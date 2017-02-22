@@ -1,0 +1,151 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullRequestClass;
+use Illuminate\Http\Request;
+use DummyFullRepositoryInterface;
+use Recca0120\Repository\Criteria;
+
+class DummyClass extends Controller
+{
+    protected $DummyPluralVariable;
+
+    public function __construct(DummyRepositoryInterface $DummyPluralVariable)
+    {
+        $this->DummyPluralVariable = $DummyPluralVariable;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param \Illuminte\Http\Request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $criteria = Criteria::create();
+
+        if ($request->has('sort') === true) {
+            $criteria->orderBy($request->get('sort'), $request->get('dir'));
+        } else {
+            $criteria->orderBy('id', 'asc');
+        }
+
+        $criteria->where(function ($criteria) use ($request) {
+            if ($request->has('id') === true) {
+                $criteria->where('id', 'like', '%'.$request->get('id').'%');
+            }
+
+            return $criteria;
+        });
+
+        $DummyPluralVariable = $this->DummyPluralVariable
+            ->paginate($criteria)
+            ->appends($request->all());
+
+        return view('DummyPluralSnakeVariable.index', compact('DummyPluralVariable'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $DummySingularVariable = $this->DummyPluralVariable->newInstance([]);
+
+        return view('DummyPluralSnakeVariable.create', compact('DummySingularVariable'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \DummyFullRequestClass  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(DummyRequestClass $request)
+    {
+        $attributes = $request->all();
+        $DummySingularVariable = $this->DummyPluralVariable->create($attributes);
+
+        return redirect(route('DummyPluralSnakeVariable.index', $request->query()))
+            ->with('success', sprintf('已新增 %s', $DummySingularVariable->name));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  string $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $DummySingularVariable = $this->DummyPluralVariable->find($id);
+
+        if (is_null($DummySingularVariable) === true) {
+            return redirect()->back()
+                ->with('error', '資料不存在');
+        }
+
+        return view('DummyPluralSnakeVariable.edit', compact('DummySingularVariable'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \DummyFullRequestClass  $request
+     * @param  string $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(DummyRequestClass $request, $id)
+    {
+        $attributes = $request->all();
+        $DummySingularVariable = $this->DummyPluralVariable->update($attributes, $id);
+
+        return redirect(route('DummyPluralSnakeVariable.index', $request->query()))
+            ->with('success', sprintf('已修改 %s', $DummySingularVariable->name));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  string $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $DummySingularVariable = $this->DummyPluralVariable->find($id);
+
+        if (is_null($DummySingularVariable) === true) {
+            return redirect()->back()
+                ->with('error', '資料不存在');
+        }
+
+        if ($this->DummyPluralVariable->delete($id) == false) {
+            return redirect()->back()
+                ->with('error', sprintf('無法刪除 %s', $DummySingularVariable->name));
+        }
+
+        return redirect(route('DummyPluralSnakeVariable.index', $request->query()))
+            ->with('success', sprintf('已刪除 %s', $DummySingularVariable->name));
+    }
+}

@@ -1,0 +1,15 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use Recca0120\Repository\EloquentRepository;
+use DummyFullRepositoryInterface as DummyClassContract;
+
+class DummyClass extends EloquentRepository implements DummyClassContract
+{
+    public function __construct(DummyModelClass $DummyModelVariable)
+    {
+        $this->model = $DummyModelVariable;
+    }
+}

@@ -1,0 +1,9 @@
+<?php
+
+namespace DummyNamespace;
+
+use Robbo\Presenter\Presenter as RobboPresenter;
+
+class DummyClass extends RobboPresenter
+{
+}

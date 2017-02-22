@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+use Plank\Mediable\Mediable;
+use DummyFullPresenterClass;
+use DummyNamespace\Presenters\Presentable;
+use Illuminate\Database\Eloquent\Model;
+
+class DummyClass extends Model
+{
+    use Mediable;
+    use Presentable;
+
+    protected $presenter = DummyPresenterClass::class;
+
+    protected $fillable = [];
+}
