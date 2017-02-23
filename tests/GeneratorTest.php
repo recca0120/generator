@@ -14,16 +14,21 @@ class GeneratorTest extends TestCase
         m::close();
     }
 
-    public function testRenderFooBarRepositoryContract()
-    {
-        $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\FooBarRepository');
+    // public function testRegisterServiceProvider()
+    // {
+    //     $generator = new Generator(new Filesystem());
+    // }
 
-        $this->verify(
-            $this->render($generator, 'Repositories/Contracts/Repository'),
-            'Repositories/Contracts/FooBarRepository'
-        );
-    }
+    // public function testRenderFooBarRepositoryContract()
+    // {
+    //     $generator = new Generator(new Filesystem());
+    //     $generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\FooBarRepository');
+    //
+    //     $this->verify(
+    //         $this->render($generator, 'Repositories/Contracts/Repository'),
+    //         'Repositories/Contracts/FooBarRepository'
+    //     );
+    // }
 
     public function testRenderFooBarRepository()
     {

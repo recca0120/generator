@@ -3,8 +3,8 @@
 namespace App;
 
 use Plank\Mediable\Mediable;
-use App\Presenters\FooBarPresenter;
 use App\Presenters\Presentable;
+use App\Presenters\FooBarPresenter;
 use Illuminate\Database\Eloquent\Model;
 
 class FooBar extends Model

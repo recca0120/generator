@@ -2,16 +2,15 @@
 
 namespace Recca0120\Generator;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 
 class Generator
 {
     protected $filesystem;
 
-    protected $attributes = [
-    ];
+    protected $attributes = [];
 
     public function __construct(Filesystem $filesystem)
     {
@@ -90,6 +89,15 @@ class Generator
         return $this;
     }
 
+    protected function setDefault($key, $value)
+    {
+        if (isset($this->attributes[$key]) === false) {
+            $this->attributes[$key] = $value;
+        }
+
+        return $this;
+    }
+
     public function get($key) {
         return Arr::get($this->attributes, $key);
     }
@@ -98,29 +106,29 @@ class Generator
         return Arr::forget($this->attributes, $key);
     }
 
-    public function render($stub)
+    public function render($stub, $orderedUses = true)
     {
-        return strtr(
+        $content = strtr(
             strtr($this->filesystem->get($stub), $this->attributes), [
                 ' extends DummyBaseClass' => '',
                 "use DummyFullBaseClass;\n" => ''
             ]
         );
+
+        return $orderedUses === true ? $this->orderedUses($content) : $content;
     }
 
     public function registerServiceProvider($content)
     {
-        $fullRepositoryClass = $this->get('DummyFullRepositoryClass');
-        $fullRepositoryInterface = $this->get('DummyFullRepositoryInterface');
-        $dummyClass = $this->get('DummyClass');
-
-        if (strpos($content, 'registerRepositories') === false) {
+        if (strpos($content, '$this->registerRepositories') === false) {
             $content = preg_replace_callback('/public function register\(.+\n\s+{/', function ($m) {
-                return $m[0]."\n\n".
+                return $m[0]."\n".
                     str_repeat(' ', 8).
                     "\$this->registerRepositories();\n";
             }, $content);
+        }
 
+        if (strpos($content, 'protected function registerRepositories()') === false) {
             $content = substr($content, 0, strrpos($content, '}')).
                 "\n".str_repeat(' ', 4).
                 'protected function registerRepositories()'.
@@ -129,21 +137,39 @@ class Generator
                 "\n}\n";
         }
 
-        if (strpos($content, $fullRepositoryClass) === false) {
-            $content = preg_replace_callback('/namespace.+|protected function registerRepositories.+\n\s+{/', function ($m) use ($fullRepositoryClass, $fullRepositoryInterface, $dummyClass) {
-                if (Str::startsWith($m[0], 'namespace') === true) {
-                    return $m[0]."\n\n".
-                        sprintf("use %s as %sContract;\n", $fullRepositoryInterface,  $dummyClass).
-                        sprintf("use %s;\n", $fullRepositoryClass);
-                } else {
-                    return $m[0]."\n".
-                        str_repeat(' ', 8).
-                        sprintf('$this->app->singleton(%sContract::class, %s::class);', $dummyClass, $dummyClass);
-                }
-            }, $content);
+        if (strpos($content, sprintf('use %s;', $this->get('DummyFullRepositoryClass'))) === false) {
+            $content = preg_replace_callback(
+                '/namespace.+/',
+                [$this, 'replaceServieProviderCallback'],
+                $content
+            );
         }
 
-        return $content;
+        if (strpos($content, sprintf('$this->app->singleton(%sContract::class, %s::class);', $this->get('DummyClass'), $this->get('DummyClass'))) === false) {
+            $content = preg_replace_callback(
+                '/protected function registerRepositories.+\n\s+{/',
+                [$this, 'replaceServieProviderCallback'],
+                $content
+            );
+        }
+
+        return $this->orderedUses($content);
+    }
+
+    protected function replaceServieProviderCallback($m) {
+        $fullRepositoryClass = $this->get('DummyFullRepositoryClass');
+        $fullRepositoryInterface = $this->get('DummyFullRepositoryInterface');
+        $dummyClass = $this->get('DummyClass');
+
+        if (Str::startsWith($m[0], 'namespace') === true) {
+            return $m[0]."\n\n".
+                sprintf("use %s as %sContract;\n", $fullRepositoryInterface,  $dummyClass).
+                sprintf("use %s;\n", $fullRepositoryClass);
+        } else {
+            return $m[0]."\n".
+                str_repeat(' ', 8).
+                sprintf('$this->app->singleton(%sContract::class, %s::class);', $dummyClass, $dummyClass);
+        }
     }
 
     protected function getNamespace($name) {
@@ -152,12 +178,14 @@ class Generator
         return rtrim(preg_replace('/'.$baseClass.'$/', '', $name), '\\');
     }
 
-    protected function setDefault($key, $value)
-    {
-        if (isset($this->attributes[$key]) === false) {
-            $this->attributes[$key] = $value;
-        }
+    protected function orderedUses($content) {
+        $fix = strtr(
+            (new UseSortFixer())
+                ->setSortType(UseSortFixer::SORT_TYPE_LENGTH)
+                ->fix($content),
+            ["\r\n" => "\n"]
+        );
 
-        return $this;
+        return $fix === false ? $content : $fix;
     }
 }

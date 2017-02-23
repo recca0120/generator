@@ -64,6 +64,8 @@ class RepositoryMakeCommand extends GeneratorCommand
             $this->option('model') ?: $this->rootNamespace().class_basename($name)
         );
 
+        $fullBaseClass = $this->option('extend') ?: 'Recca0120\Repository\EloquentRepository';
+
         $rootNamespace = trim($this->rootNamespace(), '\\');
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');
@@ -79,6 +81,7 @@ class RepositoryMakeCommand extends GeneratorCommand
         }
 
         $render = $this->generator->set('DummyFullRepositoryClass', $name.'Repository')
+            ->set('DummyFullBaseClass', $fullBaseClass)
             ->set('DummyFullModelClass', $modelClass)
             ->render($this->getStub());
 
@@ -142,6 +145,8 @@ class RepositoryMakeCommand extends GeneratorCommand
     {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a repository for the given model.'],
+
+            ['extend', '', InputOption::VALUE_OPTIONAL, 'repository extend.'],
         ];
     }
 }

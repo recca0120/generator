@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NewsRequest;
 use Illuminate\Http\Request;
-use App\Repositories\Contracts\NewsRepository;
+use App\Http\Requests\NewsRequest;
 use Recca0120\Repository\Criteria;
+use App\Repositories\Contracts\NewsRepository;
 
 class NewsController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FooBarRequest;
 use Illuminate\Http\Request;
-use App\Repositories\Contracts\FooBarRepository;
 use Recca0120\Repository\Criteria;
+use App\Http\Requests\FooBarRequest;
+use App\Repositories\Contracts\FooBarRepository;
 
 class FooBarController extends Controller
 {

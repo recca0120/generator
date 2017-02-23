@@ -40,6 +40,7 @@ class RepositoryMakeCommandTest extends TestCase
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
         $laravel->shouldReceive('offsetGet')->times(3)->with('path')->andReturn($path = 'foo');
         $input->shouldReceive('getOption')->with('model')->andReturn($model = 'foo');
+        $input->shouldReceive('getOption')->with('extend')->andReturn($fullBaseClass = 'foo');
 
         $defaultNamespace = 'Repositories';
         $directory = $path.'/'.$defaultNamespace;
@@ -64,6 +65,7 @@ class RepositoryMakeCommandTest extends TestCase
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
         $generator->shouldReceive('set')->once()->with('DummyFullRepositoryClass', $fullClass)->andReturnSelf();
+        $generator->shouldReceive('set')->once()->with('DummyFullBaseClass', $fullBaseClass)->andReturnSelf();
         $generator->shouldReceive('set')->once()->with('DummyFullModelClass', $rootNamespace.$model)->andReturnSelf();
         $generator->shouldReceive('render')->once()->with(m::type('string'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
