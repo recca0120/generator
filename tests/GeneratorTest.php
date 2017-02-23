@@ -2,10 +2,10 @@
 
 namespace Recca0120\Generator\Tests;
 
+use Illuminate\Filesystem\Filesystem;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Recca0120\Generator\Generator;
-use Illuminate\Filesystem\Filesystem;
 
 class GeneratorTest extends TestCase
 {
@@ -16,7 +16,7 @@ class GeneratorTest extends TestCase
 
     protected function setUp()
     {
-        $this->generator = new Generator(new Filesystem);
+        $this->generator = new Generator(new Filesystem());
     }
 
     public function testRenderRepositoryContract()
@@ -56,8 +56,7 @@ class GeneratorTest extends TestCase
         $this->generator
             ->set('DummyFullControllerClass', 'App\Http\Controllers\UserProviderController')
             ->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\UserProviderRepository')
-            ->set('DummyFullRequestClass', 'App\Http\Requests\UserProviderRequest')
-            ;
+            ->set('DummyFullRequestClass', 'App\Http\Requests\UserProviderRequest');
 
         $this->verify('Http/Controllers/Controller');
     }
@@ -69,6 +68,6 @@ class GeneratorTest extends TestCase
 
     protected function verify($path)
     {
-        $this->assertSame(file_get_contents(__DIR__.'/php/'.$path.'.php'), $this->generator->render($path));
+        $this->assertSame(file_get_contents(__DIR__.'/php/'.$path.'.php'), $this->generator->render(__DIR__.'/../resources/stubs/'.$path.'.stub'));
     }
 }

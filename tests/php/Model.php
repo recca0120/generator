@@ -2,10 +2,10 @@
 
 namespace App;
 
-use Plank\Mediable\Mediable;
-use App\Presenters\UserProviderPresenter;
 use App\Presenters\Presentable;
+use App\Presenters\UserProviderPresenter;
 use Illuminate\Database\Eloquent\Model;
+use Plank\Mediable\Mediable;
 
 class UserProvider extends Model
 {

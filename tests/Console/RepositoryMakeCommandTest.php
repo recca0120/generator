@@ -1,0 +1,77 @@
+<?php
+
+namespace Recca0120\Generator\Tests\Console;
+
+use Mockery as m;
+use PHPUnit\Framework\TestCase;
+use Recca0120\Generator\Console\RepositoryMakeCommand;
+use Symfony\Component\Console\Output\BufferedOutput;
+
+class RepositoryMakeCommandTest extends TestCase
+{
+    protected function mockProperty($object, $propertyName, $value)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+
+        $property = $reflectionClass->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+        $property->setAccessible(false);
+    }
+
+    protected function tearDown()
+    {
+        m::close();
+    }
+
+    public function testFire()
+    {
+        $command = new RepositoryMakeCommand(
+            $filesystem = m::mock('Illuminate\Filesystem\Filesystem'),
+            $generator = m::mock('Recca0120\Generator\Generator')
+        );
+
+        $this->mockProperty($command, 'input', $input = m::mock('Symfony\Component\Console\Input\InputInterface'));
+        $this->mockProperty($command, 'output', $output = new BufferedOutput());
+
+        $command->setLaravel($laravel = m::mock('Illuminate\Contracts\Foundation\Application, ArrayAccess'));
+
+        $input->shouldReceive('getArgument')->with('name')->andReturn($name = 'foo');
+        $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
+        $laravel->shouldReceive('offsetGet')->times(3)->with('path')->andReturn($path = 'foo');
+        $input->shouldReceive('getOption')->with('model')->andReturn($model = 'foo');
+
+        $defaultNamespace = 'Repositories';
+        $directory = $path.'/'.$defaultNamespace;
+        $file = $directory.'/'.$name.'Repository.php';
+        $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Repository';
+
+        $application = m::mock('Symfony\Component\Console\Application');
+        $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));
+        $command->setApplication($application);
+
+        $application->shouldReceive('find')->once()->with('g:repository-contract')->andReturnSelf();
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
+            return (string) $input === basename(str_replace('Repository', '', $fullClass)).' "g:repository-contract"';
+        }), m::any());
+
+        $application->shouldReceive('find')->once()->with('g:model')->andReturnSelf();
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
+            return (string) $input === basename(str_replace('Repository', '', $fullClass)).' "g:model"';
+        }), m::any());
+
+        $filesystem->shouldReceive('exists')->once()->with($file);
+        $filesystem->shouldReceive('isDirectory')->once()->with($directory);
+        $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
+        $generator->shouldReceive('set')->once()->with('DummyFullRepositoryClass', $fullClass)->andReturnSelf();
+        $generator->shouldReceive('set')->once()->with('DummyFullModelClass', $rootNamespace.$model)->andReturnSelf();
+        $generator->shouldReceive('render')->once()->with(m::type('string'))->andReturn($render = 'foo');
+        $filesystem->shouldReceive('put')->once()->with($file, $render);
+
+        $filesystem->shouldReceive('get')->once()->with($path.'/Providers/AppServiceProvider.php')->andReturn($content = 'foo');
+        $generator->shouldReceive('registerServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
+        $filesystem->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
+
+        $command->fire();
+    }
+}
