@@ -4,7 +4,6 @@ namespace Recca0120\Generator\Console;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Recca0120\Generator\Generator;
 use Symfony\Component\Console\Input\InputOption;
 
 class RepositoryMakeCommand extends GeneratorCommand

@@ -2,8 +2,6 @@
 
 namespace Recca0120\Generator\Console;
 
-use Recca0120\Generator\Generator;
-
 class RepositoryContractMakeCommand extends GeneratorCommand
 {
     /**

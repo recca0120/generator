@@ -2,10 +2,10 @@
 
 namespace Recca0120\Generator\Console;
 
-use Illuminate\Console\GeneratorCommand as BaseCommand;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Recca0120\Generator\Generator;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Console\GeneratorCommand as BaseCommand;
 
 abstract class GeneratorCommand extends BaseCommand
 {

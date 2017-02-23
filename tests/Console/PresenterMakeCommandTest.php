@@ -4,8 +4,8 @@ namespace Recca0120\Generator\Tests\Console;
 
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Recca0120\Generator\Console\PresenterMakeCommand;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Recca0120\Generator\Console\PresenterMakeCommand;
 
 class PresenterMakeCommandTest extends TestCase
 {
