@@ -38,7 +38,7 @@ class ModelMakeCommandTest extends TestCase
 
         $input->shouldReceive('getArgument')->with('name')->andReturn($name = 'foo');
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
-        $laravel->shouldReceive('offsetGet')->twice()->with('path')->andReturn($path = 'foo');
+        $laravel->shouldReceive('offsetGet')->with('path')->andReturn($path = 'foo');
 
         $file = $path.'/'.$name.'.php';
         $directory = $path;
@@ -49,8 +49,8 @@ class ModelMakeCommandTest extends TestCase
         $command->setApplication($application);
 
         $application->shouldReceive('find')->once()->with('g:presenter')->andReturnSelf();
-        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
-            return (string) $input === basename($fullClass).' "g:presenter"';
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
+            return str_replace("'", '"', (string) $input) === $name.' "g:presenter"';
         }), m::any());
 
         $filesystem->shouldReceive('exists')->once()->with($file);

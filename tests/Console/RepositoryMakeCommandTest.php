@@ -38,7 +38,8 @@ class RepositoryMakeCommandTest extends TestCase
 
         $input->shouldReceive('getArgument')->with('name')->andReturn($name = 'foo');
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
-        $laravel->shouldReceive('offsetGet')->times(3)->with('path')->andReturn($path = 'foo');
+        $laravel->shouldReceive('offsetGet')->with('path')->andReturn($path = 'foo');
+
         $input->shouldReceive('getOption')->with('model')->andReturn($model = 'foo');
         $input->shouldReceive('getOption')->with('extend')->andReturn($fullBaseClass = 'foo');
 
@@ -52,13 +53,13 @@ class RepositoryMakeCommandTest extends TestCase
         $command->setApplication($application);
 
         $application->shouldReceive('find')->once()->with('g:repository-contract')->andReturnSelf();
-        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
-            return (string) $input === basename(str_replace('Repository', '', $fullClass)).' "g:repository-contract"';
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
+            return str_replace("'", '"', (string) $input) === $name.' "g:repository-contract"';
         }), m::any());
 
         $application->shouldReceive('find')->once()->with('g:model')->andReturnSelf();
-        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
-            return (string) $input === basename(str_replace('Repository', '', $fullClass)).' "g:model"';
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
+            return str_replace("'", '"', (string) $input) === $name.' "g:model"';
         }), m::any());
 
         $filesystem->shouldReceive('exists')->once()->with($file);

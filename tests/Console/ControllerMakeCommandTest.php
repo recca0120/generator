@@ -38,7 +38,7 @@ class ControllerMakeCommandTest extends TestCase
 
         $input->shouldReceive('getArgument')->with('name')->andReturn($name = 'foo');
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
-        $laravel->shouldReceive('offsetGet')->twice()->with('path')->andReturn($path = 'foo');
+        $laravel->shouldReceive('offsetGet')->with('path')->andReturn($path = 'foo');
 
         $defaultNamespace = 'Http/Controllers';
         $directory = $path.'/'.$defaultNamespace;
@@ -50,13 +50,13 @@ class ControllerMakeCommandTest extends TestCase
         $command->setApplication($application);
 
         $application->shouldReceive('find')->once()->with('g:repository')->andReturnSelf();
-        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
-            return (string) $input === basename(str_replace('Controller', '', $fullClass)).' "g:repository"';
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
+            return str_replace('"', "'", (string) $input) === $name.' \'g:repository\'';
         }), m::any());
 
         $application->shouldReceive('find')->once()->with('g:request')->andReturnSelf();
-        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($fullClass) {
-            return (string) $input === basename(str_replace('Controller', '', $fullClass)).' "g:request"';
+        $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
+            return str_replace('"', "'", (string) $input) === $name.' \'g:request\'';
         }), m::any());
 
         $filesystem->shouldReceive('exists')->once()->with($file);

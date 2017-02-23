@@ -38,7 +38,7 @@ class RepositoryContractMakeCommandTest extends TestCase
 
         $input->shouldReceive('getArgument')->with('name')->andReturn($name = 'foo');
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
-        $laravel->shouldReceive('offsetGet')->twice()->with('path')->andReturn($path = 'foo');
+        $laravel->shouldReceive('offsetGet')->with('path')->andReturn($path = 'foo');
 
         $defaultNamespace = 'Repositories/Contracts';
         $directory = $path.'/'.$defaultNamespace;
