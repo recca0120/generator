@@ -145,10 +145,8 @@ class RepositoryMakeCommand extends GeneratorCommand
     {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a repository for the given model.'],
-
             ['extend', '', InputOption::VALUE_OPTIONAL, 'repository extend.'],
-
-            ['without-generator-model', '', InputOption::VALUE_OPTIONAL, 'don\'t generate model.']
+            ['without-generator-model', '', InputOption::VALUE_OPTIONAL, 'don\'t generate model.'],
         ];
     }
 }
