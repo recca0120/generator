@@ -47,7 +47,15 @@ class ModelMakeCommand extends GeneratorCommand
         $rootNamespace = trim($this->rootNamespace(), '\\');
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');
+        $repositoryClass = $rootNamespace.'\Repositories\\'.$baseClass.'Repository';
         $presenterClass = $rootNamespace.'\Presenters\\'.$baseClass.'Presenter';
+
+        if (class_exists($repositoryClass) === false) {
+            $this->call('g:repository', [
+                'name' => $baseClass,
+                '--without-generator-model' => true,
+            ]);
+        }
 
         if (class_exists($presenterClass) === false) {
             $this->call('g:presenter', ['name' => $baseClass]);

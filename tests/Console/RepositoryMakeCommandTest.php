@@ -42,6 +42,7 @@ class RepositoryMakeCommandTest extends TestCase
 
         $input->shouldReceive('getOption')->with('model')->andReturn($model = 'foo');
         $input->shouldReceive('getOption')->with('extend')->andReturn($fullBaseClass = 'foo');
+        $input->shouldReceive('getOption')->with('without-generator-model')->andReturn(null);
 
         $defaultNamespace = 'Repositories';
         $directory = $path.'/'.$defaultNamespace;

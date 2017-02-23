@@ -76,7 +76,7 @@ class RepositoryMakeCommand extends GeneratorCommand
             $this->call('g:repository-contract', ['name' => $baseClass]);
         }
 
-        if (class_exists($modelClass) === false) {
+        if (is_null($this->option('without-generator-model')) === true && class_exists($modelClass) === false) {
             $this->call('g:model', ['name' => $baseClass]);
         }
 
@@ -147,6 +147,8 @@ class RepositoryMakeCommand extends GeneratorCommand
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a repository for the given model.'],
 
             ['extend', '', InputOption::VALUE_OPTIONAL, 'repository extend.'],
+
+            ['without-generator-model', '', InputOption::VALUE_OPTIONAL, 'don\'t generate model.']
         ];
     }
 }
