@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerRepositories();
-
     }
 
     protected function registerRepositories()

@@ -131,7 +131,7 @@ class Generator
             $content = preg_replace_callback('/public function register\(.+\n\s+{/', function ($m) {
                 return $m[0]."\n".
                     str_repeat(' ', 8).
-                    "\$this->registerRepositories();\n";
+                    '$this->registerRepositories();';
             }, $content);
         }
 
@@ -171,7 +171,7 @@ class Generator
 
         if (Str::startsWith($m[0], 'namespace') === true) {
             return $m[0]."\n\n".
-                sprintf("use %s as %sContract;\n", $fullRepositoryInterface,  $dummyClass).
+                sprintf("use %s as %sContract;\n", $fullRepositoryInterface, $dummyClass).
                 sprintf("use %s;\n", $fullRepositoryClass);
         } else {
             return $m[0]."\n".

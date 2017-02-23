@@ -163,7 +163,7 @@ class UseSortFixer
     {
         $regex = '/(\s*(?:(?:\s+use\s+?[\w\\\\\,\s]+?;)+)\s+)/s';
         preg_match($regex, $data, $results);
-        if (!isset($results[0])) {
+        if (! isset($results[0])) {
             return false;
         }
         $result = $results[0];
@@ -189,7 +189,7 @@ class UseSortFixer
          * If any position becomes empty, removes.
          */
         $namespaces = array_filter($namespaces, function ($namespace) {
-            return !empty($namespace);
+            return ! empty($namespace);
         });
         /**
          * Grouping use statements by blocks defined in blocks variable.
@@ -247,7 +247,7 @@ class UseSortFixer
                 $groups[$group] = [];
             }
         }
-        if (!array_key_exists('_main', $groups)) {
+        if (! array_key_exists('_main', $groups)) {
             $groups = array_merge(
                 ['_main' => []],
                 $groups

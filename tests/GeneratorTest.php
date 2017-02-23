@@ -2,10 +2,10 @@
 
 namespace Recca0120\Generator\Tests;
 
-use Illuminate\Filesystem\Filesystem;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Recca0120\Generator\Generator;
+use Illuminate\Filesystem\Filesystem;
 
 class GeneratorTest extends TestCase
 {
