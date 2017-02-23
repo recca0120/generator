@@ -16,8 +16,8 @@ class Generator
 
     public function __construct(Filesystem $filesystem = null, UseSortFixer $useSortFixer = null)
     {
-        $this->filesystem = $filesystem ?: new Filesystem;
-        $this->useSortFixer = $useSortFixer ?: new UseSortFixer;
+        $this->filesystem = $filesystem ?: new Filesystem();
+        $this->useSortFixer = $useSortFixer ?: new UseSortFixer();
         $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
     }
 
@@ -102,11 +102,13 @@ class Generator
         return $this;
     }
 
-    public function get($key) {
+    public function get($key)
+    {
         return Arr::get($this->attributes, $key);
     }
 
-    public function remove($key) {
+    public function remove($key)
+    {
         return Arr::forget($this->attributes, $key);
     }
 
@@ -115,7 +117,7 @@ class Generator
         $content = strtr(
             strtr($this->filesystem->get($stub), $this->attributes), [
                 ' extends DummyBaseClass' => '',
-                "use DummyFullBaseClass;\n" => ''
+                "use DummyFullBaseClass;\n" => '',
             ]
         );
 
@@ -160,7 +162,8 @@ class Generator
         return $this->orderedUses($content);
     }
 
-    protected function replaceServieProviderCallback($m) {
+    protected function replaceServieProviderCallback($m)
+    {
         $fullRepositoryClass = $this->get('DummyFullRepositoryClass');
         $fullRepositoryInterface = $this->get('DummyFullRepositoryInterface');
         $dummyClass = $this->get('DummyClass');
@@ -176,13 +179,15 @@ class Generator
         }
     }
 
-    protected function getNamespace($name) {
+    protected function getNamespace($name)
+    {
         $baseClass = class_basename($name);
 
         return rtrim(preg_replace('/'.$baseClass.'$/', '', $name), '\\');
     }
 
-    protected function orderedUses($content) {
+    protected function orderedUses($content)
+    {
         $fix = $this->useSortFixer->fix($content);
 
         return $fix === false ? $content : strtr($fix, ["\r\n" => "\n"]);

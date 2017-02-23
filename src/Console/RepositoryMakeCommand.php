@@ -90,13 +90,13 @@ class RepositoryMakeCommand extends GeneratorCommand
         return $render;
     }
 
-    protected function registerServiceProvider($className)
+    protected function renderServiceProvider($className)
     {
         $file = parent::getPath($className);
 
         $this->files->put(
             $file,
-            $this->generator->registerServiceProvider(
+            $this->generator->renderServiceProvider(
                 $this->files->get($file)
             )
         );

@@ -141,11 +141,13 @@ class GeneratorTest extends TestCase
         return $generator->render(__DIR__.'/../src/Console/stubs/'.$className.'.stub');
     }
 
-    protected function getContent($path) {
+    protected function getContent($path)
+    {
         return file_get_contents(__DIR__.'/stubs/'.$path.'.php');
     }
 
-    protected function verify($content, $path) {
+    protected function verify($content, $path)
+    {
         $this->assertSame($this->getContent($path), $content);
     }
 }
