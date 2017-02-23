@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserProviderRequest;
+use App\Http\Requests\NewsRequest;
 use Illuminate\Http\Request;
-use App\Repositories\Contracts\UserProviderRepository;
+use App\Repositories\Contracts\NewsRepository;
 use Recca0120\Repository\Criteria;
 
-class UserProviderController extends Controller
+class NewsController extends Controller
 {
-    protected $userProviders;
+    protected $newsCollection;
 
-    public function __construct(UserProviderRepository $userProviders)
+    public function __construct(NewsRepository $newsCollection)
     {
-        $this->userProviders = $userProviders;
+        $this->newsCollection = $newsCollection;
     }
 
     /**
@@ -41,11 +41,11 @@ class UserProviderController extends Controller
             return $criteria;
         });
 
-        $userProviders = $this->userProviders
+        $newsCollection = $this->newsCollection
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('user_providers.index', compact('userProviders'));
+        return view('news.index', compact('newsCollection'));
     }
 
     /**
@@ -55,25 +55,25 @@ class UserProviderController extends Controller
      */
     public function create()
     {
-        $userProvider = $this->userProviders->newInstance([]);
+        $news = $this->newsCollection->newInstance([]);
 
-        return view('user_providers.create', compact('userProvider'));
+        return view('news.create', compact('news'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\UserProviderRequest $request
+     * @param \App\Http\Requests\NewsRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(UserProviderRequest $request)
+    public function store(NewsRequest $request)
     {
         $attributes = $request->all();
-        $userProvider = $this->userProviders->create($attributes);
+        $news = $this->newsCollection->create($attributes);
 
-        return redirect(route('user_providers.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $userProvider->name));
+        return redirect(route('news.index', $request->query()))
+            ->with('success', sprintf('已新增 %s', $news->name));
     }
 
     /**
@@ -97,31 +97,31 @@ class UserProviderController extends Controller
      */
     public function edit($id)
     {
-        $userProvider = $this->userProviders->find($id);
+        $news = $this->newsCollection->find($id);
 
-        if (is_null($userProvider) === true) {
+        if (is_null($news) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        return view('user_providers.edit', compact('userProvider'));
+        return view('news.edit', compact('news'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UserProviderRequest $request
+     * @param \App\Http\Requests\NewsRequest $request
      * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UserProviderRequest $request, $id)
+    public function update(NewsRequest $request, $id)
     {
         $attributes = $request->all();
-        $userProvider = $this->userProviders->update($attributes, $id);
+        $news = $this->newsCollection->update($attributes, $id);
 
-        return redirect(route('user_providers.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $userProvider->name));
+        return redirect(route('news.index', $request->query()))
+            ->with('success', sprintf('已修改 %s', $news->name));
     }
 
     /**
@@ -133,19 +133,19 @@ class UserProviderController extends Controller
      */
     public function destroy($id)
     {
-        $userProvider = $this->userProviders->find($id);
+        $news = $this->newsCollection->find($id);
 
-        if (is_null($userProvider) === true) {
+        if (is_null($news) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        if ($this->userProviders->delete($id) == false) {
+        if ($this->newsCollection->delete($id) == false) {
             return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $userProvider->name));
+                ->with('error', sprintf('無法刪除 %s', $news->name));
         }
 
-        return redirect(route('user_providers.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $userProvider->name));
+        return redirect(route('news.index', $request->query()))
+            ->with('success', sprintf('已刪除 %s', $news->name));
     }
 }

@@ -1,20 +1,19 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Http\Controllers;
 
-use DummyFullRequestClass;
+use App\Http\Requests\FooBarRequest;
 use Illuminate\Http\Request;
-use DummyFullRepositoryInterface;
+use App\Repositories\Contracts\FooBarRepository;
 use Recca0120\Repository\Criteria;
-use DummyFullBaseClass;
 
-class DummyClass extends DummyBaseClass
+class FooBarController extends Controller
 {
-    protected $DummyPluralVariable;
+    protected $fooBars;
 
-    public function __construct(DummyRepositoryInterface $DummyPluralVariable)
+    public function __construct(FooBarRepository $fooBars)
     {
-        $this->DummyPluralVariable = $DummyPluralVariable;
+        $this->fooBars = $fooBars;
     }
 
     /**
@@ -42,11 +41,11 @@ class DummyClass extends DummyBaseClass
             return $criteria;
         });
 
-        $DummyPluralVariable = $this->DummyPluralVariable
+        $fooBars = $this->fooBars
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('DummyView.index', compact('DummyPluralVariable'));
+        return view('foo_bars.index', compact('fooBars'));
     }
 
     /**
@@ -56,25 +55,25 @@ class DummyClass extends DummyBaseClass
      */
     public function create()
     {
-        $DummySingularVariable = $this->DummyPluralVariable->newInstance([]);
+        $fooBar = $this->fooBars->newInstance([]);
 
-        return view('DummyView.create', compact('DummySingularVariable'));
+        return view('foo_bars.create', compact('fooBar'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \DummyFullRequestClass $request
+     * @param \App\Http\Requests\FooBarRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(DummyRequestClass $request)
+    public function store(FooBarRequest $request)
     {
         $attributes = $request->all();
-        $DummySingularVariable = $this->DummyPluralVariable->create($attributes);
+        $fooBar = $this->fooBars->create($attributes);
 
-        return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $DummySingularVariable->name));
+        return redirect(route('foo_bars.index', $request->query()))
+            ->with('success', sprintf('已新增 %s', $fooBar->name));
     }
 
     /**
@@ -98,31 +97,31 @@ class DummyClass extends DummyBaseClass
      */
     public function edit($id)
     {
-        $DummySingularVariable = $this->DummyPluralVariable->find($id);
+        $fooBar = $this->fooBars->find($id);
 
-        if (is_null($DummySingularVariable) === true) {
+        if (is_null($fooBar) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        return view('DummyView.edit', compact('DummySingularVariable'));
+        return view('foo_bars.edit', compact('fooBar'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \DummyFullRequestClass $request
+     * @param \App\Http\Requests\FooBarRequest $request
      * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(DummyRequestClass $request, $id)
+    public function update(FooBarRequest $request, $id)
     {
         $attributes = $request->all();
-        $DummySingularVariable = $this->DummyPluralVariable->update($attributes, $id);
+        $fooBar = $this->fooBars->update($attributes, $id);
 
-        return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $DummySingularVariable->name));
+        return redirect(route('foo_bars.index', $request->query()))
+            ->with('success', sprintf('已修改 %s', $fooBar->name));
     }
 
     /**
@@ -134,19 +133,19 @@ class DummyClass extends DummyBaseClass
      */
     public function destroy($id)
     {
-        $DummySingularVariable = $this->DummyPluralVariable->find($id);
+        $fooBar = $this->fooBars->find($id);
 
-        if (is_null($DummySingularVariable) === true) {
+        if (is_null($fooBar) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        if ($this->DummyPluralVariable->delete($id) == false) {
+        if ($this->fooBars->delete($id) == false) {
             return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $DummySingularVariable->name));
+                ->with('error', sprintf('無法刪除 %s', $fooBar->name));
         }
 
-        return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $DummySingularVariable->name));
+        return redirect(route('foo_bars.index', $request->query()))
+            ->with('success', sprintf('已刪除 %s', $fooBar->name));
     }
 }

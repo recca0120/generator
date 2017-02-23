@@ -3,10 +3,10 @@
 namespace DummyNamespace;
 
 use DummyFullModelClass;
-use Recca0120\Repository\EloquentRepository;
+use DummyFullBaseClass;
 use DummyFullRepositoryInterface as DummyClassContract;
 
-class DummyClass extends EloquentRepository implements DummyClassContract
+class DummyClass extends DummyBaseClass implements DummyClassContract
 {
     public function __construct(DummyModelClass $DummyModelVariable)
     {
