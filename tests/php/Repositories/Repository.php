@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\UserProviderRepository as UserProviderRepositoryContract;
 use App\UserProvider;
 use Recca0120\Repository\EloquentRepository;
+use App\Repositories\Contracts\UserProviderRepository as UserProviderRepositoryContract;
 
-class Repository extends EloquentRepository implements UserProviderRepositoryContract
+class UserProviderRepository extends EloquentRepository implements UserProviderRepositoryContract
 {
     public function __construct(UserProvider $userProvider)
     {

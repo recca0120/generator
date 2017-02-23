@@ -14,60 +14,62 @@ class GeneratorTest extends TestCase
         m::close();
     }
 
-    protected function setUp()
-    {
-        $this->generator = new Generator(new Filesystem());
-    }
-
     public function testRenderRepositoryContract()
     {
-        $this->generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\UserProviderRepository');
-        $this->verify('Repositories/Contracts/Repository');
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\UserProviderRepository');
+        $this->verify($generator, 'Repositories/Contracts/Repository');
     }
 
     public function testRenderRepository()
     {
-        $this->generator->set('DummyFullRepositoryClass', 'App\Repositories\UserProviderRepository')
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullRepositoryClass', 'App\Repositories\UserProviderRepository')
             ->set('DummyFullModelClass', 'App\UserProvider');
 
-        $this->verify('Repositories/Repository');
+        $this->verify($generator, 'Repositories/Repository');
     }
 
     public function testRenderModel()
     {
-        $this->generator->set('DummyFullModelClass', 'App\UserProvider');
-        $this->verify('Model');
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullModelClass', 'App\UserProvider');
+        $this->verify($generator, 'Model');
     }
 
     public function testRenderPresenter()
     {
-        $this->generator->set('DummyFullPresenterClass', 'App\Presenters\UserProviderPresenter');
-        $this->verify('Presenters/Presenter');
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullPresenterClass', 'App\Presenters\UserProviderPresenter');
+        $this->verify($generator, 'Presenters/Presenter');
     }
 
     public function testRenderRequest()
     {
-        $this->generator->set('DummyFullRequestClass', 'App\Http\Requests\UserProviderRequest');
-        $this->verify('Http/Requests/Request');
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullRequestClass', 'App\Http\Requests\UserProviderRequest');
+        $this->verify($generator, 'Http/Requests/Request');
     }
 
     public function testRenderController()
     {
-        $this->generator
+        $generator = new Generator(new Filesystem());
+        $generator
             ->set('DummyFullControllerClass', 'App\Http\Controllers\UserProviderController')
             ->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\UserProviderRepository')
             ->set('DummyFullRequestClass', 'App\Http\Requests\UserProviderRequest');
 
-        $this->verify('Http/Controllers/Controller');
+        $this->verify($generator, 'Http/Controllers/Controller');
     }
 
     public function testRenderIndexView()
     {
-        $this->verify('Views/index.blade');
+        $generator = new Generator(new Filesystem());
+        $this->verify($generator, 'Views/index.blade');
     }
 
-    protected function verify($path)
+    protected function verify($generator, $path)
     {
-        $this->assertSame(file_get_contents(__DIR__.'/php/'.$path.'.php'), $this->generator->render(__DIR__.'/../resources/stubs/'.$path.'.stub'));
+        $this->assertSame(file_get_contents(__DIR__.'/php/'.$path.'.php'), $generator->render(__DIR__.'/../resources/stubs/'.$path.'.stub'));
     }
 }

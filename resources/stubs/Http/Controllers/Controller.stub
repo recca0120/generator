@@ -19,7 +19,7 @@ class DummyClass extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminte\Http\Request
+     * @param \Illuminte\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -63,7 +63,7 @@ class DummyClass extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \DummyFullRequestClass  $request
+     * @param \DummyFullRequestClass $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -79,7 +79,7 @@ class DummyClass extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $id
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -91,7 +91,7 @@ class DummyClass extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -110,8 +110,8 @@ class DummyClass extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \DummyFullRequestClass  $request
-     * @param  string $id
+     * @param \DummyFullRequestClass $request
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -127,7 +127,7 @@ class DummyClass extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */

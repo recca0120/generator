@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserProviderRequest;
-use App\Repositories\Contracts\UserProviderRepository;
 use Illuminate\Http\Request;
+use App\Repositories\Contracts\UserProviderRepository;
 use Recca0120\Repository\Criteria;
 
-class Controller extends Controller
+class UserProviderController extends Controller
 {
     protected $userProviders;
 
@@ -19,7 +19,7 @@ class Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminte\Http\Request
+     * @param \Illuminte\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -85,6 +85,7 @@ class Controller extends Controller
      */
     public function show($id)
     {
+        //
     }
 
     /**
@@ -110,7 +111,7 @@ class Controller extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\UserProviderRequest $request
-     * @param string                                 $id
+     * @param string $id
      *
      * @return \Illuminate\Http\Response
      */
