@@ -14,35 +14,6 @@ class GeneratorTest extends TestCase
         m::close();
     }
 
-    public function testRegisterServiceProvider()
-    {
-        $generator = new Generator(new Filesystem());
-
-        $serviceProvider = <<<EOF
-namespace App\Providers;
-
-class AppServiceProvider extends ServiceProvider
-{
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot()
-    {
-    }
-
-    /**
-     * Register any application services.
-     */
-    public function register()
-    {
-    }
-}
-EOF;
-
-        dump($generator->registerServiceProvider($serviceProvider));
-        $this->assertTrue(false);
-    }
-
     public function testRenderFooBarRepositoryContract()
     {
         $generator = new Generator(new Filesystem());
@@ -64,6 +35,21 @@ EOF;
         $this->verify(
             $this->render($generator, 'Repositories/Repository'),
             'Repositories/FooBarRepository'
+        );
+    }
+
+    public function testRenderServiceProvider()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullRepositoryClass', 'App\Repositories\FooBarRepository')
+            ->set('DummyFullBaseClass', 'Recca0120\Repository\EloquentRepository')
+            ->set('DummyFullModelClass', 'App\FooBar');
+
+        $this->verify(
+            $generator->renderServiceProvider(
+                $this->getContent('Providers/MockServiceProvider')
+            ),
+            'Providers/AppServiceProvider'
         );
     }
 
@@ -155,10 +141,11 @@ EOF;
         return $generator->render(__DIR__.'/../src/Console/stubs/'.$className.'.stub');
     }
 
+    protected function getContent($path) {
+        return file_get_contents(__DIR__.'/stubs/'.$path.'.php');
+    }
+
     protected function verify($content, $path) {
-        $this->assertSame(
-            file_get_contents(__DIR__.'/php/'.$path.'.php'),
-            $content
-        );
+        $this->assertSame($this->getContent($path), $content);
     }
 }

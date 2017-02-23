@@ -71,7 +71,7 @@ class RepositoryMakeCommandTest extends TestCase
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
         $filesystem->shouldReceive('get')->once()->with($path.'/Providers/AppServiceProvider.php')->andReturn($content = 'foo');
-        $generator->shouldReceive('registerServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
+        $generator->shouldReceive('renderServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
         $filesystem->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
 
         $command->fire();

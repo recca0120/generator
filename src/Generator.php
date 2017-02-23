@@ -122,7 +122,7 @@ class Generator
         return $orderedUses === true ? $this->orderedUses($content) : $content;
     }
 
-    public function registerServiceProvider($content)
+    public function renderServiceProvider($content)
     {
         if (strpos($content, '$this->registerRepositories') === false) {
             $content = preg_replace_callback('/public function register\(.+\n\s+{/', function ($m) {

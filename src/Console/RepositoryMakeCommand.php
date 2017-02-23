@@ -85,7 +85,7 @@ class RepositoryMakeCommand extends GeneratorCommand
             ->set('DummyFullModelClass', $modelClass)
             ->render($this->getStub());
 
-        $this->registerServiceProvider('Providers/AppServiceProvider');
+        $this->renderServiceProvider('Providers/AppServiceProvider');
 
         return $render;
     }
