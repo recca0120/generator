@@ -1,6 +1,6 @@
 <?php
 
-namespace Recca0120\Generator;
+namespace Recca0120\Generator\Fixers;
 
 // from https://github.com/mmoreram/php-formatter.git
 class UseSortFixer

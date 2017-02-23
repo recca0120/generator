@@ -5,6 +5,7 @@ namespace Recca0120\Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
+use Recca0120\Generator\Fixers\UseSortFixer;
 
 class Generator
 {
