@@ -42,4 +42,14 @@ abstract class GeneratorCommand extends BaseCommand
             $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name
         );
     }
+
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return $this->laravel->getNamespace();
+    }
 }
