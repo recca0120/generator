@@ -138,7 +138,7 @@ class GeneratorTest extends TestCase
 
     protected function render($generator, $className)
     {
-        return $generator->render(__DIR__.'/../src/Console/stubs/'.$className.'.stub');
+        return $generator->render(__DIR__.'/../resources/stubs/'.$className.'.stub');
     }
 
     protected function getContent($path)

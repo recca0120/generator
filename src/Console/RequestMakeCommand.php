@@ -32,7 +32,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/Http/Requests/Request.stub';
+        return __DIR__.'/../../resources/stubs/Http/Requests/Request.stub';
     }
 
     /**

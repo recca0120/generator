@@ -9,6 +9,8 @@ use Illuminate\Console\GeneratorCommand as BaseCommand;
 
 abstract class GeneratorCommand extends BaseCommand
 {
+    protected $generator;
+
     /**
      * Create a new controller creator command instance.
      *
