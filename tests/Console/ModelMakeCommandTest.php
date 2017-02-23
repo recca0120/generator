@@ -57,7 +57,7 @@ class ModelMakeCommandTest extends TestCase
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
         $generator->shouldReceive('set')->once()->with('DummyFullModelClass', $fullClass)->andReturnSelf();
-        $generator->shouldReceive('render')->once()->with(m::type('string'))->andReturn($render = 'foo');
+        $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
         $command->fire();

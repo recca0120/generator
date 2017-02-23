@@ -36,7 +36,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../resources/stubs/Repositories/Repository.stub';
+        return __DIR__.'/stubs/Repositories/Repository.stub';
     }
 
     /**
@@ -85,9 +85,21 @@ class RepositoryMakeCommand extends GeneratorCommand
             ->set('DummyFullModelClass', $modelClass)
             ->render($this->getStub());
 
-        $this->registerServiceProvider();
+        $this->registerServiceProvider('Providers/AppServiceProvider');
 
         return $render;
+    }
+
+    protected function registerServiceProvider($className)
+    {
+        $file = parent::getPath($className);
+
+        $this->files->put(
+            $file,
+            $this->generator->registerServiceProvider(
+                $this->files->get($file)
+            )
+        );
     }
 
     /**
@@ -122,18 +134,6 @@ class RepositoryMakeCommand extends GeneratorCommand
         }
 
         return $model;
-    }
-
-    protected function registerServiceProvider()
-    {
-        $file = parent::getPath('Providers/AppServiceProvider');
-
-        $this->files->put(
-            $file,
-            $this->generator->registerServiceProvider(
-                $this->files->get($file)
-            )
-        );
     }
 
     /**

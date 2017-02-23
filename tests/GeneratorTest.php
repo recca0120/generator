@@ -14,21 +14,45 @@ class GeneratorTest extends TestCase
         m::close();
     }
 
-    // public function testRegisterServiceProvider()
-    // {
-    //     $generator = new Generator(new Filesystem());
-    // }
+    public function testRegisterServiceProvider()
+    {
+        $generator = new Generator(new Filesystem());
 
-    // public function testRenderFooBarRepositoryContract()
-    // {
-    //     $generator = new Generator(new Filesystem());
-    //     $generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\FooBarRepository');
-    //
-    //     $this->verify(
-    //         $this->render($generator, 'Repositories/Contracts/Repository'),
-    //         'Repositories/Contracts/FooBarRepository'
-    //     );
-    // }
+        $serviceProvider = <<<EOF
+namespace App\Providers;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot()
+    {
+    }
+
+    /**
+     * Register any application services.
+     */
+    public function register()
+    {
+    }
+}
+EOF;
+
+        dump($generator->registerServiceProvider($serviceProvider));
+        $this->assertTrue(false);
+    }
+
+    public function testRenderFooBarRepositoryContract()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\FooBarRepository');
+
+        $this->verify(
+            $this->render($generator, 'Repositories/Contracts/Repository'),
+            'Repositories/Contracts/FooBarRepository'
+        );
+    }
 
     public function testRenderFooBarRepository()
     {
@@ -128,7 +152,7 @@ class GeneratorTest extends TestCase
 
     protected function render($generator, $className)
     {
-        return $generator->render(__DIR__.'/../resources/stubs/'.$className.'.stub');
+        return $generator->render(__DIR__.'/../src/Console/stubs/'.$className.'.stub');
     }
 
     protected function verify($content, $path) {

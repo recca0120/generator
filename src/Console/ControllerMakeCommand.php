@@ -32,7 +32,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../resources/stubs/Http/Controllers/Controller.stub';
+        return __DIR__.'/stubs/Http/Controllers/Controller.stub';
     }
 
     /**

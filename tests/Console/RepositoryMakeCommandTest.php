@@ -67,7 +67,7 @@ class RepositoryMakeCommandTest extends TestCase
         $generator->shouldReceive('set')->once()->with('DummyFullRepositoryClass', $fullClass)->andReturnSelf();
         $generator->shouldReceive('set')->once()->with('DummyFullBaseClass', $fullBaseClass)->andReturnSelf();
         $generator->shouldReceive('set')->once()->with('DummyFullModelClass', $rootNamespace.$model)->andReturnSelf();
-        $generator->shouldReceive('render')->once()->with(m::type('string'))->andReturn($render = 'foo');
+        $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
         $filesystem->shouldReceive('get')->once()->with($path.'/Providers/AppServiceProvider.php')->andReturn($content = 'foo');

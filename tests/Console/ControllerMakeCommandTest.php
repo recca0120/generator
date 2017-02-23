@@ -65,7 +65,7 @@ class ControllerMakeCommandTest extends TestCase
         $generator->shouldReceive('set')->once()->with('DummyFullControllerClass', $fullClass)->andReturnSelf();
         $generator->shouldReceive('set')->once()->with('DummyFullRepositoryInterface', $rootNamespace.'Repositories\Contracts\\'.$name.'Repository')->andReturnSelf();
         $generator->shouldReceive('set')->once()->with('DummyFullRequestClass', $rootNamespace.'Http\Requests\\'.$name.'Request')->andReturnSelf();
-        $generator->shouldReceive('render')->once()->with(m::type('string'))->andReturn($render = 'foo');
+        $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
         $command->fire();

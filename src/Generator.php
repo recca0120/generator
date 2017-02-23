@@ -10,11 +10,15 @@ class Generator
 {
     protected $filesystem;
 
+    protected $useSortFixer;
+
     protected $attributes = [];
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem = null, UseSortFixer $useSortFixer = null)
     {
-        $this->filesystem = $filesystem;
+        $this->filesystem = $filesystem ?: new Filesystem;
+        $this->useSortFixer = $useSortFixer ?: new UseSortFixer;
+        $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
     }
 
     public function set($key, $value)
@@ -179,13 +183,8 @@ class Generator
     }
 
     protected function orderedUses($content) {
-        $fix = strtr(
-            (new UseSortFixer())
-                ->setSortType(UseSortFixer::SORT_TYPE_LENGTH)
-                ->fix($content),
-            ["\r\n" => "\n"]
-        );
+        $fix = $this->useSortFixer->fix($content);
 
-        return $fix === false ? $content : $fix;
+        return $fix === false ? $content : strtr($fix, ["\r\n" => "\n"]);
     }
 }
