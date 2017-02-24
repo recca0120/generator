@@ -62,9 +62,9 @@ class ControllerMakeCommandTest extends TestCase
         $filesystem->shouldReceive('exists')->once()->with($file);
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
-        $generator->shouldReceive('set')->once()->with('DummyFullControllerClass', $fullClass)->andReturnSelf();
-        $generator->shouldReceive('set')->once()->with('DummyFullRepositoryInterface', $rootNamespace.'Repositories\Contracts\\'.$name.'Repository')->andReturnSelf();
-        $generator->shouldReceive('set')->once()->with('DummyFullRequestClass', $rootNamespace.'Http\Requests\\'.$name.'Request')->andReturnSelf();
+        $generator->shouldReceive('setFullControllerClass')->once()->with($fullClass)->andReturnSelf();
+        $generator->shouldReceive('setFullRepositoryInterface')->once()->with($rootNamespace.'Repositories\Contracts\\'.$name.'Repository')->andReturnSelf();
+        $generator->shouldReceive('setFullRequestClass')->once()->with($rootNamespace.'Http\Requests\\'.$name.'Request')->andReturnSelf();
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 

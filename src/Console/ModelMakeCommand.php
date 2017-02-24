@@ -61,7 +61,7 @@ class ModelMakeCommand extends GeneratorCommand
             $this->call('g:presenter', ['name' => $baseClass]);
         }
 
-        return $this->generator->set('DummyFullModelClass', $name)
+        return $this->generator->setFullModelClass($name)
             ->render($this->getStub());
     }
 }

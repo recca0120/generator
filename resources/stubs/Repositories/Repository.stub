@@ -2,8 +2,8 @@
 
 namespace DummyNamespace;
 
-use DummyFullModelClass;
 use DummyFullBaseClass;
+use DummyFullModelClass;
 use DummyFullRepositoryInterface as DummyClassContract;
 
 class DummyClass extends DummyBaseClass implements DummyClassContract

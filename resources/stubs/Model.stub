@@ -2,10 +2,10 @@
 
 namespace DummyNamespace;
 
-use Plank\Mediable\Mediable;
 use DummyFullPresenterClass;
-use DummyNamespace\Presenters\Presentable;
+use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Model;
+use DummyNamespace\Presenters\Presentable;
 
 class DummyClass extends Model
 {

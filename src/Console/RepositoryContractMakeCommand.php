@@ -56,7 +56,7 @@ class RepositoryContractMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        return $this->generator->set('DummyFullRepositoryInterface', $name.'Repository')
+        return $this->generator->setFullRepositoryInterface($name.'Repository')
             ->render($this->getStub());
     }
 

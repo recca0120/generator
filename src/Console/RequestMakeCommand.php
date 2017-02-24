@@ -56,7 +56,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        return $this->generator->set('DummyFullRequestClass', $name.'Request')
+        return $this->generator->setFullRequestClass($name.'Request')
             ->render($this->getStub());
     }
 

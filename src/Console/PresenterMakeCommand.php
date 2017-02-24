@@ -56,7 +56,7 @@ class PresenterMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        return $this->generator->set('DummyFullPresenterClass', $name.'Presenter')
+        return $this->generator->setFullPresenterClass($name.'Presenter')
             ->render($this->getStub());
     }
 

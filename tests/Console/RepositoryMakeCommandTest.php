@@ -66,9 +66,9 @@ class RepositoryMakeCommandTest extends TestCase
         $filesystem->shouldReceive('exists')->once()->with($file);
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
-        $generator->shouldReceive('set')->once()->with('DummyFullRepositoryClass', $fullClass)->andReturnSelf();
-        $generator->shouldReceive('set')->once()->with('DummyFullBaseClass', $fullBaseClass)->andReturnSelf();
-        $generator->shouldReceive('set')->once()->with('DummyFullModelClass', $rootNamespace.$model)->andReturnSelf();
+        $generator->shouldReceive('setFullRepositoryClass')->once()->with($fullClass)->andReturnSelf();
+        $generator->shouldReceive('setFullBaseClass')->once()->with($fullBaseClass)->andReturnSelf();
+        $generator->shouldReceive('setFullModelClass')->once()->with($rootNamespace.$model)->andReturnSelf();
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 

@@ -71,9 +71,9 @@ class ControllerMakeCommand extends GeneratorCommand
             $this->call('g:request', ['name' => $baseClass]);
         }
 
-        return $this->generator->set('DummyFullControllerClass', $name.'Controller')
-            ->set('DummyFullRepositoryInterface', $repositoryContractInterface)
-            ->set('DummyFullRequestClass', $requestClass)
+        return $this->generator->setFullControllerClass($name.'Controller')
+            ->setFullRepositoryInterface($repositoryContractInterface)
+            ->setFullRequestClass($requestClass)
             ->render($this->getStub());
     }
 

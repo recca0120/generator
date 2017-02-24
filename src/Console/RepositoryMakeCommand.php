@@ -80,9 +80,9 @@ class RepositoryMakeCommand extends GeneratorCommand
             $this->call('g:model', ['name' => $baseClass]);
         }
 
-        $render = $this->generator->set('DummyFullRepositoryClass', $name.'Repository')
-            ->set('DummyFullBaseClass', $fullBaseClass)
-            ->set('DummyFullModelClass', $modelClass)
+        $render = $this->generator->setFullRepositoryClass($name.'Repository')
+            ->setFullBaseClass($fullBaseClass)
+            ->setFullModelClass($modelClass)
             ->render($this->getStub());
 
         $this->renderServiceProvider('Providers/AppServiceProvider');

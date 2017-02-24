@@ -22,74 +22,126 @@ class Generator
         $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
     }
 
+    protected function parseAttribute($value) {
+        $dummyClass = class_basename($value);
+        $dummyNamespace = $this->getNamespace($value);
+
+        $dummyModelVariable = Str::camel(Str::singular(
+            preg_replace('/(Controller|Repository)$/', '', $dummyClass)
+        ));
+
+        $dummyCollectionVariable = Str::plural($dummyModelVariable);
+        $dummyCollectionVariable = $dummyCollectionVariable === $dummyModelVariable ?
+            $dummyModelVariable.'Collection' : $dummyCollectionVariable;
+
+        $dummyRepositoryVariable = $dummyCollectionVariable;
+
+        $dummyView = Str::snake(Str::plural($dummyModelVariable));
+        $dummyRoute = Str::snake(Str::plural($dummyModelVariable));
+
+        return compact(
+            'dummyNamespace',
+            'dummyClass',
+            'dummyRepositoryVariable',
+            'dummyCollectionVariable',
+            'dummyModelVariable',
+            'dummyView',
+            'dummyRoute'
+        );
+    }
+
+    public function setFullBaseClass($value) {
+        $this->set('DummyFullBaseClass', $value);
+
+        extract($this->parseAttribute($value));
+
+        $this->set('DummyBaseClass', $dummyClass);
+        if ($this->get('DummyNamespace') === $this->getNamespace($value)) {
+            $this->remove('DummyFullBaseClass');
+        }
+
+        return $this;
+    }
+
+    public function setFullRepositoryInterface($value)
+    {
+        $this->set('DummyFullRepositoryInterface', $value);
+
+        extract($this->parseAttribute($value));
+
+        return $this->setDefault('DummyNamespace', $dummyNamespace)
+            ->setDefault('DummyClass', $dummyClass)
+            ->setDefault('DummyRepositoryInterface', $dummyClass);
+    }
+
+    public function setFullRepositoryClass($value)
+    {
+        $this->set('DummyFullRepositoryClass', $value);
+
+        extract($this->parseAttribute($value));
+
+        return $this->setDefault('DummyNamespace', $dummyNamespace)
+            ->setDefault('DummyClass', $dummyClass)
+            ->setDefault('DummyFullRepositoryInterface', $dummyNamespace.'\Contracts\\'.$dummyClass)
+            ->set('DummyRepositoryClass', $dummyClass);
+    }
+
+    public function setFullModelClass($value)
+    {
+        $this->set('DummyFullModelClass', $value);
+
+        extract($this->parseAttribute($value));
+
+        return $this->setDefault('DummyNamespace', $dummyNamespace)
+            ->setDefault('DummyClass', $dummyClass)
+            ->setDefault('DummyModelVariable', $dummyModelVariable)
+            ->setDefault('DummyFullPresenterClass', $dummyNamespace.'\Presenters\\'.$dummyClass.'Presenter')
+            ->setDefault('DummyPresenterClass', $dummyClass.'Presenter')
+            ->set('DummyModelClass', $dummyClass);
+    }
+
+    public function setFullPresenterClass($value)
+    {
+        $this->set('DummyFullPresenterClass', $value);
+
+        extract($this->parseAttribute($value));
+
+        return $this->setDefault('DummyNamespace', $dummyNamespace)
+            ->setDefault('DummyClass', $dummyClass)
+            ->set('DummyPresenterClass', $dummyClass);
+    }
+
+    public function setFullRequestClass($value)
+    {
+        $this->set('DummyFullRequestClass', $value);
+
+        extract($this->parseAttribute($value));
+
+        return $this->setDefault('DummyNamespace', $dummyNamespace)
+            ->setDefault('DummyClass', $dummyClass)
+            ->set('DummyRequestClass', $dummyClass);
+    }
+
+    public function setFullControllerClass($value)
+    {
+        $this->set('DummyFullControllerClass', $value);
+
+        extract($this->parseAttribute($value));
+
+        return $this->setDefault('DummyNamespace', $dummyNamespace)
+            ->setDefault('DummyClass', $dummyClass)
+            ->setDefault('DummyRepositoryVariable', $dummyRepositoryVariable)
+            ->setDefault('DummyCollectionVariable', $dummyRepositoryVariable)
+            ->setDefault('DummyModelVariable', $dummyModelVariable)
+            ->setDefault('DummyView', $dummyView)
+            ->setDefault('DummyRoute', $dummyRoute)
+            ->set('DummyControllerClass', $dummyClass)
+            ->setFullBaseClass('App\Http\Controllers\Controller');
+    }
+
     public function set($key, $value)
     {
         $this->attributes[$key] = $value;
-
-        $baseClass = class_basename($value);
-        $namespace = $this->getNamespace($value);
-        $singular = Str::singular(preg_replace('/(Controller|Repository)$/', '', lcfirst($baseClass)));
-        $singularSnake = Str::snake($singular);
-        $plural = Str::plural($singular);
-
-        $dummyView = Str::snake($plural);
-        $dummyRoute = Str::snake($plural);
-
-        $plural = $singular === $plural ? $singular.'Collection' : $plural;
-        $pluralSnake = Str::snake($plural);
-
-        switch ($key) {
-            case 'DummyFullRepositoryInterface':
-                $this->setDefault('DummyNamespace', $namespace)
-                    ->setDefault('DummyClass', $baseClass)
-                    ->setDefault('DummyRepositoryInterface', $baseClass);
-                break;
-            case 'DummyFullRepositoryClass':
-                $this->setDefault('DummyNamespace', $namespace)
-                    ->setDefault('DummyClass', $baseClass)
-                    ->setDefault('DummyFullRepositoryInterface', $namespace.'\Contracts\\'.$baseClass)
-                    ->set('DummyRepositoryClass', $baseClass);
-                break;
-            case 'DummyFullModelClass':
-                $this->setDefault('DummyNamespace', $namespace)
-                    ->setDefault('DummyClass', $baseClass)
-                    ->setDefault('DummyModelVariable', lcfirst($baseClass))
-                    ->setDefault('DummyFullPresenterClass', $namespace.'\Presenters\\'.$baseClass.'Presenter')
-                    ->setDefault('DummyPresenterClass', $baseClass.'Presenter')
-                    ->set('DummyModelClass', $baseClass);
-                break;
-            case 'DummyFullPresenterClass':
-                $this->setDefault('DummyNamespace', $namespace)
-                    ->setDefault('DummyClass', $baseClass)
-                    ->set('DummyPresenterClass', $baseClass);
-                break;
-            case 'DummyFullRequestClass':
-                $this->setDefault('DummyNamespace', $namespace)
-                    ->setDefault('DummyClass', $baseClass)
-                    ->set('DummyRequestClass', $baseClass);
-                break;
-            case 'DummyFullControllerClass':
-                $this->setDefault('DummyNamespace', $namespace)
-                    ->setDefault('DummyClass', $baseClass)
-                    ->setDefault('DummyVariable', $plural)
-                    ->setDefault('DummyPluralVariable', $plural)
-                    ->setDefault('DummyPluralSnakeVariable', $pluralSnake)
-                    ->setDefault('DummySingularVariable', $singular)
-                    ->setDefault('DummySingularSnakeVariable', $singularSnake)
-                    ->setDefault('DummyView', $dummyView)
-                    ->setDefault('DummyRoute', $dummyRoute)
-                    ->set('DummyControllerClass', $baseClass)
-                    ->setDefault('DummyBaseClass', 'Controller');
-                break;
-            case 'DummyFullBaseClass':
-                $this->set('DummyBaseClass', $baseClass);
-
-                if ($this->get('DummyNamespace') === $this->getNamespace($value)) {
-                    $this->remove('DummyFullBaseClass');
-                }
-
-                break;
-        }
 
         return $this;
     }
@@ -115,12 +167,10 @@ class Generator
 
     public function render($stub, $orderedUses = true)
     {
-        $content = strtr(
-            strtr($this->filesystem->get($stub), $this->attributes), [
-                ' extends DummyBaseClass' => '',
-                "use DummyFullBaseClass;\n" => '',
-            ]
-        );
+        $content = strtr(strtr(strtr($this->filesystem->get($stub), $this->attributes), ["\r\n" => "\n"]), [
+            ' extends DummyBaseClass' => '',
+            "use DummyFullBaseClass;" => '',
+        ]);
 
         return $orderedUses === true ? $this->orderedUses($content) : $content;
     }

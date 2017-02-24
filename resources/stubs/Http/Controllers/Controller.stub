@@ -2,19 +2,19 @@
 
 namespace DummyNamespace;
 
+use DummyFullBaseClass;
 use DummyFullRequestClass;
 use Illuminate\Http\Request;
 use DummyFullRepositoryInterface;
 use Recca0120\Repository\Criteria;
-use DummyFullBaseClass;
 
 class DummyClass extends DummyBaseClass
 {
-    protected $DummyPluralVariable;
+    protected $DummyRepositoryVariable;
 
-    public function __construct(DummyRepositoryInterface $DummyPluralVariable)
+    public function __construct(DummyRepositoryInterface $DummyRepositoryVariable)
     {
-        $this->DummyPluralVariable = $DummyPluralVariable;
+        $this->DummyRepositoryVariable = $DummyRepositoryVariable;
     }
 
     /**
@@ -42,11 +42,11 @@ class DummyClass extends DummyBaseClass
             return $criteria;
         });
 
-        $DummyPluralVariable = $this->DummyPluralVariable
+        $DummyCollectionVariable = $this->DummyRepositoryVariable
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('DummyView.index', compact('DummyPluralVariable'));
+        return view('DummyView.index', compact('DummyCollectionVariable'));
     }
 
     /**
@@ -56,9 +56,9 @@ class DummyClass extends DummyBaseClass
      */
     public function create()
     {
-        $DummySingularVariable = $this->DummyPluralVariable->newInstance([]);
+        $DummyModelVariable = $this->DummyRepositoryVariable->newInstance([]);
 
-        return view('DummyView.create', compact('DummySingularVariable'));
+        return view('DummyView.create', compact('DummyModelVariable'));
     }
 
     /**
@@ -71,10 +71,10 @@ class DummyClass extends DummyBaseClass
     public function store(DummyRequestClass $request)
     {
         $attributes = $request->all();
-        $DummySingularVariable = $this->DummyPluralVariable->create($attributes);
+        $DummyModelVariable = $this->DummyRepositoryVariable->create($attributes);
 
         return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $DummySingularVariable->name));
+            ->with('success', sprintf('已新增 %s', $DummyModelVariable->name));
     }
 
     /**
@@ -98,14 +98,14 @@ class DummyClass extends DummyBaseClass
      */
     public function edit($id)
     {
-        $DummySingularVariable = $this->DummyPluralVariable->find($id);
+        $DummyModelVariable = $this->DummyRepositoryVariable->find($id);
 
-        if (is_null($DummySingularVariable) === true) {
+        if (is_null($DummyModelVariable) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        return view('DummyView.edit', compact('DummySingularVariable'));
+        return view('DummyView.edit', compact('DummyModelVariable'));
     }
 
     /**
@@ -119,10 +119,10 @@ class DummyClass extends DummyBaseClass
     public function update(DummyRequestClass $request, $id)
     {
         $attributes = $request->all();
-        $DummySingularVariable = $this->DummyPluralVariable->update($attributes, $id);
+        $DummyModelVariable = $this->DummyRepositoryVariable->update($attributes, $id);
 
         return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $DummySingularVariable->name));
+            ->with('success', sprintf('已修改 %s', $DummyModelVariable->name));
     }
 
     /**
@@ -134,19 +134,19 @@ class DummyClass extends DummyBaseClass
      */
     public function destroy($id)
     {
-        $DummySingularVariable = $this->DummyPluralVariable->find($id);
+        $DummyModelVariable = $this->DummyRepositoryVariable->find($id);
 
-        if (is_null($DummySingularVariable) === true) {
+        if (is_null($DummyModelVariable) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        if ($this->DummyPluralVariable->delete($id) == false) {
+        if ($this->DummyRepositoryVariable->delete($id) == false) {
             return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $DummySingularVariable->name));
+                ->with('error', sprintf('無法刪除 %s', $DummyModelVariable->name));
         }
 
         return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $DummySingularVariable->name));
+            ->with('success', sprintf('已刪除 %s', $DummyModelVariable->name));
     }
 }

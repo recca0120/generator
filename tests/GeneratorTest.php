@@ -17,7 +17,7 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarRepositoryContract()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\FooBarRepository');
+        $generator->setFullRepositoryInterface('App\Repositories\Contracts\FooBarRepository');
 
         $this->verify(
             $this->render($generator, 'Repositories/Contracts/Repository'),
@@ -28,9 +28,9 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarRepository()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullRepositoryClass', 'App\Repositories\FooBarRepository')
-            ->set('DummyFullBaseClass', 'Recca0120\Repository\EloquentRepository')
-            ->set('DummyFullModelClass', 'App\FooBar');
+        $generator->setFullRepositoryClass('App\Repositories\FooBarRepository')
+            ->setFullBaseClass('Recca0120\Repository\EloquentRepository')
+            ->setFullModelClass('App\FooBar');
 
         $this->verify(
             $this->render($generator, 'Repositories/Repository'),
@@ -41,9 +41,9 @@ class GeneratorTest extends TestCase
     public function testRenderServiceProvider()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullRepositoryClass', 'App\Repositories\FooBarRepository')
-            ->set('DummyFullBaseClass', 'Recca0120\Repository\EloquentRepository')
-            ->set('DummyFullModelClass', 'App\FooBar');
+        $generator->setFullRepositoryClass('App\Repositories\FooBarRepository')
+            ->setFullBaseClass('Recca0120\Repository\EloquentRepository')
+            ->setFullModelClass('App\FooBar');
 
         $this->verify(
             $generator->renderServiceProvider(
@@ -56,8 +56,8 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarWithoutExtendRepository()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullRepositoryClass', 'App\Repositories\FooBarWithoutExtendRepository')
-            ->set('DummyFullModelClass', 'App\FooBarWithoutExtend');
+        $generator->setFullRepositoryClass('App\Repositories\FooBarWithoutExtendRepository')
+            ->setFullModelClass('App\FooBarWithoutExtend');
 
         $this->verify(
             $this->render($generator, 'Repositories/Repository'),
@@ -68,7 +68,7 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarModel()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullModelClass', 'App\FooBar');
+        $generator->setFullModelClass('App\FooBar');
 
         $this->verify(
             $this->render($generator, 'Model'),
@@ -79,7 +79,7 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarPresenter()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullPresenterClass', 'App\Presenters\FooBarPresenter');
+        $generator->setFullPresenterClass('App\Presenters\FooBarPresenter');
 
         $this->verify(
             $this->render($generator, 'Presenters/Presenter'),
@@ -90,7 +90,7 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarRequest()
     {
         $generator = new Generator(new Filesystem());
-        $generator->set('DummyFullRequestClass', 'App\Http\Requests\FooBarRequest');
+        $generator->setFullRequestClass('App\Http\Requests\FooBarRequest');
 
         $this->verify(
             $this->render($generator, 'Http/Requests/Request'),
@@ -102,10 +102,10 @@ class GeneratorTest extends TestCase
     {
         $generator = new Generator(new Filesystem());
         $generator
-            ->set('DummyFullControllerClass', 'App\Http\Controllers\FooBarController')
-            ->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\FooBarRepository')
-            ->set('DummyFullRequestClass', 'App\Http\Requests\FooBarRequest')
-            ->set('DummyFullBaseClass', 'App\Http\Controllers\Controller');
+            ->setFullControllerClass('App\Http\Controllers\FooBarController')
+            ->setFullRepositoryInterface('App\Repositories\Contracts\FooBarRepository')
+            ->setFullRequestClass('App\Http\Requests\FooBarRequest')
+            ->setFullBaseClass('App\Http\Controllers\Controller');
 
         $this->verify(
             $this->render($generator, 'Http/Controllers/Controller'),
@@ -117,9 +117,9 @@ class GeneratorTest extends TestCase
     {
         $generator = new Generator(new Filesystem());
         $generator
-            ->set('DummyFullControllerClass', 'App\Http\Controllers\NewsController')
-            ->set('DummyFullRepositoryInterface', 'App\Repositories\Contracts\NewsRepository')
-            ->set('DummyFullRequestClass', 'App\Http\Requests\NewsRequest');
+            ->setFullControllerClass('App\Http\Controllers\NewsController')
+            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
+            ->setFullRequestClass('App\Http\Requests\NewsRequest');
 
         $this->verify(
             $this->render($generator, 'Http/Controllers/Controller'),
@@ -143,7 +143,9 @@ class GeneratorTest extends TestCase
 
     protected function getContent($path)
     {
-        return file_get_contents(__DIR__.'/stubs/'.$path.'.php');
+        return strtr(file_get_contents(__DIR__.'/stubs/'.$path.'.php'), [
+            "\r\n" => "\n"
+        ]);
     }
 
     protected function verify($content, $path)
