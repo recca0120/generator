@@ -68,7 +68,8 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarModel()
     {
         $generator = new Generator(new Filesystem());
-        $generator->setFullModelClass('App\FooBar');
+        $generator->setFullModelClass('App\FooBar')
+            ->setFullBaseClass('Illuminate\Database\Eloquent\Model');
 
         $this->verify(
             $this->render($generator, 'Model'),
@@ -79,7 +80,8 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarPresenter()
     {
         $generator = new Generator(new Filesystem());
-        $generator->setFullPresenterClass('App\Presenters\FooBarPresenter');
+        $generator->setFullPresenterClass('App\Presenters\FooBarPresenter')
+            ->setFullBaseClass('Robbo\Presenter\Presenter as RobboPresenter');
 
         $this->verify(
             $this->render($generator, 'Presenters/Presenter'),
@@ -90,7 +92,8 @@ class GeneratorTest extends TestCase
     public function testRenderFooBarRequest()
     {
         $generator = new Generator(new Filesystem());
-        $generator->setFullRequestClass('App\Http\Requests\FooBarRequest');
+        $generator->setFullRequestClass('App\Http\Requests\FooBarRequest')
+            ->setFullBaseClass('Illuminate\Foundation\Http\FormRequest');
 
         $this->verify(
             $this->render($generator, 'Http/Requests/Request'),
@@ -103,9 +106,9 @@ class GeneratorTest extends TestCase
         $generator = new Generator(new Filesystem());
         $generator
             ->setFullControllerClass('App\Http\Controllers\FooBarController')
+            ->setFullBaseClass('App\Http\Controllers\Controller')
             ->setFullRepositoryInterface('App\Repositories\Contracts\FooBarRepository')
-            ->setFullRequestClass('App\Http\Requests\FooBarRequest')
-            ->setFullBaseClass('App\Http\Controllers\Controller');
+            ->setFullRequestClass('App\Http\Requests\FooBarRequest');
 
         $this->verify(
             $this->render($generator, 'Http/Controllers/Controller'),
@@ -118,6 +121,7 @@ class GeneratorTest extends TestCase
         $generator = new Generator(new Filesystem());
         $generator
             ->setFullControllerClass('App\Http\Controllers\NewsController')
+            ->setFullBaseClass('App\Http\Controllers\Controller')
             ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
             ->setFullRequestClass('App\Http\Requests\NewsRequest');
 
@@ -144,7 +148,7 @@ class GeneratorTest extends TestCase
     protected function getContent($path)
     {
         return strtr(file_get_contents(__DIR__.'/stubs/'.$path.'.php'), [
-            "\r\n" => "\n"
+            "\r\n" => "\n",
         ]);
     }
 

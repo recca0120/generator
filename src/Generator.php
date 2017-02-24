@@ -22,9 +22,13 @@ class Generator
         $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
     }
 
-    protected function parseAttribute($value) {
-        $dummyClass = class_basename($value);
-        $dummyNamespace = $this->getNamespace($value);
+    protected function parseAttribute($value)
+    {
+        $alias = array_map('trim', explode(' as ', $value));
+        $className = $alias[0];
+
+        $dummyClass = class_basename(isset($alias[1]) === true ? $alias[1] : $className);
+        $dummyNamespace = $this->getNamespace($className);
 
         $dummyModelVariable = Str::camel(Str::singular(
             preg_replace('/(Controller|Repository)$/', '', $dummyClass)
@@ -50,7 +54,8 @@ class Generator
         );
     }
 
-    public function setFullBaseClass($value) {
+    public function setFullBaseClass($value)
+    {
         $this->set('DummyFullBaseClass', $value);
 
         extract($this->parseAttribute($value));
@@ -135,8 +140,7 @@ class Generator
             ->setDefault('DummyModelVariable', $dummyModelVariable)
             ->setDefault('DummyView', $dummyView)
             ->setDefault('DummyRoute', $dummyRoute)
-            ->set('DummyControllerClass', $dummyClass)
-            ->setFullBaseClass('App\Http\Controllers\Controller');
+            ->set('DummyControllerClass', $dummyClass);
     }
 
     public function set($key, $value)
@@ -169,7 +173,7 @@ class Generator
     {
         $content = strtr(strtr(strtr($this->filesystem->get($stub), $this->attributes), ["\r\n" => "\n"]), [
             ' extends DummyBaseClass' => '',
-            "use DummyFullBaseClass;" => '',
+            'use DummyFullBaseClass;' => '',
         ]);
 
         return $orderedUses === true ? $this->orderedUses($content) : $content;

@@ -2,6 +2,8 @@
 
 namespace Recca0120\Generator\Console;
 
+use Symfony\Component\Console\Input\InputOption;
+
 class RequestMakeCommand extends GeneratorCommand
 {
     /**
@@ -56,7 +58,10 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
+        $fullBaseClass = $this->option('extend') ?: 'Illuminate\Foundation\Http\FormRequest';
+
         return $this->generator->setFullRequestClass($name.'Request')
+            ->setFullBaseClass($fullBaseClass)
             ->render($this->getStub());
     }
 
@@ -70,5 +75,17 @@ class RequestMakeCommand extends GeneratorCommand
     protected function getPath($name)
     {
         return str_replace('.php', 'Request.php', parent::getPath($name));
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['extend', '', InputOption::VALUE_OPTIONAL, 'controller extend.'],
+        ];
     }
 }

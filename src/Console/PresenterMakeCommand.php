@@ -2,6 +2,8 @@
 
 namespace Recca0120\Generator\Console;
 
+use Symfony\Component\Console\Input\InputOption;
+
 class PresenterMakeCommand extends GeneratorCommand
 {
     /**
@@ -56,7 +58,10 @@ class PresenterMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
+        $fullBaseClass = $this->option('extend') ?: 'Robbo\Presenter\Presenter as RobboPresenter';
+
         return $this->generator->setFullPresenterClass($name.'Presenter')
+            ->setFullBaseClass($fullBaseClass)
             ->render($this->getStub());
     }
 
@@ -70,5 +75,17 @@ class PresenterMakeCommand extends GeneratorCommand
     protected function getPath($name)
     {
         return str_replace('.php', 'Presenter.php', parent::getPath($name));
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['extend', '', InputOption::VALUE_OPTIONAL, 'controller extend.'],
+        ];
     }
 }

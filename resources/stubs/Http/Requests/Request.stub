@@ -2,10 +2,10 @@
 
 namespace DummyNamespace;
 
+use DummyFullBaseClass;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Http\FormRequest;
 
-class DummyClass extends FormRequest
+class DummyClass extends DummyBaseClass
 {
     /**
      * Determine if the user is authorized to make this request.

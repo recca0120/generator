@@ -2,6 +2,8 @@
 
 namespace Recca0120\Generator\Console;
 
+use Symfony\Component\Console\Input\InputOption;
+
 class ControllerMakeCommand extends GeneratorCommand
 {
     /**
@@ -56,6 +58,8 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
+        $fullBaseClass = $this->option('extend') ?: 'App\Http\Controllers\Controller';
+
         $rootNamespace = trim($this->rootNamespace(), '\\');
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');
@@ -72,6 +76,7 @@ class ControllerMakeCommand extends GeneratorCommand
         }
 
         return $this->generator->setFullControllerClass($name.'Controller')
+            ->setFullBaseClass($fullBaseClass)
             ->setFullRepositoryInterface($repositoryContractInterface)
             ->setFullRequestClass($requestClass)
             ->render($this->getStub());
@@ -87,5 +92,17 @@ class ControllerMakeCommand extends GeneratorCommand
     protected function getPath($name)
     {
         return str_replace('.php', 'Controller.php', parent::getPath($name));
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['extend', '', InputOption::VALUE_OPTIONAL, 'controller extend.'],
+        ];
     }
 }

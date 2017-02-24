@@ -2,8 +2,8 @@
 
 namespace DummyNamespace;
 
-use Robbo\Presenter\Presenter as RobboPresenter;
+use DummyFullBaseClass;
 
-class DummyClass extends RobboPresenter
+class DummyClass extends DummyBaseClass
 {
 }

@@ -40,6 +40,8 @@ class ControllerMakeCommandTest extends TestCase
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
         $laravel->shouldReceive('offsetGet')->with('path')->andReturn($path = 'foo');
 
+        $input->shouldReceive('getOption')->with('extend')->andReturn($fullBaseClass = 'foo');
+
         $defaultNamespace = 'Http/Controllers';
         $directory = $path.'/'.$defaultNamespace;
         $file = $directory.'/'.$name.'Controller.php';
@@ -63,6 +65,7 @@ class ControllerMakeCommandTest extends TestCase
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
         $generator->shouldReceive('setFullControllerClass')->once()->with($fullClass)->andReturnSelf();
+        $generator->shouldReceive('setFullBaseClass')->once()->with($fullBaseClass)->andReturnSelf();
         $generator->shouldReceive('setFullRepositoryInterface')->once()->with($rootNamespace.'Repositories\Contracts\\'.$name.'Repository')->andReturnSelf();
         $generator->shouldReceive('setFullRequestClass')->once()->with($rootNamespace.'Http\Requests\\'.$name.'Request')->andReturnSelf();
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');

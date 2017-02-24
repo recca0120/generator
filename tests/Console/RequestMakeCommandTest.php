@@ -40,6 +40,8 @@ class RequestMakeCommandTest extends TestCase
         $laravel->shouldReceive('getNamespace')->andReturn($rootNamespace = 'fooNamespace\\');
         $laravel->shouldReceive('offsetGet')->with('path')->andReturn($path = 'foo');
 
+        $input->shouldReceive('getOption')->with('extend')->andReturn($fullBaseClass = 'foo');
+
         $defaultNamespace = 'Http/Requests';
         $directory = $path.'/'.$defaultNamespace;
         $file = $directory.'/'.$name.'Request.php';
@@ -49,6 +51,7 @@ class RequestMakeCommandTest extends TestCase
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
         $generator->shouldReceive('setFullRequestClass')->once()->with($fullClass)->andReturnSelf();
+        $generator->shouldReceive('setFullBaseClass')->once()->with($fullBaseClass)->andReturnSelf();
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
