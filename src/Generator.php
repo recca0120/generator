@@ -85,7 +85,7 @@ class Generator
      * setFullBaseClass.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullBaseClass($value)
     {
@@ -105,7 +105,7 @@ class Generator
      * setFullRepositoryInterface.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullRepositoryInterface($value)
     {
@@ -122,7 +122,7 @@ class Generator
      * setFullRepositoryClass.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullRepositoryClass($value)
     {
@@ -140,7 +140,7 @@ class Generator
      * setFullModelClass.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullModelClass($value)
     {
@@ -160,7 +160,7 @@ class Generator
      * setFullPresenterClass.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullPresenterClass($value)
     {
@@ -177,7 +177,7 @@ class Generator
      * setFullRequestClass.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullRequestClass($value)
     {
@@ -194,7 +194,7 @@ class Generator
      * setFullControllerClass.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function setFullControllerClass($value)
     {
@@ -216,7 +216,7 @@ class Generator
      * set.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     public function set($key, $value)
     {
@@ -229,7 +229,7 @@ class Generator
      * setDefault.
      *
      * @param string $value
-     * @return static
+     * @return $this
      */
     protected function setDefault($key, $value)
     {
