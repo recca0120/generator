@@ -9,12 +9,33 @@ use Recca0120\Generator\Fixers\UseSortFixer;
 
 class Generator
 {
+    /**
+     * $filesystem.
+     *
+     * @var \Illuminate\Filesystem\Filesystem
+     */
     protected $filesystem;
 
+    /**
+     * $useSortFixer.
+     *
+     * @var \Recca0120\Generator\Fixers\UseSortFixer
+     */
     protected $useSortFixer;
 
+    /**
+     * $attributes.
+     *
+     * @var array
+     */
     protected $attributes = [];
 
+    /**
+     * __construct.
+     *
+     * @param \Illuminate\Filesystem\Filesystem $filesystem   [description]
+     * @param \Recca0120\Generator\Fixers\UseSortFixers $useSortFixer [description]
+     */
     public function __construct(Filesystem $filesystem = null, UseSortFixer $useSortFixer = null)
     {
         $this->filesystem = $filesystem ?: new Filesystem();
@@ -22,6 +43,12 @@ class Generator
         $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
     }
 
+    /**
+     * parseAttribute.
+     *
+     * @param string $value
+     * @return array
+     */
     protected function parseAttribute($value)
     {
         $alias = array_map('trim', explode(' as ', $value));
@@ -54,6 +81,12 @@ class Generator
         );
     }
 
+    /**
+     * setFullBaseClass.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullBaseClass($value)
     {
         $this->set('DummyFullBaseClass', $value);
@@ -68,6 +101,12 @@ class Generator
         return $this;
     }
 
+    /**
+     * setFullRepositoryInterface.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullRepositoryInterface($value)
     {
         $this->set('DummyFullRepositoryInterface', $value);
@@ -79,6 +118,12 @@ class Generator
             ->setDefault('DummyRepositoryInterface', $dummyClass);
     }
 
+    /**
+     * setFullRepositoryClass.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullRepositoryClass($value)
     {
         $this->set('DummyFullRepositoryClass', $value);
@@ -91,6 +136,12 @@ class Generator
             ->set('DummyRepositoryClass', $dummyClass);
     }
 
+    /**
+     * setFullModelClass.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullModelClass($value)
     {
         $this->set('DummyFullModelClass', $value);
@@ -105,6 +156,12 @@ class Generator
             ->set('DummyModelClass', $dummyClass);
     }
 
+    /**
+     * setFullPresenterClass.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullPresenterClass($value)
     {
         $this->set('DummyFullPresenterClass', $value);
@@ -116,6 +173,12 @@ class Generator
             ->set('DummyPresenterClass', $dummyClass);
     }
 
+    /**
+     * setFullRequestClass.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullRequestClass($value)
     {
         $this->set('DummyFullRequestClass', $value);
@@ -127,6 +190,12 @@ class Generator
             ->set('DummyRequestClass', $dummyClass);
     }
 
+    /**
+     * setFullControllerClass.
+     *
+     * @param string $value
+     * @return static
+     */
     public function setFullControllerClass($value)
     {
         $this->set('DummyFullControllerClass', $value);
@@ -143,6 +212,12 @@ class Generator
             ->set('DummyControllerClass', $dummyClass);
     }
 
+    /**
+     * set.
+     *
+     * @param string $value
+     * @return static
+     */
     public function set($key, $value)
     {
         $this->attributes[$key] = $value;
@@ -150,6 +225,12 @@ class Generator
         return $this;
     }
 
+    /**
+     * setDefault.
+     *
+     * @param string $value
+     * @return static
+     */
     protected function setDefault($key, $value)
     {
         if (isset($this->attributes[$key]) === false) {
@@ -159,16 +240,35 @@ class Generator
         return $this;
     }
 
+    /**
+     * get.
+     *
+     * @param string $value
+     * @return string
+     */
     public function get($key)
     {
         return Arr::get($this->attributes, $key);
     }
 
+    /**
+     * remove.
+     *
+     * @param string $key
+     * @return bool
+     */
     public function remove($key)
     {
         return Arr::forget($this->attributes, $key);
     }
 
+    /**
+     * render.
+     *
+     * @param string $stub
+     * @param bool $orderedUses
+     * @return string
+     */
     public function render($stub, $orderedUses = true)
     {
         $content = strtr(strtr(strtr($this->filesystem->get($stub), $this->attributes), ["\r\n" => "\n"]), [
@@ -179,6 +279,12 @@ class Generator
         return $orderedUses === true ? $this->orderedUses($content) : $content;
     }
 
+    /**
+     * renderServiceProvider.
+     *
+     * @param string $content
+     * @return string
+     */
     public function renderServiceProvider($content)
     {
         if (strpos($content, '$this->registerRepositories') === false) {
@@ -217,30 +323,47 @@ class Generator
         return $this->orderedUses($content);
     }
 
-    protected function replaceServieProviderCallback($m)
+    /**
+     * replaceServieProviderCallback.
+     *
+     * @param  array $match
+     * @return string
+     */
+    protected function replaceServieProviderCallback($match)
     {
         $fullRepositoryClass = $this->get('DummyFullRepositoryClass');
         $fullRepositoryInterface = $this->get('DummyFullRepositoryInterface');
         $dummyClass = $this->get('DummyClass');
 
-        if (Str::startsWith($m[0], 'namespace') === true) {
-            return $m[0]."\n\n".
+        if (Str::startsWith($match[0], 'namespace') === true) {
+            return $match[0]."\n\n".
                 sprintf("use %s as %sContract;\n", $fullRepositoryInterface, $dummyClass).
                 sprintf("use %s;\n", $fullRepositoryClass);
         } else {
-            return $m[0]."\n".
+            return $match[0]."\n".
                 str_repeat(' ', 8).
                 sprintf('$this->app->singleton(%sContract::class, %s::class);', $dummyClass, $dummyClass);
         }
     }
 
+    /**
+     * getNamespace.
+     *
+     * @param string $name [description]
+     * @return string
+     */
     protected function getNamespace($name)
     {
-        $baseClass = class_basename($name);
-
-        return rtrim(preg_replace('/'.$baseClass.'$/', '', $name), '\\');
+        return rtrim(preg_replace('/'.$baseClass.'$/', '', class_basename($name)), '\\');
     }
 
+
+    /**
+     * orderedUses.
+     *
+     * @param string $content
+     * @return string
+     */
     protected function orderedUses($content)
     {
         $fix = $this->useSortFixer->fix($content);

@@ -233,7 +233,7 @@ class UseSortFixer
     /**
      * Create blocks.
      *
-     * @param array $namespaces Namespaces
+     * @param array $namespaces
      *
      * @return array Groups
      */
@@ -276,7 +276,7 @@ class UseSortFixer
     /**
      * Sort a group.
      *
-     * @param array $group Group to sort
+     * @param array $group
      *
      * @return array $group Sorted
      */
@@ -318,7 +318,7 @@ class UseSortFixer
     /**
      * Render a group.
      *
-     * @param array $group Group
+     * @param array $group
      *
      * @return string Group rendered
      */

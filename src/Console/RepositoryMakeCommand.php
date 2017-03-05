@@ -90,6 +90,12 @@ class RepositoryMakeCommand extends GeneratorCommand
         return $render;
     }
 
+    /**
+     * renderServiceProvider.
+     *
+     * @param string $className
+     * @return string
+     */
     protected function renderServiceProvider($className)
     {
         $file = parent::getPath($className);
