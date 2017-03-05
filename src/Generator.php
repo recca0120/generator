@@ -90,8 +90,8 @@ class Generator
     public function setFullBaseClass($value)
     {
         $this->set('DummyFullBaseClass', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         $this->set('DummyBaseClass', $dummyClass);
         if ($this->get('DummyNamespace') === $this->getNamespace($value)) {
@@ -110,8 +110,8 @@ class Generator
     public function setFullRepositoryInterface($value)
     {
         $this->set('DummyFullRepositoryInterface', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
@@ -127,8 +127,8 @@ class Generator
     public function setFullRepositoryClass($value)
     {
         $this->set('DummyFullRepositoryClass', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
@@ -145,8 +145,8 @@ class Generator
     public function setFullModelClass($value)
     {
         $this->set('DummyFullModelClass', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
@@ -165,8 +165,8 @@ class Generator
     public function setFullPresenterClass($value)
     {
         $this->set('DummyFullPresenterClass', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
@@ -182,8 +182,8 @@ class Generator
     public function setFullRequestClass($value)
     {
         $this->set('DummyFullRequestClass', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
@@ -199,8 +199,8 @@ class Generator
     public function setFullControllerClass($value)
     {
         $this->set('DummyFullControllerClass', $value);
-
-        extract($this->parseAttribute($value));
+        $attributes = $this->parseAttribute($value);
+        extract($attributes);
 
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
@@ -243,7 +243,6 @@ class Generator
     /**
      * get.
      *
-     * @param string $value
      * @return string
      */
     public function get($key)
@@ -349,12 +348,12 @@ class Generator
     /**
      * getNamespace.
      *
-     * @param string $name [description]
+     * @param string $name
      * @return string
      */
     protected function getNamespace($name)
     {
-        return rtrim(preg_replace('/'.$baseClass.'$/', '', class_basename($name)), '\\');
+        return rtrim(preg_replace('/'.class_basename($name).'$/', '', $name), '\\');
     }
 
 

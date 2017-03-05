@@ -60,17 +60,13 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $modelClass = $this->parseModel(
-            $this->option('model') ?: $this->rootNamespace().class_basename($name)
-        );
-
         $fullBaseClass = $this->option('extend') ?: 'Recca0120\Repository\EloquentRepository';
 
         $rootNamespace = trim($this->rootNamespace(), '\\');
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');
         $repositoryContractInterface = $namespace.'\Contracts\\'.$baseClass.'Repository';
-        $modelClass = $rootNamespace.'\\'.$baseClass;
+        $modelClass = $rootNamespace.'\\'.($this->option('model') ?: $baseClass);
 
         if (interface_exists($repositoryContractInterface) === false) {
             $this->call('g:repository-contract', ['name' => $baseClass]);
@@ -118,28 +114,6 @@ class RepositoryMakeCommand extends GeneratorCommand
     protected function getPath($name)
     {
         return str_replace('.php', 'Repository.php', parent::getPath($name));
-    }
-
-    /**
-     * Get the fully-qualified model class name.
-     *
-     * @param string $model
-     *
-     * @return string
-     */
-    protected function parseModel($model)
-    {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
-        }
-
-        $model = trim(str_replace('/', '\\', $model), '\\');
-
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.$model;
-        }
-
-        return $model;
     }
 
     /**
