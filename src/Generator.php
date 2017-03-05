@@ -356,7 +356,6 @@ class Generator
         return rtrim(preg_replace('/'.class_basename($name).'$/', '', $name), '\\');
     }
 
-
     /**
      * orderedUses.
      *
