@@ -136,7 +136,7 @@ class Generator
         return $this->setDefault('DummyNamespace', $dummyNamespace)
             ->setDefault('DummyClass', $dummyClass)
             ->setDefault('DummyRepositoryVariable', $dummyRepositoryVariable)
-            ->setDefault('DummyCollectionVariable', $dummyRepositoryVariable)
+            ->setDefault('DummyCollectionVariable', $dummyCollectionVariable)
             ->setDefault('DummyModelVariable', $dummyModelVariable)
             ->setDefault('DummyView', $dummyView)
             ->setDefault('DummyRoute', $dummyRoute)
