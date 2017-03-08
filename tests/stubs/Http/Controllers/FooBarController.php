@@ -9,8 +9,18 @@ use App\Repositories\Contracts\FooBarRepository;
 
 class FooBarController extends Controller
 {
+    /**
+     * $fooBars.
+     *
+     * @param \App\Repositories\Contracts\FooBarRepository
+     */
     protected $fooBars;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param \App\Repositories\Contracts\FooBarRepository $fooBars
+     */
     public function __construct(FooBarRepository $fooBars)
     {
         $this->fooBars = $fooBars;
@@ -20,7 +30,6 @@ class FooBarController extends Controller
      * Display a listing of the resource.
      *
      * @param \Illuminte\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -64,7 +73,6 @@ class FooBarController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\FooBarRequest $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function store(FooBarRequest $request)
@@ -80,7 +88,6 @@ class FooBarController extends Controller
      * Display the specified resource.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -92,7 +99,6 @@ class FooBarController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -112,7 +118,6 @@ class FooBarController extends Controller
      *
      * @param \App\Http\Requests\FooBarRequest $request
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(FooBarRequest $request, $id)
@@ -128,7 +133,6 @@ class FooBarController extends Controller
      * Remove the specified resource from storage.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

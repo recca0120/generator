@@ -8,8 +8,13 @@ use DummyFullRepositoryInterface as DummyClassContract;
 
 class DummyClass extends DummyBaseClass implements DummyClassContract
 {
-    public function __construct(DummyModelClass $DummyModelVariable)
+    /**
+     * Create a new repository instance.
+     *
+     * @param \DummyFullModelClass $dummyModel
+     */
+    public function __construct(DummyModelClass $dummyModel)
     {
-        $this->model = $DummyModelVariable;
+        $this->model = $dummyModel;
     }
 }

@@ -9,18 +9,27 @@ use App\Repositories\Contracts\NewsRepository;
 
 class NewsController extends Controller
 {
-    protected $newsCollection;
+    /**
+     * $news.
+     *
+     * @param \App\Repositories\Contracts\NewsRepository
+     */
+    protected $news;
 
-    public function __construct(NewsRepository $newsCollection)
+    /**
+     * Create a new controller instance.
+     *
+     * @param \App\Repositories\Contracts\NewsRepository $news
+     */
+    public function __construct(NewsRepository $news)
     {
-        $this->newsCollection = $newsCollection;
+        $this->news = $news;
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param \Illuminte\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -41,7 +50,7 @@ class NewsController extends Controller
             return $criteria;
         });
 
-        $newsCollection = $this->newsCollection
+        $newsCollection = $this->news
             ->paginate($criteria)
             ->appends($request->all());
 
@@ -55,7 +64,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $news = $this->newsCollection->newInstance([]);
+        $news = $this->news->newInstance([]);
 
         return view('news.create', compact('news'));
     }
@@ -64,13 +73,12 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\NewsRequest $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function store(NewsRequest $request)
     {
         $attributes = $request->all();
-        $news = $this->newsCollection->create($attributes);
+        $news = $this->news->create($attributes);
 
         return redirect(route('news.index', $request->query()))
             ->with('success', sprintf('已新增 %s', $news->name));
@@ -80,7 +88,6 @@ class NewsController extends Controller
      * Display the specified resource.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -92,12 +99,11 @@ class NewsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $news = $this->newsCollection->find($id);
+        $news = $this->news->find($id);
 
         if (is_null($news) === true) {
             return redirect()->back()
@@ -112,13 +118,12 @@ class NewsController extends Controller
      *
      * @param \App\Http\Requests\NewsRequest $request
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(NewsRequest $request, $id)
     {
         $attributes = $request->all();
-        $news = $this->newsCollection->update($attributes, $id);
+        $news = $this->news->update($attributes, $id);
 
         return redirect(route('news.index', $request->query()))
             ->with('success', sprintf('已修改 %s', $news->name));
@@ -128,19 +133,18 @@ class NewsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $news = $this->newsCollection->find($id);
+        $news = $this->news->find($id);
 
         if (is_null($news) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        if ($this->newsCollection->delete($id) == false) {
+        if ($this->news->delete($id) == false) {
             return redirect()->back()
                 ->with('error', sprintf('無法刪除 %s', $news->name));
         }

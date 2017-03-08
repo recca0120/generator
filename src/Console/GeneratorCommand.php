@@ -9,17 +9,22 @@ use Illuminate\Console\GeneratorCommand as BaseCommand;
 
 abstract class GeneratorCommand extends BaseCommand
 {
+    /**
+     * $generator.
+     *
+     * @var \Recca0120\Generator\Generator
+     */
     protected $generator;
 
     /**
      * Create a new controller creator command instance.
      *
      * @param \Illuminate\Filesystem\Filesystem $files
+     * @param \Recca0120\Generator\Generator
      */
     public function __construct(Filesystem $files, Generator $generator)
     {
         parent::__construct($files);
-
         $this->generator = $generator;
     }
 
@@ -27,7 +32,6 @@ abstract class GeneratorCommand extends BaseCommand
      * Parse the class name and format according to the root namespace.
      *
      * @param string $name
-     *
      * @return string
      */
     protected function qualifyClass($name)

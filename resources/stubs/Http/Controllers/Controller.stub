@@ -10,18 +10,27 @@ use Recca0120\Repository\Criteria;
 
 class DummyClass extends DummyBaseClass
 {
-    protected $DummyRepositoryVariable;
+    /**
+     * $dummyRepository.
+     *
+     * @param \DummyFullRepositoryInterface
+     */
+    protected $dummyRepository;
 
-    public function __construct(DummyRepositoryInterface $DummyRepositoryVariable)
+    /**
+     * Create a new controller instance.
+     *
+     * @param \DummyFullRepositoryInterface $dummyRepository
+     */
+    public function __construct(DummyRepositoryInterface $dummyRepository)
     {
-        $this->DummyRepositoryVariable = $DummyRepositoryVariable;
+        $this->dummyRepository = $dummyRepository;
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param \Illuminte\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -42,11 +51,11 @@ class DummyClass extends DummyBaseClass
             return $criteria;
         });
 
-        $DummyCollectionVariable = $this->DummyRepositoryVariable
+        $dummyCollection = $this->dummyRepository
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('DummyView.index', compact('DummyCollectionVariable'));
+        return view('dummyView.index', compact('dummyCollection'));
     }
 
     /**
@@ -56,32 +65,30 @@ class DummyClass extends DummyBaseClass
      */
     public function create()
     {
-        $DummyModelVariable = $this->DummyRepositoryVariable->newInstance([]);
+        $dummyModel = $this->dummyRepository->newInstance([]);
 
-        return view('DummyView.create', compact('DummyModelVariable'));
+        return view('dummyView.create', compact('dummyModel'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \DummyFullRequestClass $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function store(DummyRequestClass $request)
     {
         $attributes = $request->all();
-        $DummyModelVariable = $this->DummyRepositoryVariable->create($attributes);
+        $dummyModel = $this->dummyRepository->create($attributes);
 
-        return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $DummyModelVariable->name));
+        return redirect(route('dummyRoute.index', $request->query()))
+            ->with('success', sprintf('已新增 %s', $dummyModel->name));
     }
 
     /**
      * Display the specified resource.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -93,19 +100,18 @@ class DummyClass extends DummyBaseClass
      * Show the form for editing the specified resource.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $DummyModelVariable = $this->DummyRepositoryVariable->find($id);
+        $dummyModel = $this->dummyRepository->find($id);
 
-        if (is_null($DummyModelVariable) === true) {
+        if (is_null($dummyModel) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        return view('DummyView.edit', compact('DummyModelVariable'));
+        return view('dummyView.edit', compact('dummyModel'));
     }
 
     /**
@@ -113,40 +119,38 @@ class DummyClass extends DummyBaseClass
      *
      * @param \DummyFullRequestClass $request
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(DummyRequestClass $request, $id)
     {
         $attributes = $request->all();
-        $DummyModelVariable = $this->DummyRepositoryVariable->update($attributes, $id);
+        $dummyModel = $this->dummyRepository->update($attributes, $id);
 
-        return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $DummyModelVariable->name));
+        return redirect(route('dummyRoute.index', $request->query()))
+            ->with('success', sprintf('已修改 %s', $dummyModel->name));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param string $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $DummyModelVariable = $this->DummyRepositoryVariable->find($id);
+        $dummyModel = $this->dummyRepository->find($id);
 
-        if (is_null($DummyModelVariable) === true) {
+        if (is_null($dummyModel) === true) {
             return redirect()->back()
                 ->with('error', '資料不存在');
         }
 
-        if ($this->DummyRepositoryVariable->delete($id) == false) {
+        if ($this->dummyRepository->delete($id) == false) {
             return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $DummyModelVariable->name));
+                ->with('error', sprintf('無法刪除 %s', $dummyModel->name));
         }
 
-        return redirect(route('DummyRoute.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $DummyModelVariable->name));
+        return redirect(route('dummyRoute.index', $request->query()))
+            ->with('success', sprintf('已刪除 %s', $dummyModel->name));
     }
 }

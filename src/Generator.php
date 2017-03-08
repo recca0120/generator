@@ -33,8 +33,8 @@ class Generator
     /**
      * __construct.
      *
-     * @param \Illuminate\Filesystem\Filesystem $filesystem   [description]
-     * @param \Recca0120\Generator\Fixers\UseSortFixers $useSortFixer [description]
+     * @param \Illuminate\Filesystem\Filesystem $filesystem
+     * @param \Recca0120\Generator\Fixers\UseSortFixer $useSortFixer
      */
     public function __construct(Filesystem $filesystem = null, UseSortFixer $useSortFixer = null)
     {
@@ -57,28 +57,27 @@ class Generator
         $dummyClass = class_basename(isset($alias[1]) === true ? $alias[1] : $className);
         $dummyNamespace = $this->getNamespace($className);
 
-        $dummyModelVariable = Str::camel(Str::singular(
+        $dummyModel = Str::camel(Str::singular(
             preg_replace('/(Controller|Repository)$/', '', $dummyClass)
         ));
 
-        $dummyCollectionVariable = Str::plural($dummyModelVariable);
-        $dummyCollectionVariable = $dummyCollectionVariable === $dummyModelVariable ?
-            $dummyModelVariable.'Collection' : $dummyCollectionVariable;
+        $dummyRepository = Str::plural($dummyModel);
 
-        $dummyRepositoryVariable = $dummyCollectionVariable;
+        $dummyCollection = $dummyRepository === $dummyModel ? $dummyModel.'Collection' : $dummyRepository;
 
-        $dummyView = Str::snake(Str::plural($dummyModelVariable));
-        $dummyRoute = Str::snake(Str::plural($dummyModelVariable));
+        $dummyView = Str::snake(Str::plural($dummyModel));
 
-        return compact(
-            'dummyNamespace',
-            'dummyClass',
-            'dummyRepositoryVariable',
-            'dummyCollectionVariable',
-            'dummyModelVariable',
-            'dummyView',
-            'dummyRoute'
-        );
+        $dummyRoute = Str::snake(Str::plural($dummyModel));
+
+        return [
+            'DummyNamespace' => $dummyNamespace,
+            'DummyClass' => $dummyClass,
+            'dummyModel' => $dummyModel,
+            'dummyRepository' => $dummyRepository,
+            'dummyCollection' => $dummyCollection,
+            'dummyView' => $dummyView,
+            'dummyRoute' => $dummyRoute,
+        ];
     }
 
     /**
@@ -91,9 +90,8 @@ class Generator
     {
         $this->set('DummyFullBaseClass', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        $this->set('DummyBaseClass', $dummyClass);
+        $this->set('DummyBaseClass', $attributes['DummyClass']);
         if ($this->get('DummyNamespace') === $this->getNamespace($value)) {
             $this->remove('DummyFullBaseClass');
         }
@@ -111,11 +109,10 @@ class Generator
     {
         $this->set('DummyFullRepositoryInterface', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        return $this->setDefault('DummyNamespace', $dummyNamespace)
-            ->setDefault('DummyClass', $dummyClass)
-            ->setDefault('DummyRepositoryInterface', $dummyClass);
+        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+            ->set('DummyClass', $attributes['DummyClass'], false)
+            ->set('DummyRepositoryInterface', $attributes['DummyClass'], false);
     }
 
     /**
@@ -128,12 +125,11 @@ class Generator
     {
         $this->set('DummyFullRepositoryClass', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        return $this->setDefault('DummyNamespace', $dummyNamespace)
-            ->setDefault('DummyClass', $dummyClass)
-            ->setDefault('DummyFullRepositoryInterface', $dummyNamespace.'\Contracts\\'.$dummyClass)
-            ->set('DummyRepositoryClass', $dummyClass);
+        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+            ->set('DummyClass', $attributes['DummyClass'], false)
+            ->set('DummyFullRepositoryInterface', $attributes['DummyNamespace'].'\Contracts\\'.$attributes['DummyClass'], false)
+            ->set('DummyRepositoryClass', $attributes['DummyClass']);
     }
 
     /**
@@ -146,14 +142,13 @@ class Generator
     {
         $this->set('DummyFullModelClass', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        return $this->setDefault('DummyNamespace', $dummyNamespace)
-            ->setDefault('DummyClass', $dummyClass)
-            ->setDefault('DummyModelVariable', $dummyModelVariable)
-            ->setDefault('DummyFullPresenterClass', $dummyNamespace.'\Presenters\\'.$dummyClass.'Presenter')
-            ->setDefault('DummyPresenterClass', $dummyClass.'Presenter')
-            ->set('DummyModelClass', $dummyClass);
+        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+            ->set('DummyClass', $attributes['DummyClass'], false)
+            ->set('dummyModel', $attributes['dummyModel'], false)
+            ->set('DummyFullPresenterClass', $attributes['DummyNamespace'].'\Presenters\\'.$attributes['DummyClass'].'Presenter', false)
+            ->set('DummyPresenterClass', $attributes['DummyClass'].'Presenter', false)
+            ->set('DummyModelClass', $attributes['DummyClass']);
     }
 
     /**
@@ -166,11 +161,10 @@ class Generator
     {
         $this->set('DummyFullPresenterClass', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        return $this->setDefault('DummyNamespace', $dummyNamespace)
-            ->setDefault('DummyClass', $dummyClass)
-            ->set('DummyPresenterClass', $dummyClass);
+        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+            ->set('DummyClass', $attributes['DummyClass'], false)
+            ->set('DummyPresenterClass', $attributes['DummyClass']);
     }
 
     /**
@@ -183,11 +177,10 @@ class Generator
     {
         $this->set('DummyFullRequestClass', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        return $this->setDefault('DummyNamespace', $dummyNamespace)
-            ->setDefault('DummyClass', $dummyClass)
-            ->set('DummyRequestClass', $dummyClass);
+        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+            ->set('DummyClass', $attributes['DummyClass'], false)
+            ->set('DummyRequestClass', $attributes['DummyClass']);
     }
 
     /**
@@ -200,16 +193,15 @@ class Generator
     {
         $this->set('DummyFullControllerClass', $value);
         $attributes = $this->parseAttribute($value);
-        extract($attributes);
 
-        return $this->setDefault('DummyNamespace', $dummyNamespace)
-            ->setDefault('DummyClass', $dummyClass)
-            ->setDefault('DummyRepositoryVariable', $dummyRepositoryVariable)
-            ->setDefault('DummyCollectionVariable', $dummyCollectionVariable)
-            ->setDefault('DummyModelVariable', $dummyModelVariable)
-            ->setDefault('DummyView', $dummyView)
-            ->setDefault('DummyRoute', $dummyRoute)
-            ->set('DummyControllerClass', $dummyClass);
+        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+            ->set('DummyClass', $attributes['DummyClass'], false)
+            ->set('dummyRepository', $attributes['dummyRepository'], false)
+            ->set('dummyCollection', $attributes['dummyCollection'], false)
+            ->set('dummyModel', $attributes['dummyModel'], false)
+            ->set('dummyView', $attributes['dummyView'], false)
+            ->set('dummyRoute', $attributes['dummyRoute'], false)
+            ->set('DummyControllerClass', $attributes['DummyClass']);
     }
 
     /**
@@ -218,24 +210,17 @@ class Generator
      * @param string $value
      * @return $this
      */
-    public function set($key, $value)
+    public function set($key, $value = null, $replace = true)
     {
-        $this->attributes[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * setDefault.
-     *
-     * @param string $value
-     * @return $this
-     */
-    protected function setDefault($key, $value)
-    {
-        if (isset($this->attributes[$key]) === false) {
-            $this->attributes[$key] = $value;
+        if (is_array($key) === true) {
+            foreach ($key as $k => $v) {
+                $this->set($k, $v, $replace);
+            }
+        } else if ($replace === false && isset($this->attributes[$key]) === true) {
+            return $this;
         }
+
+        $this->attributes[$key] = $value;
 
         return $this;
     }
@@ -332,16 +317,16 @@ class Generator
     {
         $fullRepositoryClass = $this->get('DummyFullRepositoryClass');
         $fullRepositoryInterface = $this->get('DummyFullRepositoryInterface');
-        $dummyClass = $this->get('DummyClass');
+        $DummyClass = $this->get('DummyClass');
 
         if (Str::startsWith($match[0], 'namespace') === true) {
             return $match[0]."\n\n".
-                sprintf("use %s as %sContract;\n", $fullRepositoryInterface, $dummyClass).
+                sprintf("use %s as %sContract;\n", $fullRepositoryInterface, $DummyClass).
                 sprintf("use %s;\n", $fullRepositoryClass);
         } else {
             return $match[0]."\n".
                 str_repeat(' ', 8).
-                sprintf('$this->app->singleton(%sContract::class, %s::class);', $dummyClass, $dummyClass);
+                sprintf('$this->app->singleton(%sContract::class, %s::class);', $DummyClass, $DummyClass);
         }
     }
 
