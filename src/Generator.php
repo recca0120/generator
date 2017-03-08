@@ -46,12 +46,12 @@ class Generator
     /**
      * parseAttribute.
      *
-     * @param string $value
+     * @param string $className
      * @return array
      */
-    protected function parseAttribute($value)
+    protected function parseAttribute($className)
     {
-        $alias = array_map('trim', explode(' as ', $value));
+        $alias = array_map('trim', explode(' as ', $className));
         $className = $alias[0];
 
         $dummyClass = class_basename(isset($alias[1]) === true ? $alias[1] : $className);
@@ -68,6 +68,8 @@ class Generator
         $dummyView = Str::snake($plural);
         $dummyRoute = Str::snake($plural);
 
+
+
         return [
             'DummyNamespace' => $dummyNamespace,
             'DummyClass' => $dummyClass,
@@ -82,16 +84,17 @@ class Generator
     /**
      * setFullBaseClass.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullBaseClass($value)
+    public function setFullBaseClass($className)
     {
-        $this->set('DummyFullBaseClass', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        $this->set('DummyBaseClass', $attributes['DummyClass']);
-        if ($this->get('DummyNamespace') === $this->getNamespace($value)) {
+        $this->set('DummyFullBaseClass', $className)
+            ->set('DummyBaseClass', $attributes['DummyClass']);
+
+        if ($this->get('DummyNamespace') === $this->getNamespace($className)) {
             $this->remove('DummyFullBaseClass');
         }
 
@@ -101,15 +104,15 @@ class Generator
     /**
      * setFullRepositoryInterface.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullRepositoryInterface($value)
+    public function setFullRepositoryInterface($className)
     {
-        $this->set('DummyFullRepositoryInterface', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+        return $this->set('DummyFullRepositoryInterface', $className)
+            ->set('DummyNamespace', $attributes['DummyNamespace'], false)
             ->set('DummyClass', $attributes['DummyClass'], false)
             ->set('DummyRepositoryInterface', $attributes['DummyClass'], false);
     }
@@ -117,15 +120,15 @@ class Generator
     /**
      * setFullRepositoryClass.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullRepositoryClass($value)
+    public function setFullRepositoryClass($className)
     {
-        $this->set('DummyFullRepositoryClass', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+        return $this->set('DummyFullRepositoryClass', $className)
+            ->set('DummyNamespace', $attributes['DummyNamespace'], false)
             ->set('DummyClass', $attributes['DummyClass'], false)
             ->set('DummyFullRepositoryInterface', $attributes['DummyNamespace'].'\Contracts\\'.$attributes['DummyClass'], false)
             ->set('DummyRepositoryClass', $attributes['DummyClass']);
@@ -134,15 +137,15 @@ class Generator
     /**
      * setFullModelClass.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullModelClass($value)
+    public function setFullModelClass($className)
     {
-        $this->set('DummyFullModelClass', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+        return $this->set('DummyFullModelClass', $className)
+            ->set('DummyNamespace', $attributes['DummyNamespace'], false)
             ->set('DummyClass', $attributes['DummyClass'], false)
             ->set('dummyModel', $attributes['dummyModel'], false)
             ->set('DummyFullPresenterClass', $attributes['DummyNamespace'].'\Presenters\\'.$attributes['DummyClass'].'Presenter', false)
@@ -153,15 +156,15 @@ class Generator
     /**
      * setFullPresenterClass.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullPresenterClass($value)
+    public function setFullPresenterClass($className)
     {
-        $this->set('DummyFullPresenterClass', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+        return $this->set('DummyFullPresenterClass', $className)
+            ->set('DummyNamespace', $attributes['DummyNamespace'], false)
             ->set('DummyClass', $attributes['DummyClass'], false)
             ->set('DummyPresenterClass', $attributes['DummyClass']);
     }
@@ -169,15 +172,15 @@ class Generator
     /**
      * setFullRequestClass.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullRequestClass($value)
+    public function setFullRequestClass($className)
     {
-        $this->set('DummyFullRequestClass', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+        return $this->set('DummyFullRequestClass', $className)
+            ->set('DummyNamespace', $attributes['DummyNamespace'], false)
             ->set('DummyClass', $attributes['DummyClass'], false)
             ->set('DummyRequestClass', $attributes['DummyClass']);
     }
@@ -185,15 +188,15 @@ class Generator
     /**
      * setFullControllerClass.
      *
-     * @param string $value
+     * @param string $className
      * @return $this
      */
-    public function setFullControllerClass($value)
+    public function setFullControllerClass($className)
     {
-        $this->set('DummyFullControllerClass', $value);
-        $attributes = $this->parseAttribute($value);
+        $attributes = $this->parseAttribute($className);
 
-        return $this->set('DummyNamespace', $attributes['DummyNamespace'], false)
+        return $this->set('DummyFullControllerClass', $className)
+            ->set('DummyNamespace', $attributes['DummyNamespace'], false)
             ->set('DummyClass', $attributes['DummyClass'], false)
             ->set('dummyRepository', $attributes['dummyRepository'], false)
             ->set('dummyCollection', $attributes['dummyCollection'], false)
@@ -211,14 +214,9 @@ class Generator
      */
     public function set($key, $value = null, $replace = true)
     {
-        if (is_array($key) === true) {
-            foreach ($key as $k => $v) {
-                $this->set($k, $v, $replace);
-            }
-        } else if ($replace === false && isset($this->attributes[$key]) === true) {
+        if ($replace === false && isset($this->attributes[$key]) === true) {
             return $this;
         }
-
         $this->attributes[$key] = $value;
 
         return $this;
@@ -249,17 +247,18 @@ class Generator
      * render.
      *
      * @param string $stub
-     * @param bool $orderedUses
+     * @param bool $orderedUse
      * @return string
      */
-    public function render($stub, $orderedUses = true)
+    public function render($stub, $orderedUse = true)
     {
-        $content = strtr(strtr(strtr($this->filesystem->get($stub), $this->attributes), ["\r\n" => "\n"]), [
-            ' extends DummyBaseClass' => '',
-            'use DummyFullBaseClass;' => '',
-        ]);
+        $content = strtr(
+            strtr($this->filesystem->get($stub), $this->attributes), [
+                ' extends DummyBaseClass' => '',
+                'use DummyFullBaseClass;' => '',
+            ]);
 
-        return $orderedUses === true ? $this->orderedUses($content) : $content;
+        return $this->format($content, $orderedUse);
     }
 
     /**
@@ -303,13 +302,13 @@ class Generator
             );
         }
 
-        return $this->orderedUses($content);
+        return $this->format($content);
     }
 
     /**
      * replaceServieProviderCallback.
      *
-     * @param  array $match
+     * @param array $match
      * @return string
      */
     protected function replaceServieProviderCallback($match)
@@ -341,15 +340,18 @@ class Generator
     }
 
     /**
-     * orderedUses.
+     * format.
      *
      * @param string $content
+     * @param bool $orderedUse
      * @return string
      */
-    protected function orderedUses($content)
+    protected function format($content, $orderedUse = true)
     {
-        $fix = $this->useSortFixer->fix($content);
+        if ($orderedUse === true && ($ordered = $this->useSortFixer->fix($content)) !== false) {
+            $content = $ordered;
+        }
 
-        return $fix === false ? $content : strtr($fix, ["\r\n" => "\n"]);
+        return strtr($content, ["\r\n" => "\n"]);
     }
 }
