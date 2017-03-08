@@ -68,11 +68,10 @@ class Generator
         $dummyView = Str::snake($plural);
         $dummyRoute = Str::snake($plural);
 
-
-
         return [
             'DummyNamespace' => $dummyNamespace,
             'DummyClass' => $dummyClass,
+            'DummyModelClass' => $dummyClass,
             'dummyModel' => $dummyModel,
             'dummyRepository' => $dummyRepository,
             'dummyCollection' => $dummyCollection,
