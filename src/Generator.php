@@ -57,17 +57,16 @@ class Generator
         $dummyClass = class_basename(isset($alias[1]) === true ? $alias[1] : $className);
         $dummyNamespace = $this->getNamespace($className);
 
-        $dummyModel = Str::camel(Str::singular(
+        $singular = Str::camel(Str::singular(
             preg_replace('/(Controller|Repository)$/', '', $dummyClass)
         ));
+        $plural = Str::plural($singular);
 
-        $dummyRepository = Str::plural($dummyModel);
-
-        $dummyCollection = $dummyRepository === $dummyModel ? $dummyModel.'Collection' : $dummyRepository;
-
-        $dummyView = Str::snake(Str::plural($dummyModel));
-
-        $dummyRoute = Str::snake(Str::plural($dummyModel));
+        $dummyModel = $singular;
+        $dummyRepository = $plural;
+        $dummyCollection = $singular === $plural ? $singular.'Collection' : $plural;
+        $dummyView = Str::snake($plural);
+        $dummyRoute = Str::snake($plural);
 
         return [
             'DummyNamespace' => $dummyNamespace,
