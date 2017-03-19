@@ -11,7 +11,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'g:repository';
+    protected $name = 'generate:repository';
 
     /**
      * The console command description.
@@ -65,11 +65,11 @@ class RepositoryMakeCommand extends GeneratorCommand
         $modelClass = $rootNamespace.'\\'.($this->option('model') ?: $baseClass);
 
         if (interface_exists($repositoryContractInterface) === false) {
-            $this->call('g:repository-contract', ['name' => $baseClass]);
+            $this->call('generate:repository-contract', ['name' => $baseClass]);
         }
 
         if (is_null($this->option('without-generator-model')) === true && class_exists($modelClass) === false) {
-            $this->call('g:model', ['name' => $baseClass]);
+            $this->call('generate:model', ['name' => $baseClass]);
         }
 
         $render = $this->generator->setFullRepositoryClass($name.'Repository')

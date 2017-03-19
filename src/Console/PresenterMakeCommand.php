@@ -11,7 +11,7 @@ class PresenterMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'g:presenter';
+    protected $name = 'generate:presenter';
 
     /**
      * The console command description.

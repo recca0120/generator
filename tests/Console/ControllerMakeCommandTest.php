@@ -51,14 +51,14 @@ class ControllerMakeCommandTest extends TestCase
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));
         $command->setApplication($application);
 
-        $application->shouldReceive('find')->once()->with('g:repository')->andReturnSelf();
+        $application->shouldReceive('find')->once()->with('generate:repository')->andReturnSelf();
         $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
-            return str_replace('"', "'", (string) $input) === $name.' \'g:repository\'';
+            return str_replace('"', "'", (string) $input) === $name.' \'generate:repository\'';
         }), m::any());
 
-        $application->shouldReceive('find')->once()->with('g:request')->andReturnSelf();
+        $application->shouldReceive('find')->once()->with('generate:request')->andReturnSelf();
         $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
-            return str_replace('"', "'", (string) $input) === $name.' \'g:request\'';
+            return str_replace('"', "'", (string) $input) === $name.' \'generate:request\'';
         }), m::any());
 
         $filesystem->shouldReceive('exists')->once()->with($file);

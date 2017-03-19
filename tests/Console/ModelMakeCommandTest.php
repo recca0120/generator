@@ -50,14 +50,14 @@ class ModelMakeCommandTest extends TestCase
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));
         $command->setApplication($application);
 
-        $application->shouldReceive('find')->once()->with('g:repository')->andReturnSelf();
+        $application->shouldReceive('find')->once()->with('generate:repository')->andReturnSelf();
         $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
-            return str_replace("'", '"', (string) $input) === $name.' --without-generator-model=1 "g:repository"';
+            return str_replace("'", '"', (string) $input) === $name.' --without-generator-model=1 "generate:repository"';
         }), m::any());
 
-        $application->shouldReceive('find')->once()->with('g:presenter')->andReturnSelf();
+        $application->shouldReceive('find')->once()->with('generate:presenter')->andReturnSelf();
         $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
-            return str_replace("'", '"', (string) $input) === $name.' "g:presenter"';
+            return str_replace("'", '"', (string) $input) === $name.' "generate:presenter"';
         }), m::any());
 
         $filesystem->shouldReceive('exists')->once()->with($file);

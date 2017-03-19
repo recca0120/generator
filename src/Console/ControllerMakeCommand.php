@@ -11,7 +11,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'g:controller';
+    protected $name = 'generate:controller';
 
     /**
      * The console command description.
@@ -68,11 +68,11 @@ class ControllerMakeCommand extends GeneratorCommand
         $requestClass = $rootNamespace.'\Http\Requests\\'.$baseClass.'Request';
 
         if (class_exists($repositoryClass) === false) {
-            $this->call('g:repository', ['name' => $baseClass]);
+            $this->call('generate:repository', ['name' => $baseClass]);
         }
 
         if (class_exists($requestClass) === false) {
-            $this->call('g:request', ['name' => $baseClass]);
+            $this->call('generate:request', ['name' => $baseClass]);
         }
 
         return $this->generator->setFullControllerClass($name.'Controller')

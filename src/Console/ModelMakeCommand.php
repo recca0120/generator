@@ -11,7 +11,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'g:model';
+    protected $name = 'generate:model';
 
     /**
      * The console command description.
@@ -55,14 +55,14 @@ class ModelMakeCommand extends GeneratorCommand
         $presenterClass = $rootNamespace.'\Presenters\\'.$baseClass.'Presenter';
 
         if (class_exists($repositoryClass) === false) {
-            $this->call('g:repository', [
+            $this->call('generate:repository', [
                 'name' => $baseClass,
                 '--without-generator-model' => true,
             ]);
         }
 
         if (class_exists($presenterClass) === false) {
-            $this->call('g:presenter', ['name' => $baseClass]);
+            $this->call('generate:presenter', ['name' => $baseClass]);
         }
 
         return $this->generator->setFullModelClass($name)

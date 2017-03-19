@@ -53,14 +53,14 @@ class RepositoryMakeCommandTest extends TestCase
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));
         $command->setApplication($application);
 
-        $application->shouldReceive('find')->once()->with('g:repository-contract')->andReturnSelf();
+        $application->shouldReceive('find')->once()->with('generate:repository-contract')->andReturnSelf();
         $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
-            return str_replace("'", '"', (string) $input) === $name.' "g:repository-contract"';
+            return str_replace("'", '"', (string) $input) === $name.' "generate:repository-contract"';
         }), m::any());
 
-        $application->shouldReceive('find')->once()->with('g:model')->andReturnSelf();
+        $application->shouldReceive('find')->once()->with('generate:model')->andReturnSelf();
         $application->shouldReceive('run')->once()->with(m::on(function ($input) use ($name) {
-            return str_replace("'", '"', (string) $input) === $name.' "g:model"';
+            return str_replace("'", '"', (string) $input) === $name.' "generate:model"';
         }), m::any());
 
         $filesystem->shouldReceive('exists')->once()->with($file);
