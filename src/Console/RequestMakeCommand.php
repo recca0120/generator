@@ -11,7 +11,7 @@ class RequestMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'g:request';
+    protected $name = 'generate:request';
 
     /**
      * The console command description.
