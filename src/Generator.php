@@ -68,6 +68,15 @@ class Generator
         $dummyView = Str::snake($plural);
         $dummyRoute = Str::snake($plural);
 
+        $pos = strpos($dummyNamespace, 'Controller');
+        if ($pos !== false) {
+            $prefix = Str::camel(trim(substr($dummyNamespace, $pos + 12), '\\'));
+            if (empty($prefix) === false) {
+                $dummyView = $prefix.'::'.$dummyView;
+                $dummyRoute = $prefix.'.'.$dummyRoute;
+            }
+        }
+
         return [
             'DummyNamespace' => $dummyNamespace,
             'DummyClass' => $dummyClass,

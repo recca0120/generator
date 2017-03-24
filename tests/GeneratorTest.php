@@ -116,6 +116,21 @@ class GeneratorTest extends TestCase
         );
     }
 
+    public function testRenderAdminFooBarController()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator
+            ->setFullControllerClass('App\Http\Controllers\Admin\FooBarController')
+            ->setFullBaseClass('App\Http\Controllers\Controller')
+            ->setFullRepositoryInterface('App\Repositories\Contracts\FooBarRepository')
+            ->setFullRequestClass('App\Http\Requests\FooBarRequest');
+
+        $this->verify(
+            $this->render($generator, 'Http/Controllers/Controller'),
+            'Http/Controllers/Admin/FooBarController'
+        );
+    }
+
     public function testRenderNewsController()
     {
         $generator = new Generator(new Filesystem());
