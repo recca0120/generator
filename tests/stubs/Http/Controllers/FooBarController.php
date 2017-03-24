@@ -81,7 +81,7 @@ class FooBarController extends Controller
         $fooBar = $this->fooBars->create($attributes);
 
         return redirect(route('foo_bars.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $fooBar->name));
+            ->with('success', $fooBar->name.' saved successfully.');
     }
 
     /**
@@ -107,7 +107,7 @@ class FooBarController extends Controller
 
         if (is_null($fooBar) === true) {
             return redirect()->back()
-                ->with('error', '資料不存在');
+                ->with('error', 'not found');
         }
 
         return view('foo_bars.edit', compact('fooBar'));
@@ -126,7 +126,7 @@ class FooBarController extends Controller
         $fooBar = $this->fooBars->update($attributes, $id);
 
         return redirect(route('foo_bars.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $fooBar->name));
+            ->with('success', $fooBar->name.' updated successfully.');
     }
 
     /**
@@ -141,15 +141,12 @@ class FooBarController extends Controller
 
         if (is_null($fooBar) === true) {
             return redirect()->back()
-                ->with('error', '資料不存在');
+                ->with('error', 'not found');
         }
 
-        if ($this->fooBars->delete($id) == false) {
-            return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $fooBar->name));
-        }
+        $this->fooBars->delete($id);
 
         return redirect(route('foo_bars.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $fooBar->name));
+            ->with('success', $fooBar->name.' deleted successfully.');
     }
 }

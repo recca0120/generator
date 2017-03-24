@@ -81,7 +81,7 @@ class NewsController extends Controller
         $news = $this->news->create($attributes);
 
         return redirect(route('news.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $news->name));
+            ->with('success', $news->name.' saved successfully.');
     }
 
     /**
@@ -107,7 +107,7 @@ class NewsController extends Controller
 
         if (is_null($news) === true) {
             return redirect()->back()
-                ->with('error', '資料不存在');
+                ->with('error', 'not found');
         }
 
         return view('news.edit', compact('news'));
@@ -126,7 +126,7 @@ class NewsController extends Controller
         $news = $this->news->update($attributes, $id);
 
         return redirect(route('news.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $news->name));
+            ->with('success', $news->name.' updated successfully.');
     }
 
     /**
@@ -141,15 +141,12 @@ class NewsController extends Controller
 
         if (is_null($news) === true) {
             return redirect()->back()
-                ->with('error', '資料不存在');
+                ->with('error', 'not found');
         }
 
-        if ($this->news->delete($id) == false) {
-            return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $news->name));
-        }
+        $this->news->delete($id);
 
         return redirect(route('news.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $news->name));
+            ->with('success', $news->name.' deleted successfully.');
     }
 }

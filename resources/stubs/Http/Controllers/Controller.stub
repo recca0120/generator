@@ -82,7 +82,7 @@ class DummyClass extends DummyBaseClass
         $dummyModel = $this->dummyRepository->create($attributes);
 
         return redirect(route('dummyRoute.index', $request->query()))
-            ->with('success', sprintf('已新增 %s', $dummyModel->name));
+            ->with('success', $dummyModel->name.' saved successfully.');
     }
 
     /**
@@ -108,7 +108,7 @@ class DummyClass extends DummyBaseClass
 
         if (is_null($dummyModel) === true) {
             return redirect()->back()
-                ->with('error', '資料不存在');
+                ->with('error', 'not found');
         }
 
         return view('dummyView.edit', compact('dummyModel'));
@@ -127,7 +127,7 @@ class DummyClass extends DummyBaseClass
         $dummyModel = $this->dummyRepository->update($attributes, $id);
 
         return redirect(route('dummyRoute.index', $request->query()))
-            ->with('success', sprintf('已修改 %s', $dummyModel->name));
+            ->with('success', $dummyModel->name.' updated successfully.');
     }
 
     /**
@@ -142,15 +142,12 @@ class DummyClass extends DummyBaseClass
 
         if (is_null($dummyModel) === true) {
             return redirect()->back()
-                ->with('error', '資料不存在');
+                ->with('error', 'not found');
         }
 
-        if ($this->dummyRepository->delete($id) == false) {
-            return redirect()->back()
-                ->with('error', sprintf('無法刪除 %s', $dummyModel->name));
-        }
+        $this->dummyRepository->delete($id);
 
         return redirect(route('dummyRoute.index', $request->query()))
-            ->with('success', sprintf('已刪除 %s', $dummyModel->name));
+            ->with('success', $dummyModel->name.' deleted successfully.');
     }
 }
