@@ -44,52 +44,6 @@ class Generator
     }
 
     /**
-     * parseAttribute.
-     *
-     * @param string $className
-     * @return array
-     */
-    protected function parseAttribute($className)
-    {
-        $alias = array_map('trim', explode(' as ', $className));
-        $className = $alias[0];
-
-        $dummyClass = class_basename(isset($alias[1]) === true ? $alias[1] : $className);
-        $dummyNamespace = $this->getNamespace($className);
-
-        $singular = Str::camel(Str::singular(
-            preg_replace('/(Controller|Repository)$/', '', $dummyClass)
-        ));
-        $plural = Str::plural($singular);
-
-        $dummyModel = $singular;
-        $dummyRepository = $plural;
-        $dummyCollection = $singular === $plural ? $singular.'Collection' : $plural;
-        $dummyView = Str::snake($plural);
-        $dummyRoute = Str::snake($plural);
-
-        $pos = strpos($dummyNamespace, 'Controller');
-        if ($pos !== false) {
-            $prefix = Str::camel(trim(substr($dummyNamespace, $pos + 12), '\\'));
-            if (empty($prefix) === false) {
-                $dummyView = $prefix.'::'.$dummyView;
-                $dummyRoute = $prefix.'.'.$dummyRoute;
-            }
-        }
-
-        return [
-            'DummyNamespace' => $dummyNamespace,
-            'DummyClass' => $dummyClass,
-            'DummyModelClass' => $dummyClass,
-            'dummyModel' => $dummyModel,
-            'dummyRepository' => $dummyRepository,
-            'dummyCollection' => $dummyCollection,
-            'dummyView' => $dummyView,
-            'dummyRoute' => $dummyRoute,
-        ];
-    }
-
-    /**
      * setFullBaseClass.
      *
      * @param string $className
@@ -311,6 +265,52 @@ class Generator
         }
 
         return $this->format($content);
+    }
+
+    /**
+     * parseAttribute.
+     *
+     * @param string $className
+     * @return array
+     */
+    protected function parseAttribute($className)
+    {
+        $alias = array_map('trim', explode(' as ', $className));
+        $className = $alias[0];
+
+        $dummyClass = class_basename(isset($alias[1]) === true ? $alias[1] : $className);
+        $dummyNamespace = $this->getNamespace($className);
+
+        $singular = Str::camel(Str::singular(
+            preg_replace('/(Controller|Repository)$/', '', $dummyClass)
+        ));
+        $plural = Str::plural($singular);
+
+        $dummyModel = $singular;
+        $dummyRepository = $plural;
+        $dummyCollection = $singular === $plural ? $singular.'Collection' : $plural;
+        $dummyView = Str::snake($plural);
+        $dummyRoute = Str::snake($plural);
+
+        $pos = strpos($dummyNamespace, 'Controller');
+        if ($pos !== false) {
+            $prefix = Str::camel(trim(substr($dummyNamespace, $pos + 12), '\\'));
+            if (empty($prefix) === false) {
+                $dummyView = $prefix.'::'.$dummyView;
+                $dummyRoute = $prefix.'.'.$dummyRoute;
+            }
+        }
+
+        return [
+            'DummyNamespace' => $dummyNamespace,
+            'DummyClass' => $dummyClass,
+            'DummyModelClass' => $dummyClass,
+            'dummyModel' => $dummyModel,
+            'dummyRepository' => $dummyRepository,
+            'dummyCollection' => $dummyCollection,
+            'dummyView' => $dummyView,
+            'dummyRoute' => $dummyRoute,
+        ];
     }
 
     /**
