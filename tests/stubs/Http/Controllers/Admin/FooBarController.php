@@ -133,10 +133,11 @@ class FooBarController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \Illuminte\Http\Request $request
      * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $fooBar = $this->fooBars->find($id);
 
