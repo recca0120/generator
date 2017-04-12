@@ -9,16 +9,6 @@ use Recca0120\Generator\Console\RepositoryMakeCommand;
 
 class RepositoryMakeCommandTest extends TestCase
 {
-    protected function mockProperty($object, $propertyName, $value)
-    {
-        $reflectionClass = new \ReflectionClass($object);
-
-        $property = $reflectionClass->getProperty($propertyName);
-        $property->setAccessible(true);
-        $property->setValue($object, $value);
-        $property->setAccessible(false);
-    }
-
     protected function tearDown()
     {
         m::close();
@@ -77,5 +67,15 @@ class RepositoryMakeCommandTest extends TestCase
         $filesystem->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
 
         $command->fire();
+    }
+
+    protected function mockProperty($object, $propertyName, $value)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+
+        $property = $reflectionClass->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+        $property->setAccessible(false);
     }
 }

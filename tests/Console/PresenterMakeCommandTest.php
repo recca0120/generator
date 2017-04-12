@@ -9,16 +9,6 @@ use Recca0120\Generator\Console\PresenterMakeCommand;
 
 class PresenterMakeCommandTest extends TestCase
 {
-    protected function mockProperty($object, $propertyName, $value)
-    {
-        $reflectionClass = new \ReflectionClass($object);
-
-        $property = $reflectionClass->getProperty($propertyName);
-        $property->setAccessible(true);
-        $property->setValue($object, $value);
-        $property->setAccessible(false);
-    }
-
     protected function tearDown()
     {
         m::close();
@@ -56,5 +46,15 @@ class PresenterMakeCommandTest extends TestCase
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
         $command->fire();
+    }
+
+    protected function mockProperty($object, $propertyName, $value)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+
+        $property = $reflectionClass->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+        $property->setAccessible(false);
     }
 }

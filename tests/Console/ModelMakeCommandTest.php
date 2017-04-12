@@ -9,16 +9,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class ModelMakeCommandTest extends TestCase
 {
-    protected function mockProperty($object, $propertyName, $value)
-    {
-        $reflectionClass = new \ReflectionClass($object);
-
-        $property = $reflectionClass->getProperty($propertyName);
-        $property->setAccessible(true);
-        $property->setValue($object, $value);
-        $property->setAccessible(false);
-    }
-
     protected function tearDown()
     {
         m::close();
@@ -69,5 +59,15 @@ class ModelMakeCommandTest extends TestCase
         $filesystem->shouldReceive('put')->once()->with($file, $render);
 
         $command->fire();
+    }
+
+    protected function mockProperty($object, $propertyName, $value)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+
+        $property = $reflectionClass->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($object, $value);
+        $property->setAccessible(false);
     }
 }
