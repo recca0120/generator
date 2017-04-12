@@ -29,7 +29,7 @@ class FooBarController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminte\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -54,7 +54,7 @@ class FooBarController extends Controller
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('admin::foo_bars.index', compact('fooBars'));
+        return view('admin::foo-bars.index', compact('fooBars'));
     }
 
     /**
@@ -66,7 +66,7 @@ class FooBarController extends Controller
     {
         $fooBar = $this->fooBars->newInstance([]);
 
-        return view('admin::foo_bars.create', compact('fooBar'));
+        return view('admin::foo-bars.create', compact('fooBar'));
     }
 
     /**
@@ -80,7 +80,7 @@ class FooBarController extends Controller
         $attributes = $request->all();
         $fooBar = $this->fooBars->create($attributes);
 
-        return redirect(route('admin.foo_bars.index', $request->query()))
+        return redirect(route('admin.foo-bars.index', $request->query()))
             ->with('success', $fooBar->name.' saved successfully.');
     }
 
@@ -110,7 +110,7 @@ class FooBarController extends Controller
                 ->with('error', 'not found');
         }
 
-        return view('admin::foo_bars.edit', compact('fooBar'));
+        return view('admin::foo-bars.edit', compact('fooBar'));
     }
 
     /**
@@ -125,14 +125,14 @@ class FooBarController extends Controller
         $attributes = $request->all();
         $fooBar = $this->fooBars->update($attributes, $id);
 
-        return redirect(route('admin.foo_bars.index', $request->query()))
+        return redirect(route('admin.foo-bars.index', $request->query()))
             ->with('success', $fooBar->name.' updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminte\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param string $id
      * @return \Illuminate\Http\Response
      */
@@ -147,7 +147,7 @@ class FooBarController extends Controller
 
         $this->fooBars->delete($id);
 
-        return redirect(route('admin.foo_bars.index', $request->query()))
+        return redirect(route('admin.foo-bars.index', $request->query()))
             ->with('success', $fooBar->name.' deleted successfully.');
     }
 }

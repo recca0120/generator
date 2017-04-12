@@ -289,8 +289,8 @@ class Generator
         $dummyModel = $singular;
         $dummyRepository = $plural;
         $dummyCollection = $singular === $plural ? $singular.'Collection' : $plural;
-        $dummyView = Str::snake($plural);
-        $dummyRoute = Str::snake($plural);
+        $dummyView = str_replace('_', '-', Str::snake($plural));
+        $dummyRoute = str_replace('_', '-', Str::snake($plural));
 
         $pos = strpos($dummyNamespace, 'Controller');
         if ($pos !== false) {

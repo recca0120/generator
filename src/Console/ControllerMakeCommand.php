@@ -58,11 +58,11 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $fullBaseClass = $this->option('extend') ?:
-            class_exists($this->getNamespace($name).'\Controller') === false
-                ? 'App\Http\Controllers\Controller'
-                : $this->getNamespace($name).'\Controller';
+        $fullBaseClass = $this->getNamespace($name).'\Controller';
+        $fullBaseClass = class_exists($fullBaseClass) === true ?
+            $fullBaseClass : 'App\Http\Controllers\Controller';
 
+        $fullBaseClass = $this->option('extend') ?: $fullBaseClass;
         $rootNamespace = trim($this->rootNamespace(), '\\');
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');

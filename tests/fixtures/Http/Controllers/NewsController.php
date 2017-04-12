@@ -29,7 +29,7 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminte\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -132,7 +132,7 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \Illuminte\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param string $id
      * @return \Illuminate\Http\Response
      */
