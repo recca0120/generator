@@ -1,0 +1,19 @@
+@component('admin::components.layout', ['title' => 'dummyTitle'])
+    @component('admin::components.panel', ['title' => 'dummyTitle'])
+        {{ Form::open([
+            'method' =>'PUT',
+            'route' => ['dummyRoute.update', $dummyModel->id],
+            'class' => 'form-horizontal form-label-left',
+            'data-parsley-validate' => 'data-parsley-validate',
+        ]) }}
+
+            @include('dummyView._form', ['dummyModel' => $dummyModel])
+
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
+                <a href="{{ route('dummyRoute.index', request()) }}" class="btn btn-default">Cancel</a>
+            </div>
+        {{ Form::close() }}
+    @endcomponent
+@endcomponent

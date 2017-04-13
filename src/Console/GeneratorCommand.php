@@ -25,6 +25,7 @@ abstract class GeneratorCommand extends BaseCommand
     public function __construct(Filesystem $files, Generator $generator)
     {
         parent::__construct($files);
+
         $this->generator = $generator;
     }
 
@@ -57,5 +58,22 @@ abstract class GeneratorCommand extends BaseCommand
     protected function rootNamespace()
     {
         return $this->laravel->getNamespace();
+    }
+
+    /**
+     * getStubResource.
+     *
+     * @param string $path
+     * @return string
+     */
+    protected function getStubResource($stub)
+    {
+        // return __DIR__.'/../../resources/stubs/'.$stub;
+
+        $root = $this->laravel->basePath().'/resources/views/generator/';
+
+        return $this->files->exists($root.$stub) === true
+            ? $root.$stub
+            : __DIR__.'/../../resources/stubs/'.$stub;
     }
 }

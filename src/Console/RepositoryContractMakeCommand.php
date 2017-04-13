@@ -32,7 +32,7 @@ class RepositoryContractMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../resources/stubs/Repositories/Contracts/Repository.stub';
+        return $this->getStubResource('Repositories/Contracts/Repository.stub');
     }
 
     /**

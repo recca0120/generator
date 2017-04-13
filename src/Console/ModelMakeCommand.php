@@ -34,7 +34,7 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../resources/stubs/Model.stub';
+        return $this->getStubResource('Model.stub');
     }
 
     /**

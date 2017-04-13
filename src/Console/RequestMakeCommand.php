@@ -34,7 +34,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../resources/stubs/Http/Requests/Request.stub';
+        return $this->getStubResource('Http/Requests/Request.stub');
     }
 
     /**

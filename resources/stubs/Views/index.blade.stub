@@ -1,4 +1,0 @@
-@component('dummyViewComponent')
-    @slot('header')
-    @endslot
-@endcomponent

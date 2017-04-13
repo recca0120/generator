@@ -3,8 +3,10 @@
 namespace Recca0120\Generator;
 
 use Illuminate\Support\ServiceProvider;
+use Recca0120\Generator\Console\ViewMakeCommand;
 use Recca0120\Generator\Console\ModelMakeCommand;
 use Recca0120\Generator\Console\RequestMakeCommand;
+use Recca0120\Generator\Console\ScaffoldMakeCommand;
 use Recca0120\Generator\Console\PresenterMakeCommand;
 use Recca0120\Generator\Console\ControllerMakeCommand;
 use Recca0120\Generator\Console\RepositoryMakeCommand;
@@ -26,10 +28,12 @@ class GeneratorServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole() === true) {
             $this->commands([
-                ControllerMakeCommand::class,
+                ViewMakeCommand::class,
                 ModelMakeCommand::class,
                 RequestMakeCommand::class,
+                ScaffoldMakeCommand::class,
                 PresenterMakeCommand::class,
+                ControllerMakeCommand::class,
                 RepositoryMakeCommand::class,
                 RepositoryContractMakeCommand::class,
             ]);

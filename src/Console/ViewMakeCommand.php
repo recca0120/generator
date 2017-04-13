@@ -2,30 +2,31 @@
 
 namespace Recca0120\Generator\Console;
 
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends GeneratorCommand
+class ViewMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'generate:controller';
+    protected $name = 'generate:view';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new controller';
+    protected $description = 'Create a new view';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Controller';
+    protected $type = 'View';
 
     /**
      * Get the stub file for the generator.
@@ -34,7 +35,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return $this->getStubResource('Http/Controllers/Controller.stub');
+        return $this->getStubResource('resources/views/scaffold/'.$this->view().'.blade.stub');
     }
 
     /**
@@ -70,14 +71,6 @@ class ControllerMakeCommand extends GeneratorCommand
         $repositoryClass = $rootNamespace.'\Repositories\\'.$baseClass.'Repository';
         $requestClass = $rootNamespace.'\Http\Requests\\'.$baseClass.'Request';
 
-        if (class_exists($repositoryClass) === false) {
-            $this->call('generate:repository', ['name' => $baseClass]);
-        }
-
-        if (class_exists($requestClass) === false) {
-            $this->call('generate:request', ['name' => $baseClass]);
-        }
-
         return $this->generator->setFullControllerClass($name.'Controller')
             ->setFullBaseClass($fullBaseClass)
             ->setFullRepositoryInterface($repositoryContractInterface)
@@ -94,7 +87,22 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        return str_replace('.php', 'Controller.php', parent::getPath($name));
+        $name = Str::replaceFirst($this->rootNamespace().'Http\Controllers\\', '', $name);
+        $path = $this->laravel->basePath().'/resources/views/';
+
+        return $path .= implode('/', array_map(function ($path) {
+            return Str::snake($path, '-');
+        }, explode('\\', $name))).'/'.$this->view().'.blade.php';
+    }
+
+    /**
+     * view.
+     *
+     * @return string
+     */
+    protected function view()
+    {
+        return $this->option('view') ?: 'index';
     }
 
     /**
@@ -106,6 +114,7 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         return [
             ['extend', '', InputOption::VALUE_OPTIONAL, 'controller extend.'],
+            ['view', '', InputOption::VALUE_OPTIONAL, 'view'],
         ];
     }
 }

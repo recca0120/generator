@@ -34,7 +34,7 @@ class PresenterMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../resources/stubs/Presenters/Presenter.stub';
+        return $this->getStubResource('Presenters/Presenter.stub');
     }
 
     /**

@@ -37,6 +37,9 @@ class PresenterMakeCommandTest extends TestCase
         $file = $directory.'/'.$name.'Presenter.php';
         $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Presenter';
 
+        $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
+        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/'.$defaultNamespace.'/Presenter.stub')->once()->andReturn(false);
+
         $filesystem->shouldReceive('exists')->once()->with($file);
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);
         $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);

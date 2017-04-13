@@ -165,6 +165,7 @@ class Generator
             ->set('dummyModel', $attributes['dummyModel'], false)
             ->set('dummyView', $attributes['dummyView'], false)
             ->set('dummyRoute', $attributes['dummyRoute'], false)
+            ->set('dummyTitle', $attributes['dummyTitle'], false)
             ->set('DummyControllerClass', $attributes['DummyClass']);
     }
 
@@ -289,8 +290,9 @@ class Generator
         $dummyModel = $singular;
         $dummyRepository = $plural;
         $dummyCollection = $singular === $plural ? $singular.'Collection' : $plural;
-        $dummyView = str_replace('_', '-', Str::snake($plural));
-        $dummyRoute = str_replace('_', '-', Str::snake($plural));
+        $dummyView = Str::snake($plural, '-');
+        $dummyRoute = Str::snake($plural, '-');
+        $dummyTitle = ucwords(Str::snake($plural, ' '));
 
         $pos = strpos($dummyNamespace, 'Controller');
         if ($pos !== false) {
@@ -310,6 +312,7 @@ class Generator
             'dummyCollection' => $dummyCollection,
             'dummyView' => $dummyView,
             'dummyRoute' => $dummyRoute,
+            'dummyTitle' => $dummyTitle,
         ];
     }
 

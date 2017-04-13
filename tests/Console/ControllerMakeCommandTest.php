@@ -37,6 +37,9 @@ class ControllerMakeCommandTest extends TestCase
         $file = $directory.'/'.$name.'Controller.php';
         $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Controller';
 
+        $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
+        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/'.$defaultNamespace.'/Controller.stub')->once()->andReturn(false);
+
         $application = m::mock('Symfony\Component\Console\Application');
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));
         $command->setApplication($application);

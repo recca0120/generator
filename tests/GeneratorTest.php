@@ -146,14 +146,50 @@ class GeneratorTest extends TestCase
         );
     }
 
-    // public function testRenderViewIndex()
-    // {
-    //     $generator = new Generator(new Filesystem());
-    //     $this->verify(
-    //         $this->render($generator, 'Views/index.blade'),
-    //         'Views/index.blade'
-    //     );
-    // }
+    public function testRenderViewIndex()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator
+            ->setFullControllerClass('App\Http\Controllers\Admin\NewsController')
+            ->setFullBaseClass('App\Http\Controllers\Admin\Controller')
+            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
+            ->setFullRequestClass('App\Http\Requests\NewsRequest');
+
+        $this->verify(
+            $this->render($generator, 'resources/views/scaffold/index.blade'),
+            'resources/views/news/index.blade'
+        );
+    }
+
+    public function testRenderViewCreate()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator
+            ->setFullControllerClass('App\Http\Controllers\Admin\NewsController')
+            ->setFullBaseClass('App\Http\Controllers\Admin\Controller')
+            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
+            ->setFullRequestClass('App\Http\Requests\NewsRequest');
+
+        $this->verify(
+            $this->render($generator, 'resources/views/scaffold/create.blade'),
+            'resources/views/news/create.blade'
+        );
+    }
+
+    public function testRenderViewEdit()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator
+            ->setFullControllerClass('App\Http\Controllers\Admin\NewsController')
+            ->setFullBaseClass('App\Http\Controllers\Admin\Controller')
+            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
+            ->setFullRequestClass('App\Http\Requests\NewsRequest');
+
+        $this->verify(
+            $this->render($generator, 'resources/views/scaffold/edit.blade'),
+            'resources/views/news/edit.blade'
+        );
+    }
 
     protected function render($generator, $className)
     {
