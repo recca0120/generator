@@ -68,7 +68,6 @@ class ViewMakeCommand extends GeneratorCommand
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');
         $repositoryContractInterface = $rootNamespace.'\Repositories\Contracts\\'.$baseClass.'Repository';
-        $repositoryClass = $rootNamespace.'\Repositories\\'.$baseClass.'Repository';
         $requestClass = $rootNamespace.'\Http\Requests\\'.$baseClass.'Request';
 
         return $this->generator->setFullControllerClass($name.'Controller')
