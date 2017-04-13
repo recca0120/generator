@@ -63,7 +63,7 @@ class ViewMakeCommand extends GeneratorCommand
         $fullBaseClass = class_exists($fullBaseClass) === true ?
             $fullBaseClass : 'App\Http\Controllers\Controller';
 
-        $fullBaseClass = $this->option('extend') ?: $fullBaseClass;
+        $fullBaseClass = (string) $this->option('extend') ?: $fullBaseClass;
         $rootNamespace = trim($this->rootNamespace(), '\\');
         $namespace = $this->getNamespace($name);
         $baseClass = ltrim(str_replace($namespace, '', $name), '\\');
@@ -102,7 +102,7 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function view()
     {
-        return $this->option('view') ?: 'index';
+        return (string) $this->option('view') ?: 'index';
     }
 
     /**
