@@ -63,7 +63,8 @@ abstract class GeneratorCommand extends BaseCommand
     /**
      * getStubResource.
      *
-     * @param string $path
+     * @param string $stub
+     * @param string $folder
      * @return string
      */
     protected function getStubResource($stub, $folder = 'app')
