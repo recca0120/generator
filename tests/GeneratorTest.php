@@ -20,7 +20,7 @@ class GeneratorTest extends TestCase
         $generator->setFullRepositoryInterface('App\Repositories\Contracts\FooBarRepository');
 
         $this->verify(
-            $this->render($generator, 'Repositories/Contracts/Repository'),
+            [$generator, 'Repositories/Contracts/Repository'],
             'Repositories/Contracts/FooBarRepository'
         );
     }
@@ -33,7 +33,7 @@ class GeneratorTest extends TestCase
             ->setFullModelClass('App\FooBar');
 
         $this->verify(
-            $this->render($generator, 'Repositories/Repository'),
+            [$generator, 'Repositories/Repository'],
             'Repositories/FooBarRepository'
         );
     }
@@ -45,11 +45,11 @@ class GeneratorTest extends TestCase
             ->setFullBaseClass('Recca0120\Repository\EloquentRepository')
             ->setFullModelClass('App\FooBar');
 
-        $this->verify(
+        $this->assertSame(
+            $this->getContent('Providers/AppServiceProvider'),
             $generator->renderServiceProvider(
                 $this->getContent('Providers/MockServiceProvider')
-            ),
-            'Providers/AppServiceProvider'
+            )
         );
     }
 
@@ -60,7 +60,7 @@ class GeneratorTest extends TestCase
             ->setFullModelClass('App\FooBarWithoutExtend');
 
         $this->verify(
-            $this->render($generator, 'Repositories/Repository'),
+            [$generator, 'Repositories/Repository'],
             'Repositories/FooBarWithoutExtendRepository'
         );
     }
@@ -72,7 +72,7 @@ class GeneratorTest extends TestCase
             ->setFullBaseClass('Illuminate\Database\Eloquent\Model');
 
         $this->verify(
-            $this->render($generator, 'Model'),
+            [$generator, 'Model'],
             'FooBar'
         );
     }
@@ -84,7 +84,7 @@ class GeneratorTest extends TestCase
             ->setFullBaseClass('Robbo\Presenter\Presenter as RobboPresenter');
 
         $this->verify(
-            $this->render($generator, 'Presenters/Presenter'),
+            [$generator, 'Presenters/Presenter'],
             'Presenters/FooBarPresenter'
         );
     }
@@ -96,7 +96,7 @@ class GeneratorTest extends TestCase
             ->setFullBaseClass('Illuminate\Foundation\Http\FormRequest');
 
         $this->verify(
-            $this->render($generator, 'Http/Requests/Request'),
+            [$generator, 'Http/Requests/Request'],
             'Http/Requests/FooBarRequest'
         );
     }
@@ -111,7 +111,7 @@ class GeneratorTest extends TestCase
             ->setFullRequestClass('App\Http\Requests\FooBarRequest');
 
         $this->verify(
-            $this->render($generator, 'Http/Controllers/Controller'),
+            [$generator, 'Http/Controllers/Controller'],
             'Http/Controllers/FooBarController'
         );
     }
@@ -126,7 +126,7 @@ class GeneratorTest extends TestCase
             ->setFullRequestClass('App\Http\Requests\FooBarRequest');
 
         $this->verify(
-            $this->render($generator, 'Http/Controllers/Controller'),
+            [$generator, 'Http/Controllers/Controller'],
             'Http/Controllers/Admin/FooBarController'
         );
     }
@@ -141,7 +141,7 @@ class GeneratorTest extends TestCase
             ->setFullRequestClass('App\Http\Requests\NewsRequest');
 
         $this->verify(
-            $this->render($generator, 'Http/Controllers/Controller'),
+            [$generator, 'Http/Controllers/Controller'],
             'Http/Controllers/NewsController'
         );
     }
@@ -156,8 +156,9 @@ class GeneratorTest extends TestCase
             ->setFullRequestClass('App\Http\Requests\NewsRequest');
 
         $this->verify(
-            $this->render($generator, 'resources/views/scaffold/index.blade'),
-            'resources/views/news/index.blade'
+            [$generator, 'views/scaffold/index.blade'],
+            'views/news/index.blade',
+            'resources'
         );
     }
 
@@ -171,8 +172,9 @@ class GeneratorTest extends TestCase
             ->setFullRequestClass('App\Http\Requests\NewsRequest');
 
         $this->verify(
-            $this->render($generator, 'resources/views/scaffold/create.blade'),
-            'resources/views/news/create.blade'
+            [$generator, 'views/scaffold/create.blade'],
+            'views/news/create.blade',
+            'resources'
         );
     }
 
@@ -186,25 +188,29 @@ class GeneratorTest extends TestCase
             ->setFullRequestClass('App\Http\Requests\NewsRequest');
 
         $this->verify(
-            $this->render($generator, 'resources/views/scaffold/edit.blade'),
-            'resources/views/news/edit.blade'
+            [$generator, 'views/scaffold/edit.blade'],
+            'views/news/edit.blade',
+            'resources'
         );
     }
 
-    protected function render($generator, $className)
+    protected function render($generator, $className, $folder = 'app')
     {
-        return $generator->render(__DIR__.'/../resources/stubs/'.$className.'.stub');
+        return $generator->render(__DIR__.'/../resources/stubs/'.$folder.'/'.$className.'.stub');
     }
 
-    protected function getContent($path)
+    protected function getContent($path, $folder = 'app')
     {
-        return strtr(file_get_contents(__DIR__.'/fixtures/'.$path.'.php'), [
+        return strtr(file_get_contents(__DIR__.'/fixtures/'.$folder.'/'.$path.'.php'), [
             "\r\n" => "\n",
         ]);
     }
 
-    protected function verify($content, $path)
+    protected function verify($command, $path, $folder = 'app')
     {
-        $this->assertSame($this->getContent($path), $content);
+        $this->assertSame(
+            $this->getContent($path, $folder),
+            $this->render($command[0], $command[1], $folder)
+        );
     }
 }

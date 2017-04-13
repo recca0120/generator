@@ -36,7 +36,7 @@ class RepositoryContractMakeCommandTest extends TestCase
         $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Repository';
 
         $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
-        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/'.$defaultNamespace.'/Repository.stub')->once()->andReturn(false);
+        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/app/'.$defaultNamespace.'/Repository.stub')->once()->andReturn(false);
 
         $filesystem->shouldReceive('exists')->once()->with($file);
         $filesystem->shouldReceive('isDirectory')->once()->with($directory);

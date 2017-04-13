@@ -35,7 +35,7 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return $this->getStubResource('resources/views/scaffold/'.$this->view().'.blade.stub');
+        return $this->getStubResource('views/scaffold/'.$this->view().'.blade.stub', 'resources');
     }
 
     /**

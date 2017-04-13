@@ -40,7 +40,7 @@ class RepositoryMakeCommandTest extends TestCase
         $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Repository';
 
         $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
-        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/'.$defaultNamespace.'/Repository.stub')->once()->andReturn(false);
+        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/app/'.$defaultNamespace.'/Repository.stub')->once()->andReturn(false);
 
         $application = m::mock('Symfony\Component\Console\Application');
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));

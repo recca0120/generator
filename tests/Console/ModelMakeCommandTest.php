@@ -37,7 +37,7 @@ class ModelMakeCommandTest extends TestCase
         $fullClass = $rootNamespace.$name;
 
         $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
-        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/Model.stub')->once()->andReturn(false);
+        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/app/Model.stub')->once()->andReturn(false);
 
         $application = m::mock('Symfony\Component\Console\Application');
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));

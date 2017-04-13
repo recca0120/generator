@@ -66,14 +66,12 @@ abstract class GeneratorCommand extends BaseCommand
      * @param string $path
      * @return string
      */
-    protected function getStubResource($stub)
+    protected function getStubResource($stub, $folder = 'app')
     {
-        // return __DIR__.'/../../resources/stubs/'.$stub;
-
-        $root = $this->laravel->basePath().'/resources/views/generator/';
+        $root = $this->laravel->basePath().'/resources/views/generator/'.$folder.'/';
 
         return $this->files->exists($root.$stub) === true
             ? $root.$stub
-            : __DIR__.'/../../resources/stubs/'.$stub;
+            : __DIR__.'/../../resources/stubs/'.$folder.'/'.$stub;
     }
 }
