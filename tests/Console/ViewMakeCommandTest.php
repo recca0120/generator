@@ -39,7 +39,7 @@ class ViewMakeCommandTest extends TestCase
         $file = $directory.'/'.$view.'.blade.php';
         $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Controller';
 
-        $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
+        $laravel->shouldReceive('basePath')->andReturn($basePath = 'foo');
         $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/resources/views/scaffold/'.$view.'.blade.stub')->once()->andReturn(false);
 
         $application = m::mock('Symfony\Component\Console\Application');
