@@ -10,11 +10,11 @@ use Recca0120\Generator\Fixers\UseSortFixer;
 class Generator
 {
     /**
-     * $filesystem.
+     * $files.
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
-    protected $filesystem;
+    protected $files;
 
     /**
      * $useSortFixer.
@@ -33,12 +33,12 @@ class Generator
     /**
      * __construct.
      *
-     * @param \Illuminate\Filesystem\Filesystem $filesystem
+     * @param \Illuminate\Filesystem\Filesystem $files
      * @param \Recca0120\Generator\Fixers\UseSortFixer $useSortFixer
      */
-    public function __construct(Filesystem $filesystem = null, UseSortFixer $useSortFixer = null)
+    public function __construct(Filesystem $files = null, UseSortFixer $useSortFixer = null)
     {
-        $this->filesystem = $filesystem ?: new Filesystem();
+        $this->files = $files ?: new Filesystem();
         $this->useSortFixer = $useSortFixer ?: new UseSortFixer();
         $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
     }
@@ -216,7 +216,7 @@ class Generator
     public function render($stub, $orderedUse = true)
     {
         $content = strtr(
-            strtr($this->filesystem->get($stub), $this->attributes), [
+            strtr($this->files->get($stub), $this->attributes), [
                 ' extends DummyBaseClass' => '',
                 'use DummyFullBaseClass;' => '',
             ]);
