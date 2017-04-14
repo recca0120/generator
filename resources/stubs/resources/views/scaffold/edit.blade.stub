@@ -5,6 +5,7 @@
             'route' => ['dummyRoute.update', $dummyModel->id],
             'class' => 'form-horizontal form-label-left',
             'data-parsley-validate' => 'data-parsley-validate',
+            'files' => true,
         ]) }}
 
             @include('dummyView._form', ['dummyModel' => $dummyModel])

@@ -5,6 +5,7 @@
             'route' => ['admin.foo-bars.update', $fooBar->id],
             'class' => 'form-horizontal form-label-left',
             'data-parsley-validate' => 'data-parsley-validate',
+            'files' => true,
         ]) }}
 
             @include('admin::foo-bars._form', ['fooBar' => $fooBar])
