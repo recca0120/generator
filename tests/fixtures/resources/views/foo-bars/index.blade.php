@@ -1,6 +1,6 @@
-@component('admin::layouts.master', ['title' => 'News'])
-    @component('admin::components.panel', ['title' => 'News'])
-        <a href="{{ route('admin.news.create') }}" class="btn btn-success">
+@component('admin::layouts.master', ['title' => 'Foo Bars'])
+    @component('admin::components.panel', ['title' => 'Foo Bars'])
+        <a href="{{ route('admin.foo-bars.create') }}" class="btn btn-success">
             <i class="fa fa-plus"></i>
             Add
         </a>
@@ -11,15 +11,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($newsCollection as $news)
+                @foreach ($fooBars as $fooBar)
                     <tr>
-                        <td>{{ $news->id }}</td>
+                        <td>{{ $fooBar->id }}</td>
                         <td>
-                            <a href="{{ route('admin.news.edit', [$news->id]) }}" class="btn btn-info btn-xs">
+                            <a href="{{ route('admin.foo-bars.edit', [$fooBar->id]) }}" class="btn btn-info btn-xs">
                                 <i class="fa fa-pencil"></i>
                                 Edit
                             </a>
-                            <a href="{{ route('admin.news.destroy', [$news->id]) }}" class="btn btn-danger btn-xs" data-method="DELETE">
+                            <a href="{{ route('admin.foo-bars.destroy', [$fooBar->id]) }}" class="btn btn-danger btn-xs" data-method="DELETE">
                                 <i class="fa fa-trash-o"></i>
                                 Delete
                             </a>
@@ -28,8 +28,8 @@
                 @endforeach
             </tbody>
         </table>
-        @if ($newsCollection->hasPages() === true)
-            {{ $newsCollection->render() }}
+        @if ($fooBars->hasPages() === true)
+            {{ $fooBars->render() }}
         @endif
     @endcomponent
 @endcomponent

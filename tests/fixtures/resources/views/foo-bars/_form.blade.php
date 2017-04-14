@@ -3,7 +3,7 @@
         Id
         <span class="required">*</span>
     </label>
-    {{ Form::text('id', $news->id, [
+    {{ Form::text('id', $fooBar->id, [
         'class' => 'form-control',
         'required' => 'required',
     ]) }}

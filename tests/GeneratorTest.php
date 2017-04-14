@@ -149,15 +149,11 @@ class GeneratorTest extends TestCase
     public function testRenderViewIndex()
     {
         $generator = new Generator(new Filesystem());
-        $generator
-            ->setFullControllerClass('App\Http\Controllers\Admin\NewsController')
-            ->setFullBaseClass('App\Http\Controllers\Admin\Controller')
-            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
-            ->setFullRequestClass('App\Http\Requests\NewsRequest');
+        $generator->setFullControllerClass('App\Http\Controllers\Admin\FooBarController');
 
         $this->verify(
             [$generator, 'views/scaffold/index.blade'],
-            'views/news/index.blade',
+            'views/foo-bars/index.blade',
             'resources'
         );
     }
@@ -165,15 +161,11 @@ class GeneratorTest extends TestCase
     public function testRenderViewCreate()
     {
         $generator = new Generator(new Filesystem());
-        $generator
-            ->setFullControllerClass('App\Http\Controllers\Admin\NewsController')
-            ->setFullBaseClass('App\Http\Controllers\Admin\Controller')
-            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
-            ->setFullRequestClass('App\Http\Requests\NewsRequest');
+        $generator->setFullControllerClass('App\Http\Controllers\Admin\FooBarController');
 
         $this->verify(
             [$generator, 'views/scaffold/create.blade'],
-            'views/news/create.blade',
+            'views/foo-bars/create.blade',
             'resources'
         );
     }
@@ -181,15 +173,23 @@ class GeneratorTest extends TestCase
     public function testRenderViewEdit()
     {
         $generator = new Generator(new Filesystem());
-        $generator
-            ->setFullControllerClass('App\Http\Controllers\Admin\NewsController')
-            ->setFullBaseClass('App\Http\Controllers\Admin\Controller')
-            ->setFullRepositoryInterface('App\Repositories\Contracts\NewsRepository')
-            ->setFullRequestClass('App\Http\Requests\NewsRequest');
+        $generator->setFullControllerClass('App\Http\Controllers\Admin\FooBarController');
 
         $this->verify(
             [$generator, 'views/scaffold/edit.blade'],
-            'views/news/edit.blade',
+            'views/foo-bars/edit.blade',
+            'resources'
+        );
+    }
+
+    public function testRenderViewForm()
+    {
+        $generator = new Generator(new Filesystem());
+        $generator->setFullControllerClass('App\Http\Controllers\Admin\FooBarController');
+
+        $this->verify(
+            [$generator, 'views/scaffold/_form.blade'],
+            'views/foo-bars/_form.blade',
             'resources'
         );
     }
