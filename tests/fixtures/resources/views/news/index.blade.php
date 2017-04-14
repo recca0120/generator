@@ -1,4 +1,4 @@
-@component('admin::components.layout', ['title' => 'News'])
+@component('admin::layouts.master', ['title' => 'News'])
     @component('admin::components.panel', ['title' => 'News'])
         <a href="{{ route('admin.news.create') }}" class="btn btn-success">
             <i class="fa fa-plus"></i>

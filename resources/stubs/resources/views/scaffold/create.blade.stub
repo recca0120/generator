@@ -1,4 +1,4 @@
-@component('admin::components.layout', ['title' => 'dummyTitle'])
+@component('admin::layouts.master', ['title' => 'dummyTitle'])
     @component('admin::components.panel', ['title' => 'dummyTitle'])
         {{ Form::open([
             'method' => 'POST',

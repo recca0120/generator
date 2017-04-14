@@ -1,4 +1,4 @@
-@component('admin::components.layout', ['title' => 'News'])
+@component('admin::layouts.master', ['title' => 'News'])
     @component('admin::components.panel', ['title' => 'News'])
         {{ Form::open([
             'method' =>'PUT',

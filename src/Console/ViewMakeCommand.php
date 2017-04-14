@@ -86,7 +86,7 @@ class ViewMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = str_replace($this->rootNamespace().'Http\Controllers\\', '', $name);
+        $name = Str::plural(str_replace($this->rootNamespace().'Http\Controllers\\', '', $name));
         $path = $this->laravel->basePath().'/resources/views/';
 
         return $path .= implode('/', array_map(function ($path) {

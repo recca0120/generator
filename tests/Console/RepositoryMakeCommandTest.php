@@ -17,7 +17,7 @@ class RepositoryMakeCommandTest extends TestCase
     public function testFire()
     {
         $command = new RepositoryMakeCommand(
-            $filesystem = m::mock('Illuminate\Filesystem\Filesystem'),
+            $files = m::mock('Illuminate\Filesystem\Filesystem'),
             $generator = m::mock('Recca0120\Generator\Generator')
         );
 
@@ -40,7 +40,7 @@ class RepositoryMakeCommandTest extends TestCase
         $fullClass = $rootNamespace.str_replace('/', '\\', $defaultNamespace).'\\'.$name.'Repository';
 
         $laravel->shouldReceive('basePath')->once()->andReturn($basePath = 'foo');
-        $filesystem->shouldReceive('exists')->with($basePath.'/resources/views/generator/app/'.$defaultNamespace.'/Repository.stub')->once()->andReturn(false);
+        $files->shouldReceive('exists')->with($basePath.'/resources/views/generator/app/'.$defaultNamespace.'/Repository.stub')->once()->andReturn(false);
 
         $application = m::mock('Symfony\Component\Console\Application');
         $application->shouldReceive('getHelperSet')->andReturn(m::mock('Symfony\Component\Console\Helper\HelperSet'));
@@ -56,18 +56,18 @@ class RepositoryMakeCommandTest extends TestCase
             return str_replace("'", '"', (string) $input) === $name.' "generate:model"';
         }), m::any());
 
-        $filesystem->shouldReceive('exists')->once()->with($file);
-        $filesystem->shouldReceive('isDirectory')->once()->with($directory);
-        $filesystem->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
+        $files->shouldReceive('exists')->once()->with($file);
+        $files->shouldReceive('isDirectory')->once()->with($directory);
+        $files->shouldReceive('makeDirectory')->once()->with($directory, 0777, true, true);
         $generator->shouldReceive('setFullRepositoryClass')->once()->with($fullClass)->andReturnSelf();
         $generator->shouldReceive('setFullBaseClass')->once()->with($fullBaseClass)->andReturnSelf();
         $generator->shouldReceive('setFullModelClass')->once()->with($rootNamespace.$model)->andReturnSelf();
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
-        $filesystem->shouldReceive('put')->once()->with($file, $render);
+        $files->shouldReceive('put')->once()->with($file, $render);
 
-        $filesystem->shouldReceive('get')->once()->with($path.'/Providers/AppServiceProvider.php')->andReturn($content = 'foo');
+        $files->shouldReceive('get')->once()->with($path.'/Providers/AppServiceProvider.php')->andReturn($content = 'foo');
         $generator->shouldReceive('renderServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
-        $filesystem->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
+        $files->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
 
         $command->fire();
     }
