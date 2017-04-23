@@ -54,7 +54,7 @@ class FooBarController extends Controller
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('admin::foo-bars.index', compact('fooBars'));
+        return response()->view('admin::foo-bars.index', compact('fooBars'));
     }
 
     /**
@@ -66,21 +66,22 @@ class FooBarController extends Controller
     {
         $fooBar = $this->fooBars->newInstance([]);
 
-        return view('admin::foo-bars.create', compact('fooBar'));
+        return response()->view('admin::foo-bars.create', compact('fooBar'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\FooBarRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(FooBarRequest $request)
     {
         $attributes = $request->all();
         $fooBar = $this->fooBars->create($attributes);
 
-        return redirect(route('admin.foo-bars.index', $request->query()))
+        return response()
+            ->redirectToRoute('admin.foo-bars.index', $request->query())
             ->with('success', $fooBar->name.' saved successfully.');
     }
 
@@ -106,11 +107,12 @@ class FooBarController extends Controller
         $fooBar = $this->fooBars->find($id);
 
         if (is_null($fooBar) === true) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'not found');
         }
 
-        return view('admin::foo-bars.edit', compact('fooBar'));
+        return response()->view('admin::foo-bars.edit', compact('fooBar'));
     }
 
     /**
@@ -118,14 +120,15 @@ class FooBarController extends Controller
      *
      * @param \App\Http\Requests\FooBarRequest $request
      * @param string $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(FooBarRequest $request, $id)
     {
         $attributes = $request->all();
         $fooBar = $this->fooBars->update($attributes, $id);
 
-        return redirect(route('admin.foo-bars.index', $request->query()))
+        return response()
+            ->redirectToRoute('admin.foo-bars.index', $request->query())
             ->with('success', $fooBar->name.' updated successfully.');
     }
 
@@ -134,20 +137,22 @@ class FooBarController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param string $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, $id)
     {
         $fooBar = $this->fooBars->find($id);
 
         if (is_null($fooBar) === true) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'not found');
         }
 
         $this->fooBars->delete($id);
 
-        return redirect(route('admin.foo-bars.index', $request->query()))
+        return response()
+            ->redirectToRoute('admin.foo-bars.index', $request->query())
             ->with('success', $fooBar->name.' deleted successfully.');
     }
 }

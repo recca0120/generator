@@ -55,7 +55,7 @@ class DummyClass extends DummyBaseClass
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('dummyView.index', compact('dummyCollection'));
+        return response()->view('dummyView.index', compact('dummyCollection'));
     }
 
     /**
@@ -67,21 +67,22 @@ class DummyClass extends DummyBaseClass
     {
         $dummyModel = $this->dummyRepository->newInstance([]);
 
-        return view('dummyView.create', compact('dummyModel'));
+        return response()->view('dummyView.create', compact('dummyModel'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \DummyFullRequestClass $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DummyRequestClass $request)
     {
         $attributes = $request->all();
         $dummyModel = $this->dummyRepository->create($attributes);
 
-        return redirect(route('dummyRoute.index', $request->query()))
+        return response()
+            ->redirectToRoute('dummyRoute.index', $request->query())
             ->with('success', $dummyModel->name.' saved successfully.');
     }
 
@@ -107,11 +108,12 @@ class DummyClass extends DummyBaseClass
         $dummyModel = $this->dummyRepository->find($id);
 
         if (is_null($dummyModel) === true) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'not found');
         }
 
-        return view('dummyView.edit', compact('dummyModel'));
+        return response()->view('dummyView.edit', compact('dummyModel'));
     }
 
     /**
@@ -119,14 +121,15 @@ class DummyClass extends DummyBaseClass
      *
      * @param \DummyFullRequestClass $request
      * @param string $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(DummyRequestClass $request, $id)
     {
         $attributes = $request->all();
         $dummyModel = $this->dummyRepository->update($attributes, $id);
 
-        return redirect(route('dummyRoute.index', $request->query()))
+        return response()
+            ->redirectToRoute('dummyRoute.index', $request->query())
             ->with('success', $dummyModel->name.' updated successfully.');
     }
 
@@ -135,20 +138,22 @@ class DummyClass extends DummyBaseClass
      *
      * @param \Illuminate\Http\Request $request
      * @param string $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, $id)
     {
         $dummyModel = $this->dummyRepository->find($id);
 
         if (is_null($dummyModel) === true) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'not found');
         }
 
         $this->dummyRepository->delete($id);
 
-        return redirect(route('dummyRoute.index', $request->query()))
+        return response()
+            ->redirectToRoute('dummyRoute.index', $request->query())
             ->with('success', $dummyModel->name.' deleted successfully.');
     }
 }

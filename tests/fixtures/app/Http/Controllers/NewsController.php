@@ -54,7 +54,7 @@ class NewsController extends Controller
             ->paginate($criteria)
             ->appends($request->all());
 
-        return view('news.index', compact('newsCollection'));
+        return response()->view('news.index', compact('newsCollection'));
     }
 
     /**
@@ -66,21 +66,22 @@ class NewsController extends Controller
     {
         $news = $this->news->newInstance([]);
 
-        return view('news.create', compact('news'));
+        return response()->view('news.create', compact('news'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\NewsRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(NewsRequest $request)
     {
         $attributes = $request->all();
         $news = $this->news->create($attributes);
 
-        return redirect(route('news.index', $request->query()))
+        return response()
+            ->redirectToRoute('news.index', $request->query())
             ->with('success', $news->name.' saved successfully.');
     }
 
@@ -106,11 +107,12 @@ class NewsController extends Controller
         $news = $this->news->find($id);
 
         if (is_null($news) === true) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'not found');
         }
 
-        return view('news.edit', compact('news'));
+        return response()->view('news.edit', compact('news'));
     }
 
     /**
@@ -118,14 +120,15 @@ class NewsController extends Controller
      *
      * @param \App\Http\Requests\NewsRequest $request
      * @param string $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(NewsRequest $request, $id)
     {
         $attributes = $request->all();
         $news = $this->news->update($attributes, $id);
 
-        return redirect(route('news.index', $request->query()))
+        return response()
+            ->redirectToRoute('news.index', $request->query())
             ->with('success', $news->name.' updated successfully.');
     }
 
@@ -134,20 +137,22 @@ class NewsController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param string $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, $id)
     {
         $news = $this->news->find($id);
 
         if (is_null($news) === true) {
-            return redirect()->back()
+            return redirect()
+                ->back()
                 ->with('error', 'not found');
         }
 
         $this->news->delete($id);
 
-        return redirect(route('news.index', $request->query()))
+        return response()
+            ->redirectToRoute('news.index', $request->query())
             ->with('success', $news->name.' deleted successfully.');
     }
 }
