@@ -1,7 +1,7 @@
 @component('admin::layouts.master', ['title' => 'dummyTitle'])
 
     {{ Form::open([
-        'method' =>'PUT',
+        'method' => 'PUT',
         'route' => ['dummyRoute.update', $dummyModel->id],
         'class' => 'form-horizontal form-label-left',
         'data-parsley-validate' => 'data-parsley-validate',

@@ -1,7 +1,7 @@
 @component('admin::layouts.master', ['title' => 'Foo Bars'])
 
     {{ Form::open([
-        'method' =>'PUT',
+        'method' => 'PUT',
         'route' => ['admin.foo-bars.update', $fooBar->id],
         'class' => 'form-horizontal form-label-left',
         'data-parsley-validate' => 'data-parsley-validate',
