@@ -1,6 +1,6 @@
 @component('admin::layouts.master', ['title' => 'dummyTitle'])
 
-    {{ Form::open([
+    {{ Form::model($dummyModel, [
         'method' => 'PUT',
         'route' => ['dummyRoute.update', $dummyModel->id],
         'class' => 'form-horizontal form-label-left',

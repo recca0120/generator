@@ -1,6 +1,6 @@
 @component('admin::layouts.master', ['title' => 'Foo Bars'])
 
-    {{ Form::open([
+    {{ Form::model($fooBar, [
         'method' => 'POST',
         'route' => ['admin.foo-bars.store'],
         'class' => 'form-horizontal form-label-left',
