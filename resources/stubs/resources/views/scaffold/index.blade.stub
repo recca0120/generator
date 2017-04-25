@@ -1,5 +1,7 @@
 @component('admin::layouts.master', ['title' => 'dummyTitle'])
+
     @component('admin::components.panel', ['title' => 'dummyTitle'])
+
         <a href="{{ route('dummyRoute.create') }}" class="btn btn-success">
             <i class="fa fa-plus"></i>
             Add
@@ -29,8 +31,11 @@
                 @endforeach
             </tbody>
         </table>
+
         @if ($dummyCollection->hasPages() === true)
             {{ $dummyCollection->render() }}
         @endif
+
     @endcomponent
+
 @endcomponent

@@ -1,12 +1,14 @@
 @component('admin::layouts.master', ['title' => 'dummyTitle'])
-    @component('admin::components.panel', ['title' => 'dummyTitle'])
-        {{ Form::open([
-            'method' => 'POST',
-            'route' => ['dummyRoute.store'],
-            'class' => 'form-horizontal form-label-left',
-            'data-parsley-validate' => 'data-parsley-validate',
-            'files' => true,
-        ]) }}
+
+    {{ Form::open([
+        'method' => 'POST',
+        'route' => ['dummyRoute.store'],
+        'class' => 'form-horizontal form-label-left',
+        'data-parsley-validate' => 'data-parsley-validate',
+        'files' => true,
+    ]) }}
+
+        @component('admin::components.panel', ['title' => 'dummyTitle'])
 
             @include('dummyView._form', ['dummyModel' => $dummyModel])
 
@@ -15,6 +17,9 @@
                 {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
                 <a href="{{ route('dummyRoute.index', request()->all()) }}" class="btn btn-default">Cancel</a>
             </div>
-        {{ Form::close() }}
-    @endcomponent
+
+        @endcomponent
+
+    {{ Form::close() }}
+
 @endcomponent

@@ -1,5 +1,7 @@
 @component('admin::layouts.master', ['title' => 'Foo Bars'])
+
     @component('admin::components.panel', ['title' => 'Foo Bars'])
+
         <a href="{{ route('admin.foo-bars.create') }}" class="btn btn-success">
             <i class="fa fa-plus"></i>
             Add
@@ -29,8 +31,11 @@
                 @endforeach
             </tbody>
         </table>
+
         @if ($fooBars->hasPages() === true)
             {{ $fooBars->render() }}
         @endif
+
     @endcomponent
+
 @endcomponent
