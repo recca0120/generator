@@ -2,7 +2,7 @@
 
     @component('admin::components.panel', ['title' => 'Foo Bars'])
 
-        <a href="{{ route('admin.foo-bars.create') }}" class="btn btn-success">
+        <a href="{{ route('admin.foo-bars.create', request()->query()) }}" class="btn btn-success">
             <i class="fa fa-plus"></i>
             Add
         </a>
@@ -19,11 +19,11 @@
                     <tr>
                         <td>{{ $fooBar->id }}</td>
                         <td>
-                            <a href="{{ route('admin.foo-bars.edit', [$fooBar->id]) }}" class="btn btn-info btn-xs">
+                            <a href="{{ route('admin.foo-bars.edit', array_merge([$fooBar->id], request()->query())) }}" class="btn btn-info btn-xs">
                                 <i class="fa fa-pencil"></i>
                                 Edit
                             </a>
-                            <a href="{{ route('admin.foo-bars.destroy', [$fooBar->id]) }}" class="btn btn-danger btn-xs" data-method="DELETE">
+                            <a href="{{ route('admin.foo-bars.destroy', array_merge([$fooBar->id], request()->query())) }}" class="btn btn-danger btn-xs" data-method="DELETE">
                                 <i class="fa fa-trash-o"></i>
                                 Delete
                             </a>
