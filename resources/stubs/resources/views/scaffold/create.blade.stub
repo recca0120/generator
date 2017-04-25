@@ -13,6 +13,7 @@
             @include('dummyView._form', ['dummyModel' => $dummyModel])
 
             <div class="ln_solid"></div>
+
             <div class="form-group">
                 {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
                 <a href="{{ route('dummyRoute.index', request()->query()) }}" class="btn btn-default">Cancel</a>

@@ -13,6 +13,7 @@
             @include('admin::foo-bars._form', ['fooBar' => $fooBar])
 
             <div class="ln_solid"></div>
+
             <div class="form-group">
                 {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
                 <a href="{{ route('admin.foo-bars.index', request()->query()) }}" class="btn btn-default">Cancel</a>
