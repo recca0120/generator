@@ -11,6 +11,7 @@ class RepositoryMakeCommandTest extends TestCase
 {
     protected function tearDown()
     {
+        parent::tearDown();
         m::close();
     }
 
@@ -69,7 +70,7 @@ class RepositoryMakeCommandTest extends TestCase
         $generator->shouldReceive('renderServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
         $files->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
 
-        $command->fire();
+        $this->assertNull($command->fire());
     }
 
     protected function mockProperty($object, $propertyName, $value)

@@ -12,6 +12,7 @@ class ViewMakeCommandTest extends TestCase
 {
     protected function tearDown()
     {
+        parent::tearDown();
         m::close();
     }
 
@@ -57,7 +58,7 @@ class ViewMakeCommandTest extends TestCase
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $files->shouldReceive('put')->once()->with($file, $render);
 
-        $command->fire();
+        $this->assertNull($command->fire());
     }
 
     protected function mockProperty($object, $propertyName, $value)
