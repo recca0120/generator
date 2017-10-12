@@ -16,7 +16,7 @@ class ViewMakeCommandTest extends TestCase
         m::close();
     }
 
-    public function testFire()
+    public function testHandle()
     {
         $command = new ViewMakeCommand(
             $files = m::mock('Illuminate\Filesystem\Filesystem'),
@@ -58,7 +58,7 @@ class ViewMakeCommandTest extends TestCase
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $files->shouldReceive('put')->once()->with($file, $render);
 
-        $this->assertNull($command->fire());
+        $this->assertNull($command->handle());
     }
 
     protected function mockProperty($object, $propertyName, $value)

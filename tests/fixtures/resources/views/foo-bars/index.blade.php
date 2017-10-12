@@ -1,13 +1,25 @@
-@component('admin::layouts.master', ['title' => 'Foo Bars'])
+@component('admin::components.layouts.master')
 
-    @component('admin::components.panel', ['title' => 'Foo Bars'])
+    @slot('contentHeader')
+        @component('admin::components.content-header')
+            @slot('title')
+                Foo Bars
+            @endslot
+        @endcomponent
+    @endslot
 
-        <a href="{{ route('admin.foo-bars.create', request()->query()) }}" class="btn btn-success">
-            <i class="fa fa-plus"></i>
-            Add
-        </a>
+    @component('admin::components.box', ['tableResponsive' => true, 'noPadding' => true])
+        @slot('title')
+            Foo Bars
+        @endslot
 
-        <table class="table table-striped jambo_table bulk_action">
+        <div class="btn-toolbar pad">
+            <a href="{{ route('admin.foo-bars.create') }}" class="btn btn-success btn-sm" data-tooltip="Add">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+
+        <table class="table table-hover bulk_action">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -23,7 +35,7 @@
                                 <i class="fa fa-pencil"></i>
                                 Edit
                             </a>
-                            <a href="{{ route('admin.foo-bars.destroy', array_merge([$fooBar->id], request()->query())) }}" class="btn btn-danger btn-xs" data-method="DELETE">
+                            <a href="{{ route('admin.foo-bars.destroy', array_merge([$fooBar->id], request()->query())) }}" class="btn btn-danger btn-xs" data-method="delete" data-confirm="delete ?">
                                 <i class="fa fa-trash-o"></i>
                                 Delete
                             </a>
@@ -33,9 +45,9 @@
             </tbody>
         </table>
 
-        @if ($fooBars->hasPages() === true)
-            {{ $fooBars->render() }}
-        @endif
+        @slot('footer')
+            {{ $fooBars->render('admin::vendor.pagination.admin-lte') }}
+        @endslot
 
     @endcomponent
 

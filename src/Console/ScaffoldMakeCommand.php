@@ -27,7 +27,7 @@ class ScaffoldMakeCommand extends Command
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         $name = $this->argument('name');
 

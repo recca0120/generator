@@ -1,4 +1,4 @@
-<div class="item form-group">
+<div class="form-group">
     <label for="id" class="control-label">
         Id
         <span class="required">*</span>

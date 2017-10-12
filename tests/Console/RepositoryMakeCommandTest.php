@@ -15,7 +15,7 @@ class RepositoryMakeCommandTest extends TestCase
         m::close();
     }
 
-    public function testFire()
+    public function testHandle()
     {
         $command = new RepositoryMakeCommand(
             $files = m::mock('Illuminate\Filesystem\Filesystem'),
@@ -70,7 +70,7 @@ class RepositoryMakeCommandTest extends TestCase
         $generator->shouldReceive('renderServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
         $files->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
 
-        $this->assertNull($command->fire());
+        $this->assertNull($command->handle());
     }
 
     protected function mockProperty($object, $propertyName, $value)
