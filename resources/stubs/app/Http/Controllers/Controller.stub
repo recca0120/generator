@@ -126,7 +126,7 @@ class DummyClass extends DummyBaseClass
     public function update(DummyRequestClass $request, $id)
     {
         $attributes = $request->all();
-        $dummyModel = $this->dummyRepository->update($attributes, $id);
+        $dummyModel = $this->dummyRepository->update($id, $attributes);
 
         return response()
             ->redirectToRoute('dummyRoute.index', $request->query())

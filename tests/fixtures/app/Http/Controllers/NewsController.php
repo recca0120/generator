@@ -125,7 +125,7 @@ class NewsController extends Controller
     public function update(NewsRequest $request, $id)
     {
         $attributes = $request->all();
-        $news = $this->news->update($attributes, $id);
+        $news = $this->news->update($id, $attributes);
 
         return response()
             ->redirectToRoute('news.index', $request->query())

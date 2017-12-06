@@ -125,7 +125,7 @@ class FooBarController extends Controller
     public function update(FooBarRequest $request, $id)
     {
         $attributes = $request->all();
-        $fooBar = $this->fooBars->update($attributes, $id);
+        $fooBar = $this->fooBars->update($id, $attributes);
 
         return response()
             ->redirectToRoute('foo-bars.index', $request->query())
