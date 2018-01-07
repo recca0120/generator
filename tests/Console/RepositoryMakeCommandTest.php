@@ -70,7 +70,11 @@ class RepositoryMakeCommandTest extends TestCase
         $generator->shouldReceive('renderServiceProvider')->once()->with($content)->andReturn($registerContent = 'foo');
         $files->shouldReceive('put')->once()->with($path.'/Providers/AppServiceProvider.php', $registerContent);
 
-        $this->assertNull($command->handle());
+        if (method_exists($command, 'handle') === true) {
+            $this->assertNull($command->handle());
+        } else {
+            $this->assertNull($command->fire());
+        }
     }
 
     protected function mockProperty($object, $propertyName, $value)

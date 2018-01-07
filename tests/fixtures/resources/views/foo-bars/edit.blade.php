@@ -8,12 +8,9 @@
         @endcomponent
     @endslot
 
-    {{ Form::model($fooBar, [
-        'method' => 'PUT',
-        'route' => ['admin.foo-bars.update', $fooBar->id],
-        'data-parsley-validate' => 'data-parsley-validate',
-        'files' => true,
-    ]) }}
+    <form method="post" action="{{ route('admin.foo-bars.update', [$fooBar->id]) }}" enctype="multipart/form-data" data-parsley-validate>
+        {{ csrf_field() }}
+        {{ method_field('PUT') }}
 
         @component('admin::components.box')
             @slot('title')
@@ -23,11 +20,11 @@
             @include('admin::foo-bars._form', ['fooBar' => $fooBar])
 
             @slot('footer')
-                {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
+                <button type="submit" class="btn btn-success">Submit</button>
                 <a href="{{ route('admin.foo-bars.index', request()->query()) }}" class="btn btn-default">Cancel</a>
             @endslot
         @endcomponent
 
-    {{ Form::close() }}
+    </form>
 
 @endcomponent

@@ -3,8 +3,5 @@
         Id
         <span class="required">*</span>
     </label>
-    {{ Form::text('id', null, [
-        'class' => 'form-control',
-        'required' => 'required',
-    ]) }}
+    <input type="text" name="id" value="{{ $fooBar->id }}" class="form-control" required />
 </div>

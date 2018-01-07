@@ -46,7 +46,11 @@ class RepositoryContractMakeCommandTest extends TestCase
         $generator->shouldReceive('render')->once()->with(m::on('is_file'))->andReturn($render = 'foo');
         $files->shouldReceive('put')->once()->with($file, $render);
 
-        $this->assertNull($command->handle());
+        if (method_exists($command, 'handle') === true) {
+            $this->assertNull($command->handle());
+        } else {
+            $this->assertNull($command->fire());
+        }
     }
 
     protected function mockProperty($object, $propertyName, $value)
