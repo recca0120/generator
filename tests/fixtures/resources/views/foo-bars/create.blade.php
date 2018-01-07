@@ -8,12 +8,8 @@
         @endcomponent
     @endslot
 
-    {{ Form::model($fooBar, [
-        'method' => 'POST',
-        'route' => ['admin.foo-bars.store'],
-        'data-parsley-validate' => 'data-parsley-validate',
-        'files' => true,
-    ]) }}
+    <form method="post" action="{{ route('admin.foo-bars.store') }}" enctype="multipart/form-data" data-parsley-validate>
+        {{ csrf_field() }}
 
         @component('admin::components.box')
             @slot('title')
@@ -23,11 +19,11 @@
             @include('admin::foo-bars._form', ['fooBar' => $fooBar])
 
             @slot('footer')
-                {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
+                <button type="submit" class="btn btn-success">Submit</button>
                 <a href="{{ route('admin.foo-bars.index', request()->query()) }}" class="btn btn-default">Cancel</a>
             @endslot
         @endcomponent
 
-    {{ Form::close() }}
+    </form>
 
 @endcomponent
