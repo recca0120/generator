@@ -1,0 +1,15 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyExtends;
+
+class DummyClass extends DummyBaseExtends
+{
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [];
+}

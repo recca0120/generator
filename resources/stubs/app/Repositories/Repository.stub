@@ -1,0 +1,20 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyExtends;
+use App\DummyName;
+use DummyNamespace\Contracts\DummyClass as DummyClassContract;
+
+class DummyClass extends DummyBaseExtends implements DummyClassContract
+{
+    /**
+     * Create a new repository instance.
+     *
+     * @param \App\DummyName $dummyName
+     */
+    public function __construct(DummyName $dummyName)
+    {
+        $this->model = $dummyName;
+    }
+}
