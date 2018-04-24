@@ -15,6 +15,8 @@ class Generator
 
     private $name = '';
 
+    private $command = '';
+
     private $attributes = [];
 
     public function __construct($config, $files = null, UseSortFixer $useSortFixer = null)
@@ -32,9 +34,15 @@ class Generator
         return $this;
     }
 
-    public function render($command)
+    public function setCommand($command) {
+        $this->command = $command;
+
+        return $this;
+    }
+
+    public function render()
     {
-        $config = Arr::get($this->config, 'commands.'.$command);
+        $config = Arr::get($this->config, 'commands.'.$this->command);
         $className = $this->name.Arr::get($config, 'suffix', '');
 
         $dependencies = $this->renderDependencies(Arr::get($config, 'dependencies', []));
@@ -44,21 +52,29 @@ class Generator
             'class' => $className,
         ]), $dependencies);
 
-        return new Response(
-            $this->format(strtr($this->files->get($config['stub']), $this->toDummy($attributes)), Arr::get($config, 'sort', true)),
-            $attributes
+        return new Code(
+            $this->format(
+                strtr($this->files->get($config['stub']), $this->toDummy($attributes)),
+                Arr::get($config, 'sort', true)
+            ),
+            $attributes,
+            $dependencies,
+            $config
         );
     }
 
     private function renderDependencies($dependencies)
     {
-        $responses = [];
+        $codes = [];
         foreach ($dependencies as $dependency) {
             $generator = new static($this->config);
-            $responses[$dependency] = $generator->setName($this->name)->render($dependency);
+            $codes[$dependency] = $generator
+                ->setName($this->name)
+                ->setCommand($dependency)
+                ->render();
         }
 
-        return $responses;
+        return $codes;
     }
 
     private function toDummy($attributes)

@@ -4,16 +4,21 @@ namespace Recca0120\Generator;
 
 use Illuminate\Support\Str;
 
-class Response
+class Code
 {
     private $content;
 
     private $attributes = [];
 
-    public function __construct($content, $attributes = [])
+    private $dependencies = [];
+
+    private $config = [];
+
+    public function __construct($content, $attributes = [], $dependencies = [], $config = [])
     {
         $this->content = $content;
         $this->attributes = $attributes;
+        $this->config = $config;
     }
 
     public function __toString()
@@ -29,6 +34,10 @@ class Response
                 $attributes[Str::studly($prefix.'_'.$key)] = $value;
             }
 
+            if (empty($this->attributes['namespace']) === false) {
+                $attributes[Str::studly($prefix.'_name')] = $this->attributes['namespace'] . '\\' . $this->attributes['name'];
+            }
+
             return $attributes;
         }
 
@@ -39,4 +48,6 @@ class Response
     {
         return $this->content;
     }
+
+    public function store() {}
 }

@@ -59,10 +59,10 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'model';
-        $response = $generator->setName($name)->render($command);
+        $code = $generator->setCommand($command)->setName($name)->render();
 
         $this->assertSame(
-            $this->lineEncoding((string) $response),
+            $this->lineEncoding((string) $code),
             $this->getFixture('app/FooBar.php')
         );
     }
@@ -73,10 +73,10 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'repository-contract';
-        $response = $generator->setName($name)->render($command);
+        $code = $generator->setCommand($command)->setName($name)->render();
 
         $this->assertSame(
-            $this->lineEncoding((string) $response),
+            $this->lineEncoding((string) $code),
             $this->getFixture('app/Repositories/Contracts/FooBarRepository.php')
         );
     }
@@ -87,12 +87,14 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'repository';
-        $response = $generator->setName($name)->render($command);
+        $code = $generator->setCommand($command)->setName($name)->render();
 
         $this->assertSame(
-            $this->lineEncoding((string) $response),
+            $this->lineEncoding((string) $code),
             $this->getFixture('app/Repositories/FooBarRepository.php')
         );
+
+        var_dump($code);
     }
 
     private function getFixture($path)
