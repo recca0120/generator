@@ -3,18 +3,18 @@
 namespace DummyNamespace;
 
 use DummyExtends;
-use App\DummyName;
-use DummyNamespace\Contracts\DummyClass as DummyClassContract;
+use DummyModelNamespace\DummyModelClass;
+use DummyRepositoryContractNamespace\DummyRepositoryContractClass as DummyClassContract;
 
 class DummyClass extends DummyBaseExtends implements DummyClassContract
 {
     /**
      * Create a new repository instance.
      *
-     * @param \App\DummyName $dummyName
+     * @param \DummyModelNamespace\DummyModelClass $dummyModelClass
      */
-    public function __construct(DummyName $dummyName)
+    public function __construct(DummyModelClass $dummyModelClass)
     {
-        $this->model = $dummyName;
+        $this->model = $dummyModelClass;
     }
 }

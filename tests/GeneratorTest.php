@@ -38,6 +38,10 @@ class GeneratorTest extends TestCase
                         'namespace' => 'App\Repositories',
                         'extends' => 'Recca0120\Repository\EloquentRepository',
                     ],
+                    'dependencies' => [
+                        'model',
+                        'repository-contract',
+                    ],
                 ],
             ],
         ];
@@ -53,8 +57,12 @@ class GeneratorTest extends TestCase
     public function it_should_generate_model()
     {
         $generator = new Generator($this->config);
+        $name = 'FooBar';
+        $command = 'model';
+        $response = $generator->setName($name)->render($command);
+
         $this->assertSame(
-            $this->lineEncoding($generator->setName('FooBar')->render('model')),
+            $this->lineEncoding((string) $response),
             $this->getFixture('app/FooBar.php')
         );
     }
@@ -63,8 +71,12 @@ class GeneratorTest extends TestCase
     public function it_should_generate_repository_contract()
     {
         $generator = new Generator($this->config);
+        $name = 'FooBar';
+        $command = 'repository-contract';
+        $response = $generator->setName($name)->render($command);
+
         $this->assertSame(
-            $this->lineEncoding($generator->setName('FooBar')->render('repository-contract')),
+            $this->lineEncoding((string) $response),
             $this->getFixture('app/Repositories/Contracts/FooBarRepository.php')
         );
     }
@@ -73,8 +85,12 @@ class GeneratorTest extends TestCase
     public function it_should_generate_repository()
     {
         $generator = new Generator($this->config);
+        $name = 'FooBar';
+        $command = 'repository';
+        $response = $generator->setName($name)->render($command);
+
         $this->assertSame(
-            $this->lineEncoding($generator->setName('FooBar')->render('repository')),
+            $this->lineEncoding((string) $response),
             $this->getFixture('app/Repositories/FooBarRepository.php')
         );
     }

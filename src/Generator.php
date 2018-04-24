@@ -15,6 +15,8 @@ class Generator
 
     private $name = '';
 
+    private $attributes = [];
+
     public function __construct($config, $files = null, UseSortFixer $useSortFixer = null)
     {
         $this->config = $config;
@@ -34,25 +36,34 @@ class Generator
     {
         $config = Arr::get($this->config, 'commands.'.$command);
         $className = $this->name.Arr::get($config, 'suffix', '');
-        $attributes = Arr::get($config, 'attributes', []);
-        $useSort = Arr::get($config, 'sort', true);
 
-        return $this->format(
-            strtr($this->files->get($config['stub']), $this->toDummy(array_merge($attributes, [
-                'name' => $this->name,
-                'class' => $className,
-            ]))),
-            $useSort
+        $dependencies = $this->renderDependencies(Arr::get($config, 'dependencies', []));
+
+        $attributes = $this->mergeAttributes(array_merge(Arr::get($config, 'attributes', []), [
+            'name' => $this->name,
+            'class' => $className,
+        ]), $dependencies);
+
+        return new Response(
+            $this->format(strtr($this->files->get($config['stub']), $this->toDummy($attributes)), Arr::get($config, 'sort', true)),
+            $attributes
         );
+    }
+
+    private function renderDependencies($dependencies)
+    {
+        $responses = [];
+        foreach ($dependencies as $dependency) {
+            $generator = new static($this->config);
+            $responses[$dependency] = $generator->setName($this->name)->render($dependency);
+        }
+
+        return $responses;
     }
 
     private function toDummy($attributes)
     {
         $dummy = [];
-
-        if (empty($attributes['extends']) === false) {
-            $attributes['base_extends'] = basename($attributes['extends']);
-        }
 
         foreach ($attributes as $key => $value) {
             $dummy['Dummy'.Str::studly($key)] = $value;
@@ -60,6 +71,19 @@ class Generator
         }
 
         return $dummy;
+    }
+
+    private function mergeAttributes($attributes, $dependencies)
+    {
+        if (empty($attributes['extends']) === false) {
+            $attributes['base_extends'] = basename($attributes['extends']);
+        }
+
+        foreach ($dependencies as $name => $dependency) {
+            $attributes = array_merge($attributes, $dependency->getAttributes($name));
+        }
+
+        return $attributes;
     }
 
     private function format($content, $useSort = false)

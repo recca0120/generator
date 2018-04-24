@@ -27,6 +27,10 @@ return [
                 'namespace' => 'App\Repositories',
                 'extends' => 'Recca0120\Repository\EloquentRepository',
             ],
+            'dependencies' => [
+                'model',
+                'repository-contract'
+            ]
         ],
     ],
 ];
