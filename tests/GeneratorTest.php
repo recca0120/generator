@@ -12,36 +12,34 @@ class GeneratorTest extends TestCase
     {
         parent::setUp();
         $this->config = [
-            'commands' => [
-                'model' => [
-                    'path' => base_path('app'),
-                    'stub' => resource_path('stubs/app/Model.stub'),
-                    'attributes' => [
-                        'namespace' => 'App',
-                        'extends' => 'Illuminate\Database\Eloquent\Model',
-                    ],
+            'model' => [
+                'path' => base_path('app'),
+                'stub' => resource_path('stubs/app/Model.stub'),
+                'attributes' => [
+                    'namespace' => 'App',
+                    'extends' => 'Illuminate\Database\Eloquent\Model',
                 ],
-                'repository-contract' => [
-                    'path' => base_path('app/Repositories/Contracts'),
-                    'stub' => resource_path('stubs/app/Repositories/Contracts/Repository.stub'),
-                    'suffix' => 'Repository',
-                    'sort' => false,
-                    'attributes' => [
-                        'namespace' => 'App\Repositories\Contracts',
-                    ],
+            ],
+            'repository-contract' => [
+                'path' => base_path('app/Repositories/Contracts'),
+                'stub' => resource_path('stubs/app/Repositories/Contracts/Repository.stub'),
+                'suffix' => 'Repository',
+                'sort' => false,
+                'attributes' => [
+                    'namespace' => 'App\Repositories\Contracts',
                 ],
-                'repository' => [
-                    'path' => base_path('app/Repositories/Contracts'),
-                    'stub' => resource_path('stubs/app/Repositories/Repository.stub'),
-                    'suffix' => 'Repository',
-                    'attributes' => [
-                        'namespace' => 'App\Repositories',
-                        'extends' => 'Recca0120\Repository\EloquentRepository',
-                    ],
-                    'dependencies' => [
-                        'model',
-                        'repository-contract',
-                    ],
+            ],
+            'repository' => [
+                'path' => base_path('app/Repositories/Contracts'),
+                'stub' => resource_path('stubs/app/Repositories/Repository.stub'),
+                'suffix' => 'Repository',
+                'attributes' => [
+                    'namespace' => 'App\Repositories',
+                    'extends' => 'Recca0120\Repository\EloquentRepository',
+                ],
+                'dependencies' => [
+                    'model',
+                    'repository-contract',
                 ],
             ],
         ];
@@ -59,7 +57,7 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'model';
-        $code = $generator->setCommand($command)->setName($name)->render();
+        $code = $generator->setName($name)->render($command);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),
@@ -73,7 +71,7 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'repository-contract';
-        $code = $generator->setCommand($command)->setName($name)->render();
+        $code = $generator->setName($name)->render($command);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),
@@ -87,14 +85,14 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'repository';
-        $code = $generator->setCommand($command)->setName($name)->render();
+        $code = $generator->setName($name)->render($command);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),
             $this->getFixture('app/Repositories/FooBarRepository.php')
         );
 
-        var_dump($code);
+        $code->store();
     }
 
     private function getFixture($path)

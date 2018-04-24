@@ -54,7 +54,7 @@ if (function_exists('env') === false) {
 if (function_exists('base_path') === false) {
     function base_path($path)
     {
-        return realpath(__DIR__.'/../'.$path);
+        return realpath(__DIR__.'/fixtures/'.$path);
     }
 }
 

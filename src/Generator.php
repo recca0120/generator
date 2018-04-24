@@ -34,15 +34,9 @@ class Generator
         return $this;
     }
 
-    public function setCommand($command) {
-        $this->command = $command;
-
-        return $this;
-    }
-
-    public function render()
+    public function render($command)
     {
-        $config = Arr::get($this->config, 'commands.'.$this->command);
+        $config = Arr::get($this->config, $command);
         $className = $this->name.Arr::get($config, 'suffix', '');
 
         $dependencies = $this->renderDependencies(Arr::get($config, 'dependencies', []));
@@ -54,12 +48,12 @@ class Generator
 
         return new Code(
             $this->format(
-                strtr($this->files->get($config['stub']), $this->toDummy($attributes)),
+                $this->renderStub($config['stub'], $attributes),
                 Arr::get($config, 'sort', true)
             ),
             $attributes,
-            $dependencies,
-            $config
+            $config['path'].'/'.$className.'.php',
+            $dependencies
         );
     }
 
@@ -70,11 +64,15 @@ class Generator
             $generator = new static($this->config);
             $codes[$dependency] = $generator
                 ->setName($this->name)
-                ->setCommand($dependency)
-                ->render();
+                ->render($dependency);
         }
 
         return $codes;
+    }
+
+    private function renderStub($stub, $attributes)
+    {
+        return strtr($this->files->get($config['stub']), $this->toDummy($attributes));
     }
 
     private function toDummy($attributes)

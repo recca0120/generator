@@ -3,22 +3,26 @@
 namespace Recca0120\Generator;
 
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 
 class Code
 {
+    public $storePath = '';
     private $content;
 
     private $attributes = [];
 
     private $dependencies = [];
 
-    private $config = [];
+    private $files;
 
-    public function __construct($content, $attributes = [], $dependencies = [], $config = [])
+    public function __construct($content, $attributes = [], $storePath = '', $dependencies = [], $files = null)
     {
         $this->content = $content;
         $this->attributes = $attributes;
-        $this->config = $config;
+        $this->dependencies = $dependencies;
+        $this->storePath = $storePath;
+        $this->files = $files ?: new Filesystem;
     }
 
     public function __toString()
@@ -35,7 +39,7 @@ class Code
             }
 
             if (empty($this->attributes['namespace']) === false) {
-                $attributes[Str::studly($prefix.'_name')] = $this->attributes['namespace'] . '\\' . $this->attributes['name'];
+                $attributes[Str::studly($prefix.'_name')] = $this->attributes['namespace'].'\\'.$this->attributes['name'];
             }
 
             return $attributes;
@@ -49,5 +53,12 @@ class Code
         return $this->content;
     }
 
-    public function store() {}
+    public function store()
+    {
+        foreach ($this->dependencies as $dependency) {
+            $this->files->put($dependency->storePath, $dependency->content());
+        }
+
+        $this->files->put($this->storePath, $this->content());
+    }
 }
