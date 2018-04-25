@@ -60,7 +60,7 @@ class GeneratorTest extends TestCase
         $code = $generator->generate($command, $name);
 
         $this->assertSame(
-            $this->lineEncoding((string) $code),
+            $this->lineEncoding($code->render()),
             $this->getFixture('app/FooBar.php')
         );
     }
@@ -74,7 +74,7 @@ class GeneratorTest extends TestCase
         $code = $generator->generate($command, $name);
 
         $this->assertSame(
-            $this->lineEncoding((string) $code),
+            $this->lineEncoding($code->render()),
             $this->getFixture('app/Repositories/Contracts/FooBarRepository.php')
         );
     }
@@ -88,7 +88,7 @@ class GeneratorTest extends TestCase
         $code = $generator->generate($command, $name);
 
         $this->assertSame(
-            $this->lineEncoding((string) $code),
+            $this->lineEncoding($code->render()),
             $this->getFixture('app/Repositories/FooBarRepository.php')
         );
 
