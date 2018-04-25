@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use DummyExtends;
-use DummyModelName;
+use DummyModelQualifiedName;
 use DummyRepositoryContractNamespace\DummyRepositoryContractClass as DummyClassContract;
 
 class DummyClass extends DummyBaseExtends implements DummyClassContract
@@ -11,10 +11,10 @@ class DummyClass extends DummyBaseExtends implements DummyClassContract
     /**
      * Create a new repository instance.
      *
-     * @param \DummyModelName $dummyModelClass
+     * @param DummyModelFullyQualifiedName $dummyModelClass
      */
     public function __construct(DummyModelClass $dummyModelClass)
     {
-        $this->model = $dummyModelClass;
+        parent::__construct($dummyModelClass);
     }
 }

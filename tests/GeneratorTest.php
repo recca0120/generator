@@ -30,7 +30,7 @@ class GeneratorTest extends TestCase
                 ],
             ],
             'repository' => [
-                'path' => base_path('app/Repositories/Contracts'),
+                'path' => base_path('app/Repositories'),
                 'stub' => resource_path('stubs/app/Repositories/Repository.stub'),
                 'suffix' => 'Repository',
                 'attributes' => [
@@ -57,7 +57,7 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'model';
-        $code = $generator->setName($name)->render($command);
+        $code = $generator->generate($command, $name);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),
@@ -71,8 +71,7 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'repository-contract';
-        $code = $generator->setName($name)->render($command);
-        var_dump((string) $code);
+        $code = $generator->generate($command, $name);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),
@@ -86,7 +85,7 @@ class GeneratorTest extends TestCase
         $generator = new Generator($this->config);
         $name = 'FooBar';
         $command = 'repository';
-        $code = $generator->setName($name)->render($command);
+        $code = $generator->generate($command, $name);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),

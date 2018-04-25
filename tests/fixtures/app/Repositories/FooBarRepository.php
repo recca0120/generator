@@ -15,6 +15,6 @@ class FooBarRepository extends EloquentRepository implements FooBarRepositoryCon
      */
     public function __construct(FooBar $fooBar)
     {
-        $this->model = $fooBar;
+        parent::__construct($fooBar);
     }
 }
