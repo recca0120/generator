@@ -28,6 +28,7 @@ class Code
         $this->useSortFixer->setSortType(UseSortFixer::SORT_TYPE_LENGTH);
         $this->name = $name;
         $this->config = $config;
+        $this->dependencies = $dependencies;
 
         $this->className = $this->name.Arr::get($this->config, 'suffix', '');
         $this->attributes = $this->mergeAttributes($dependencies);
@@ -63,10 +64,16 @@ class Code
             $dependency->store();
         }
 
-        $path = Arr::get($this->config, 'path', '').'/'.$this->className.'.'.Arr::get($this->config, 'extension', 'php');
-        $code = $this->render();
+        $file = Arr::get($this->config, 'path', '').'/'.$this->className.'.'.Arr::get($this->config, 'extension', 'php');
+        $directory = dirname($file);
 
-        return $this->files->put($path, $code);
+        if ($this->files->isDirectory($directory) === false) {
+            $this->files->makeDirectory($directory, 0755, true);
+        }
+
+        return $this->files->exists($file) === false
+            ? $this->files->put($file, $this->render())
+            : false;
     }
 
     private function getDummyAttributes()

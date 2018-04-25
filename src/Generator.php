@@ -10,9 +10,15 @@ class Generator
 {
     private $config;
 
-    public function __construct($config)
+    private $fils;
+
+    private $useSortFixer;
+
+    public function __construct($config, Filesystem $files = null, UseSortFixer $useSortFixer = null)
     {
         $this->config = $config;
+        $this->files = $files ?: new Filesystem;
+        $this->useSortFixer = $useSortFixer ?: new UseSortFixer();
     }
 
     public function generate($command, $name)
@@ -22,7 +28,9 @@ class Generator
         return new Code(
             $name,
             $config,
-            $this->generateDependencies($name, Arr::get($config, 'dependencies', []))
+            $this->generateDependencies($name, Arr::get($config, 'dependencies', [])),
+            $this->files,
+            $this->useSortFixer
         );
     }
 
@@ -30,7 +38,14 @@ class Generator
     {
         $codes = [];
         foreach ($dependencies as $dependency) {
-            $codes[$dependency] = new Code($name, Arr::get($this->config, $dependency, []));
+            $dependencyConfig = Arr::get($this->config, $dependency, []);
+            $codes[$dependency] = new Code(
+                $name,
+                $dependencyConfig,
+                [],
+                $this->files,
+                $this->useSortFixer
+            );
         }
 
         return $codes;
