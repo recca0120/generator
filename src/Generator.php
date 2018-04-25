@@ -72,7 +72,7 @@ class Generator
 
     private function renderStub($stub, $attributes)
     {
-        return strtr($this->files->get($config['stub']), $this->toDummy($attributes));
+        return strtr($this->files->get($stub), $this->toDummy($attributes));
     }
 
     private function toDummy($attributes)

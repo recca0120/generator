@@ -1,20 +1,7 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Contracts;
 
-use App\FooBar;
-use Recca0120\Repository\EloquentRepository;
-use App\Repositories\Contracts\FooBarRepository as FooBarRepositoryContract;
-
-class FooBarRepository extends EloquentRepository implements FooBarRepositoryContract
+interface FooBarRepository
 {
-    /**
-     * Create a new repository instance.
-     *
-     * @param \App\FooBar $fooBar
-     */
-    public function __construct(FooBar $fooBar)
-    {
-        $this->model = $fooBar;
-    }
 }

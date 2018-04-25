@@ -72,6 +72,7 @@ class GeneratorTest extends TestCase
         $name = 'FooBar';
         $command = 'repository-contract';
         $code = $generator->setName($name)->render($command);
+        var_dump((string) $code);
 
         $this->assertSame(
             $this->lineEncoding((string) $code),
