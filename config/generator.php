@@ -13,7 +13,6 @@ return [
         'path' => app_path('Repositories/Contracts'),
         'stub' => resource_path('stubs/app/Repositories/Contracts/Repository.stub'),
         'suffix' => 'Repository',
-        'sort' => false,
         'attributes' => [
             'namespace' => 'App\Repositories\Contracts',
         ],

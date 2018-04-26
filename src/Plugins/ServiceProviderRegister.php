@@ -45,7 +45,7 @@ class ServiceProviderRegister extends Plugin
             );
         }
 
-        if ($class && strpos($content, sprintf('$this->app->singleton(%sContract::class, %s::class);', $class, $class)) === false) {
+        if ($class && strpos($content, $this->singletonString($class)) === false) {
             $content = preg_replace_callback(
                 '/protected function registerRepositories.+\n\s+{/',
                 [$this, 'replaceServieProviderCallback'],
@@ -53,7 +53,12 @@ class ServiceProviderRegister extends Plugin
             );
         }
 
-        $this->files->put($path, $this->useSortFixer->fix($content));
+        $fixedContent = $this->useSortFixer->fix($content);
+
+        $this->files->put(
+            $path,
+            $fixedContent ? $fixedContent : $content
+        );
     }
 
     /**
@@ -74,8 +79,11 @@ class ServiceProviderRegister extends Plugin
                 sprintf("use %s;\n", $qualifiedName);
         }
 
-        return $match[0]."\n".
-            str_repeat(' ', 8).
-            sprintf('$this->app->singleton(%sContract::class, %s::class);', $class, $class);
+        return $match[0]."\n".str_repeat(' ', 8).$this->singletonString($class);
+    }
+
+    private function singletonString($class)
+    {
+        return sprintf('$this->app->singleton(%sContract::class, %s::class);', $class, $class);
     }
 }

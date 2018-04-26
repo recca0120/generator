@@ -60,7 +60,7 @@ class Code
 
     public function render()
     {
-        return $this->format($this->renderStub(), Arr::get($this->config, 'sort', true));
+        return $this->format($this->renderStub());
     }
 
     public function store()
@@ -86,9 +86,11 @@ class Code
         return strtr($this->files->get($this->config['stub']), $this->getDummyAttributes());
     }
 
-    private function format($content, $useSort = false)
+    private function format($content)
     {
-        return $useSort === true ? $this->useSortFixer->fix($content) : $content;
+        $fixedContent = $this->useSortFixer->fix($content);
+
+        return $fixedContent ? $fixedContent : $content;
     }
 
     private function mergeAttributes($dependencies, $plugins)
