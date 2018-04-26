@@ -2,7 +2,7 @@
 
 return [
     'model' => [
-        'path' => base_path('app'),
+        'path' => app_path(''),
         'stub' => resource_path('stubs/app/Model.stub'),
         'attributes' => [
             'namespace' => 'App',
@@ -10,7 +10,7 @@ return [
         ],
     ],
     'repository-contract' => [
-        'path' => base_path('app/Repositories/Contracts'),
+        'path' => app_path('Repositories/Contracts'),
         'stub' => resource_path('stubs/app/Repositories/Contracts/Repository.stub'),
         'suffix' => 'Repository',
         'sort' => false,
@@ -19,16 +19,21 @@ return [
         ],
     ],
     'repository' => [
-        'path' => base_path('app/Repositories/Contracts'),
+        'path' => app_path('Repositories'),
         'stub' => resource_path('stubs/app/Repositories/Repository.stub'),
         'suffix' => 'Repository',
         'attributes' => [
             'namespace' => 'App\Repositories',
-            'extends' => 'Recca0120\Repository\EloquentRepository',
+            'extends' => \Recca0120\Repository\EloquentRepository::class,
         ],
         'dependencies' => [
             'model',
             'repository-contract',
+        ],
+        'plugins' => [
+            \Recca0120\Generator\Plugins\ServiceProviderRegister::class => [
+                'path' => app_path('Providers/AppServiceProvider.php'),
+            ],
         ],
     ],
 ];

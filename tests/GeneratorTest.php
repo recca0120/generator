@@ -15,10 +15,17 @@ class GeneratorTest extends TestCase
     {
         $this->root = vfsStream::setup();
 
+        mkdir($this->root->url().'/app');
+        mkdir($this->root->url().'/app/Providers');
+        file_put_contents(
+            $this->root->url().'/app/Providers/AppServiceProvider.php',
+            file_get_contents(__DIR__.'/fixtures/app/Providers/AppServiceProvider.php')
+        );
+
         parent::setUp();
         $this->config = [
             'model' => [
-                'path' => $this->base_path('app'),
+                'path' => $this->app_path(''),
                 'stub' => resource_path('stubs/app/Model.stub'),
                 'attributes' => [
                     'namespace' => 'App',
@@ -26,7 +33,7 @@ class GeneratorTest extends TestCase
                 ],
             ],
             'repository-contract' => [
-                'path' => $this->base_path('app/Repositories/Contracts'),
+                'path' => $this->app_path('Repositories/Contracts'),
                 'stub' => resource_path('stubs/app/Repositories/Contracts/Repository.stub'),
                 'suffix' => 'Repository',
                 'sort' => false,
@@ -35,16 +42,21 @@ class GeneratorTest extends TestCase
                 ],
             ],
             'repository' => [
-                'path' => $this->base_path('app/Repositories'),
+                'path' => $this->app_path('Repositories'),
                 'stub' => resource_path('stubs/app/Repositories/Repository.stub'),
                 'suffix' => 'Repository',
                 'attributes' => [
                     'namespace' => 'App\Repositories',
-                    'extends' => 'Recca0120\Repository\EloquentRepository',
+                    'extends' => \Recca0120\Repository\EloquentRepository::class,
                 ],
                 'dependencies' => [
                     'model',
                     'repository-contract',
+                ],
+                'plugins' => [
+                    \Recca0120\Generator\Plugins\ServiceProviderRegister::class => [
+                        'path' => $this->app_path('Providers/AppServiceProvider.php'),
+                    ],
                 ],
             ],
         ];
@@ -96,6 +108,11 @@ class GeneratorTest extends TestCase
             $this->lineEncoding($code->render()),
             $this->getFixture('app/Repositories/FooBarRepository.php')
         );
+
+        $this->assertSame(
+            $this->lineEncoding(file_get_contents($this->app_path('Providers/AppServiceProvider.php'))),
+            $this->getFixture('app/Providers/AppServiceProviderSnapshot.php')
+        );
     }
 
     /** @test */
@@ -138,8 +155,8 @@ class GeneratorTest extends TestCase
         return str_replace("\r\n", "\n", $content);
     }
 
-    private function base_path($path)
+    private function app_path($path)
     {
-        return $this->root->url().'/'.$path;
+        return $this->root->url().'/app/'.$path;
     }
 }

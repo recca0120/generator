@@ -21,6 +21,8 @@ class Code
 
     private $files;
 
+    private $useSortFixer;
+
     public function __construct($name, $config, $dependencies = [], Filesystem $files = null, UseSortFixer $useSortFixer = null)
     {
         $this->files = $files ?: new Filesystem;
@@ -31,7 +33,10 @@ class Code
         $this->dependencies = $dependencies;
 
         $this->className = $this->name.Arr::get($this->config, 'suffix', '');
-        $this->attributes = $this->mergeAttributes($dependencies);
+        $this->attributes = $this->mergeAttributes(
+            $dependencies,
+            Arr::get($this->config, 'plugins', [])
+        );
     }
 
     public function __toString()
@@ -47,7 +52,7 @@ class Code
 
         $attributes = [];
         foreach ($this->attributes as $key => $value) {
-            $attributes[$prefix.'_'.$key] = $value;
+            $attributes[str_replace('-', '_', $prefix.'_'.$key)] = $value;
         }
 
         return $attributes;
@@ -76,17 +81,6 @@ class Code
             : false;
     }
 
-    private function getDummyAttributes()
-    {
-        $dummy = [];
-        foreach ($this->attributes as $key => $value) {
-            $dummy['Dummy'.Str::studly($key)] = $value;
-            $dummy['dummy'.Str::studly($key)] = Str::camel($value);
-        }
-
-        return $dummy;
-    }
-
     private function renderStub()
     {
         return strtr($this->files->get($this->config['stub']), $this->getDummyAttributes());
@@ -97,7 +91,7 @@ class Code
         return $useSort === true ? $this->useSortFixer->fix($content) : $content;
     }
 
-    private function mergeAttributes($dependencies)
+    private function mergeAttributes($dependencies, $plugins)
     {
         $attributes = array_merge(Arr::get($this->config, 'attributes', []), [
             'name' => $this->name,
@@ -117,6 +111,29 @@ class Code
             $attributes = array_merge($attributes, $dependency->getAttributes($name));
         }
 
+        foreach ($plugins as $pluginClass => $pluginConfig) {
+            $plugin = new $pluginClass();
+            $plugin->setConfig($pluginConfig);
+            $plugin->setAttributes($attributes);
+            $plugin->setFilesystem($this->files);
+            $plugin->setUseSortFixer($this->useSortFixer);
+            $processedAttributes = $plugin->process();
+            if (is_array($processedAttributes) === true) {
+                $attributes = array_merge($attributes, $processedAttributes);
+            }
+        }
+
         return $attributes;
+    }
+
+    private function getDummyAttributes()
+    {
+        $dummy = [];
+        foreach ($this->attributes as $key => $value) {
+            $dummy['Dummy'.Str::studly($key)] = $value;
+            $dummy['dummy'.Str::studly($key)] = Str::camel($value);
+        }
+
+        return $dummy;
     }
 }

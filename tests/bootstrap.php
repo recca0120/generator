@@ -58,6 +58,13 @@ if (function_exists('base_path') === false) {
     }
 }
 
+if (function_exists('app_path') === false) {
+    function app_path($path)
+    {
+        return realpath(__DIR__.'/fixtures/app/'.$path);
+    }
+}
+
 if (function_exists('resource_path') === false) {
     function resource_path($path)
     {
