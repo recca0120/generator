@@ -3,17 +3,22 @@
 namespace Recca0120\Generator\Tests;
 
 use Mockery as m;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Recca0120\Generator\Generator;
 
 class GeneratorTest extends TestCase
 {
+    private $root;
+
     protected function setUp()
     {
+        $this->root = vfsStream::setup();
+
         parent::setUp();
         $this->config = [
             'model' => [
-                'path' => base_path('app'),
+                'path' => $this->base_path('app'),
                 'stub' => resource_path('stubs/app/Model.stub'),
                 'attributes' => [
                     'namespace' => 'App',
@@ -21,7 +26,7 @@ class GeneratorTest extends TestCase
                 ],
             ],
             'repository-contract' => [
-                'path' => base_path('app/Repositories/Contracts'),
+                'path' => $this->base_path('app/Repositories/Contracts'),
                 'stub' => resource_path('stubs/app/Repositories/Contracts/Repository.stub'),
                 'suffix' => 'Repository',
                 'sort' => false,
@@ -30,7 +35,7 @@ class GeneratorTest extends TestCase
                 ],
             ],
             'repository' => [
-                'path' => base_path('app/Repositories'),
+                'path' => $this->base_path('app/Repositories'),
                 'stub' => resource_path('stubs/app/Repositories/Repository.stub'),
                 'suffix' => 'Repository',
                 'attributes' => [
@@ -91,8 +96,36 @@ class GeneratorTest extends TestCase
             $this->lineEncoding($code->render()),
             $this->getFixture('app/Repositories/FooBarRepository.php')
         );
+    }
+
+    /** @test */
+    public function it_should_store_code_and_depencencies()
+    {
+        $generator = new Generator($this->config);
+        $name = 'FooBar';
+        $command = 'repository';
+        $code = $generator->generate($command, $name);
 
         $code->store();
+
+        $this->assertTrue($this->root->hasChild('app/FooBar.php'));
+        $this->assertTrue($this->root->hasChild('app/Repositories/FooBarRepository.php'));
+        $this->assertTrue($this->root->hasChild('app/Repositories/Contracts/FooBarRepository.php'));
+
+        $this->assertSame(
+            $this->lineEncoding($this->root->getChild('app/FooBar.php')->getContent()),
+            $this->getFixture('app/FooBar.php')
+        );
+
+        $this->assertSame(
+            $this->lineEncoding($this->root->getChild('app/Repositories/FooBarRepository.php')->getContent()),
+            $this->getFixture('app/Repositories/FooBarRepository.php')
+        );
+
+        $this->assertSame(
+            $this->lineEncoding($this->root->getChild('app/Repositories/Contracts/FooBarRepository.php')->getContent()),
+            $this->getFixture('app/Repositories/Contracts/FooBarRepository.php')
+        );
     }
 
     private function getFixture($path)
@@ -103,5 +136,10 @@ class GeneratorTest extends TestCase
     private function lineEncoding($content)
     {
         return str_replace("\r\n", "\n", $content);
+    }
+
+    private function base_path($path)
+    {
+        return $this->root->url().'/'.$path;
     }
 }
