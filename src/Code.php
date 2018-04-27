@@ -101,7 +101,7 @@ class Code
         ]);
 
         if (empty($attributes['extends']) === false) {
-            $attributes['base_extends'] = basename($attributes['extends']);
+            $attributes['base_extends'] = basename(str_replace('//', '/', $attributes['extends']));
         }
 
         if (empty($attributes['namespace']) === false) {
