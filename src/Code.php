@@ -111,7 +111,7 @@ class Code
                 continue;
             }
 
-            $attributes[$key] = basename(str_replace('//', '/', $value));
+            $attributes[$key] = basename(str_replace('\\', '/', $value));
         }
 
         if (empty($attributes['namespace']) === false) {
