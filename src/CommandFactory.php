@@ -18,9 +18,9 @@ class CommandFactory
     public function create()
     {
         return array_map(function ($name) {
-            $command = new GeneratorCommand($this->generator, $name);
+            $command = new GeneratorCommand($this->generator, $name, $this->config[$name]);
 
-            $instanceName = 'generator.'.$name;
+            $instanceName = 'recca0120.generator.'.$name;
             $this->app->instance($instanceName, $command);
 
             return $instanceName;

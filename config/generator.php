@@ -6,8 +6,7 @@ return [
         'stub' => resource_path('stubs/app/Model.stub'),
         'attributes' => [
             'namespace' => 'App',
-            'extends_qualified_class' => Illuminate\Database\Eloquent\Model::class,
-            'extends_class' => 'Model',
+            'extends_qualified_class' => \Illuminate\Database\Eloquent\Model::class,
         ],
     ],
     'repository-contract' => [
@@ -25,7 +24,6 @@ return [
         'attributes' => [
             'namespace' => 'App\Repositories',
             'extends_qualified_class' => \Recca0120\Repository\EloquentRepository::class,
-            'extends_class' => 'EloquentRepository',
         ],
         'dependencies' => [
             'model',
