@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use DummyExtends;
+use DummyExtendsQualifiedClass;
 
-class DummyClass extends DummyBaseExtends
+class DummyClass extends DummyExtendsClass
 {
     /**
      * The attributes that are mass assignable.

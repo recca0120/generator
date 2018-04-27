@@ -100,13 +100,23 @@ class Code
             'class' => $this->className,
         ]);
 
-        if (empty($attributes['extends']) === false) {
-            $attributes['base_extends'] = basename(str_replace('//', '/', $attributes['extends']));
+        foreach ($attributes as $key => $value) {
+            if (Str::endsWith($key, 'qualified_class') === false) {
+                continue;
+            }
+
+            $key = str_replace('qualified_', '', $key);
+
+            if (empty($attributes[$key]) === false) {
+                continue;
+            }
+
+            $attributes[$key] = basename(str_replace('//', '/', $value));
         }
 
         if (empty($attributes['namespace']) === false) {
-            $attributes['fully_qualified_name'] = '\\'.$attributes['namespace'].'\\'.$attributes['class'];
-            $attributes['qualified_name'] = $attributes['namespace'].'\\'.$attributes['class'];
+            $attributes['fully_qualified_class'] = '\\'.$attributes['namespace'].'\\'.$attributes['class'];
+            $attributes['qualified_class'] = $attributes['namespace'].'\\'.$attributes['class'];
         }
 
         foreach ($dependencies as $name => $dependency) {

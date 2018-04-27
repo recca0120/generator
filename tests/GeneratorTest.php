@@ -29,7 +29,7 @@ class GeneratorTest extends TestCase
                 'stub' => resource_path('stubs/app/Model.stub'),
                 'attributes' => [
                     'namespace' => 'App',
-                    'extends' => 'Illuminate\Database\Eloquent\Model',
+                    'extends_qualified_class' => \Illuminate\Database\Eloquent\Model::class,
                 ],
             ],
             'repository-contract' => [
@@ -47,7 +47,7 @@ class GeneratorTest extends TestCase
                 'suffix' => 'Repository',
                 'attributes' => [
                     'namespace' => 'App\Repositories',
-                    'extends' => \Recca0120\Repository\EloquentRepository::class,
+                    'extends_qualified_class' => \Recca0120\Repository\EloquentRepository::class,
                 ],
                 'dependencies' => [
                     'model',

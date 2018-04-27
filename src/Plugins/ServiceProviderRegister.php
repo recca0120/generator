@@ -34,7 +34,7 @@ class ServiceProviderRegister extends Plugin
                 "\n}\n";
         }
 
-        $qualifiedName = $this->attributes['qualified_name'];
+        $qualifiedName = $this->attributes['qualified_class'];
         $class = $this->attributes['class'];
 
         if ($qualifiedName && strpos($content, sprintf('use %s;', $qualifiedName)) === false) {
@@ -69,9 +69,9 @@ class ServiceProviderRegister extends Plugin
      */
     private function replaceServieProviderCallback($match)
     {
-        $qualifiedName = $this->attributes['qualified_name'];
+        $qualifiedName = $this->attributes['qualified_class'];
         $class = $this->attributes['class'];
-        $contractQualifiedName = $this->attributes['repository_contract_qualified_name'];
+        $contractQualifiedName = $this->attributes['repository_contract_qualified_class'];
 
         if (Str::startsWith($match[0], 'namespace') === true) {
             return $match[0]."\n\n".

@@ -2,16 +2,16 @@
 
 namespace DummyNamespace;
 
-use DummyExtends;
-use DummyModelQualifiedName;
+use DummyModelQualifiedClass;
+use DummyExtendsQualifiedClass;
 use DummyRepositoryContractNamespace\DummyRepositoryContractClass as DummyClassContract;
 
-class DummyClass extends DummyBaseExtends implements DummyClassContract
+class DummyClass extends DummyExtendsClass implements DummyClassContract
 {
     /**
      * Create a new repository instance.
      *
-     * @param DummyModelFullyQualifiedName $dummyModelClass
+     * @param DummyModelFullyQualifiedClass $dummyModelClass
      */
     public function __construct(DummyModelClass $dummyModelClass)
     {
