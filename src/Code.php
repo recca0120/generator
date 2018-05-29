@@ -144,6 +144,10 @@ class Code
         foreach ($this->attributes as $key => $value) {
             $dummy['Dummy'.Str::studly($key)] = $value;
             $dummy['dummy'.Str::studly($key)] = Str::camel($value);
+            $dummy['DummySingular'.Str::studly($key)] = Str::singular($value);
+            $dummy['dummySingular'.Str::studly($key)] = Str::camel(Str::singular($value));
+            $dummy['DummyPlural'.Str::studly($key)] = Str::plural($value);
+            $dummy['dummyPlural'.Str::studly($key)] = Str::camel(Str::plural($value));
         }
 
         return $dummy;

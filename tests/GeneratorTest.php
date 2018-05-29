@@ -59,6 +59,18 @@ class GeneratorTest extends TestCase
                     ],
                 ],
             ],
+            'controller' => [
+                'path' => app_path('Http/Controllers'),
+                'stub' => resource_path('stubs/app/Http/Controllers/Controller.stub'),
+                'suffix' => 'Controller',
+                'attributes' => [
+                    'namespace' => 'App\Http\Controllers',
+                    'extends_qualified_class' => \Illuminate\Http\Controller::class,
+                ],
+                'dependencies' => [
+                    'repository',
+                ],
+            ]
         ];
     }
 
@@ -142,6 +154,20 @@ class GeneratorTest extends TestCase
         $this->assertSame(
             $this->lineEncoding($this->root->getChild('app/Repositories/Contracts/FooBarRepository.php')->getContent()),
             $this->getFixture('app/Repositories/Contracts/FooBarRepository.php')
+        );
+    }
+
+    /** @test */
+    public function it_should_generate_controller()
+    {
+        $generator = new Generator($this->config);
+        $name = 'FooBar';
+        $command = 'controller';
+        $code = $generator->generate($command, $name);
+
+        $this->assertSame(
+            $this->lineEncoding($code->render()),
+            $this->getFixture('app/Http/Controllers/FooBarController.php')
         );
     }
 

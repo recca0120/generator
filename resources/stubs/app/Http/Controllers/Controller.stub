@@ -1,0 +1,152 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Http\Request;
+use DummyExtendsQualifiedClass;
+use Recca0120\Repository\Criteria;
+use DummyRepositoryContractQualifiedClass;
+
+class DummyClass extends DummyExtendsClass
+{
+    /**
+     * $dummyPluralRepositoryName.
+     *
+     * @param DummyRepositoryContractFullyQualifiedClass
+     */
+    protected $dummyPluralRepositoryName;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param DummyRepositoryContractFullyQualifiedClass $dummyPluralRepositoryName
+     */
+    public function __construct(DummyRepositoryContractClass $dummyPluralRepositoryName)
+    {
+        $this->dummyPluralRepositoryName = $dummyPluralRepositoryName;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $dummyPluralRepositoryName = $this->dummyPluralRepositoryName
+            ->paginate(tap(Criteria::create(), function($criteria) use ($request) {
+                if ($request->filled('sort') === true) {
+                    $criteria->orderBy($request->get('sort'), $request->get('dir'));
+                } else {
+                    $criteria->orderBy('id', 'asc');
+                }
+
+                if ($request->filled('id') === true) {
+                    $criteria->where('id', 'like', '%'.$request->get('id').'%');
+                }
+            }))
+            ->appends($request->all());
+
+        return response()->view('dummyName.index', compact('dummyPluralRepositoryName'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $dummyModelName = $this->dummyPluralRepositoryName->newInstance([]);
+
+        return response()->view('dummyName.create', compact('dummyModel'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $attributes = $request->all();
+        $dummyModelName = $this->dummyPluralRepositoryName->create($attributes);
+
+        return response()
+            ->redirectToRoute('dummyName.index', $request->query())
+            ->with('success', $dummyModelName->name.' saved successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $dummyModelName = $this->dummyPluralRepositoryName->find($id);
+
+        if (is_null($dummyModelName) === true) {
+            return redirect()
+                ->back()
+                ->with('error', 'not found');
+        }
+
+        return response()->view('dummyName.edit', compact('dummyModelName'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \DummyFullRequestClass $request
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $attributes = $request->all();
+        $dummyModelName = $this->dummyPluralRepositoryName->update($id, $attributes);
+
+        return response()
+            ->redirectToRoute('dummyName.index', $request->query())
+            ->with('success', $dummyModelName->name.' updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request, $id)
+    {
+        $dummyModelName = $this->dummyPluralRepositoryName->find($id);
+
+        if (is_null($dummyModelName) === true) {
+            return redirect()
+                ->back()
+                ->with('error', 'not found');
+        }
+
+        $this->dummyPluralRepositoryName->delete($id);
+
+        return response()
+            ->redirectToRoute('dummyName.index', $request->query())
+            ->with('success', $dummyModelName->name.' deleted successfully.');
+    }
+}

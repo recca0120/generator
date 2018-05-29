@@ -39,13 +39,17 @@ class Generator
         $codes = [];
         foreach ($dependencies as $dependency) {
             $dependencyConfig = Arr::get($this->config, $dependency, []);
+            $depencyCodes = $this->generateDependencies($name, array_get($dependencyConfig, 'dependencies', []));
+
             $codes[$dependency] = new Code(
                 $name,
                 $dependencyConfig,
-                [],
+                $depencyCodes,
                 $this->files,
                 $this->useSortFixer
             );
+
+            $codes = array_merge($codes, $depencyCodes);
         }
 
         return $codes;

@@ -35,4 +35,16 @@ return [
             ],
         ],
     ],
+    'controller' => [
+        'path' => app_path('Http/Controllers'),
+        'stub' => resource_path('stubs/app/Http/Controllers/Controller.stub'),
+        'suffix' => 'Controller',
+        'attributes' => [
+            'namespace' => 'App\Http\Controllers',
+            'extends_qualified_class' => \Illuminate\Http\Controller::class,
+        ],
+        'dependencies' => [
+            'repository',
+        ],
+    ]
 ];
