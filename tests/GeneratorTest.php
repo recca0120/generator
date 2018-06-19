@@ -6,9 +6,12 @@ use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Recca0120\Generator\Generator;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class GeneratorTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     private $root;
 
     protected function setUp()
@@ -72,12 +75,6 @@ class GeneratorTest extends TestCase
                 ],
             ]
         ];
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        m::close();
     }
 
     /** @test */
