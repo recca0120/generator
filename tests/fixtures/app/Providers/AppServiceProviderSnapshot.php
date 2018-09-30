@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    protected function registerRepositories()
+    private function registerRepositories()
     {
         $this->app->singleton(FooBarRepositoryContract::class, FooBarRepository::class);
     }
