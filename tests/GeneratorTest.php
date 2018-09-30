@@ -2,7 +2,6 @@
 
 namespace Recca0120\Generator\Tests;
 
-use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Recca0120\Generator\Generator;
@@ -73,7 +72,7 @@ class GeneratorTest extends TestCase
                 'dependencies' => [
                     'repository',
                 ],
-            ]
+            ],
         ];
     }
 

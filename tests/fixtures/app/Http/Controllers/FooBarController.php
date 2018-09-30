@@ -35,7 +35,7 @@ class FooBarController extends Controller
     public function index(Request $request)
     {
         $fooBars = $this->fooBars
-            ->paginate(tap(Criteria::create(), function($criteria) use ($request) {
+            ->paginate(tap(Criteria::create(), function ($criteria) use ($request) {
                 if ($request->filled('sort') === true) {
                     $criteria->orderBy($request->get('sort'), $request->get('dir'));
                 } else {
