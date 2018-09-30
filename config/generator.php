@@ -46,5 +46,5 @@ return [
         'dependencies' => [
             'repository',
         ],
-    ]
+    ],
 ];
