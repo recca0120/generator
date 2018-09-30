@@ -25,10 +25,10 @@ class ServiceProviderRegister extends Plugin
             }, $content);
         }
 
-        if (strpos($content, 'protected function registerRepositories()') === false) {
+        if (strpos($content, 'private function registerRepositories()') === false) {
             $content = substr($content, 0, strrpos($content, '}')).
                 "\n".str_repeat(' ', 4).
-                'protected function registerRepositories()'.
+                'private function registerRepositories()'.
                 "\n".str_repeat(' ', 4).'{'.
                 "\n".str_repeat(' ', 4).'}'.
                 "\n}\n";
